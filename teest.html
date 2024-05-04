@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billy_Syper_Hero</title>
+    <link rel="shortcut icon" href="ахеренный вопрос.png" type="image/png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        /* Местоположение фоновой картинки */
+        background-image: url(фоннада);
+        /* Фоновое изображение выровнено по центру в горизонтальной и вертикальной плоскостях */
+        background-position: center center;
+        /* Фон не повторяется */
+        background-repeat: no-repeat;
+        /* Фон зафиксирован в области просмотра и потому не двигается, когда высота контента превышает высоту изображения */
+        background-attachment: fixed;
+        /* Это свойство заставляет фон менять масштаб при изменении размеров содержащего его контейнера*/
+        background-size: cover;
+        /* Цвет фона, который будет отображаться при загрузке фоновой картинки*/
+        background-color: #050104;
+      }
+    </style>
+    <style>
+      @media (max-width: 579px) and (min-width: 1px) {
+        .layer1 {
+          padding: 10px; /* стили для текста заглавия */
+          margin-top: 3px; /*  внешний отступ сверху элемента */
+          margin-bottom: 0.5px; /*  внешний отступ снизу элемента */
+          margin-left: 9%; /*  внешний отступ слева элемента */
+        }
+        .layer2 {
+          margin-left: 17%; /* стили для основных пунктов навигации */
+        }
+        .layer3 {
+          text-align: center;
+          font-size: 1em;
+        }
+        .navbar {
+          height: 50px;
+          padding: 1px;
+          position: fixed;
+          z-index: 500;
+          box-shadow: 0px 10px 10px #050104;
+          top: 0;
+          right: 0;
+          left: 0;
+        }
+        a {
+          outline: none;
+          text-decoration: none;
+          display: inline-block;
+          margin-right: 0.625%;
+          line-height: 1;
+          color: rgb(255, 255, 255);
+        }
+
+        .rounder-img {
+          will-change: 50%;
+          border-radius: 50%;
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          overflow-y: scroll;
+        }
+
+        .previy {
+          border-radius: 10px; /* Уголки */
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          margin-top: 1vh; /*  внешний отступ сверху элемента */
+          margin-bottom: 1vh; /*  внешний отступ снизу элемента */
+          margin-left: 1%; /*  внешний отступ слева элемента */
+          margin-right: 1%; /*  внешний отступ справа элемента */
+        }
+
+        .shapka {
+          width: 100%;
+          margin: 0 auto;
+          position: relative; /* Шапка сайта */
+          padding-left: 4%;
+          padding-right: 4%;
+          background: #1a1a1a;
+          margin-bottom: 20%;
+        }
+
+        .footer {
+          width: 100%;
+          background: #171717; /* Цвет фона */
+          color: #ffffff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          height: 15vh;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+          bottom: 0px;
+          text-align: center;
+          overflow: hidden;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 1300px; /* основной контейнер со всем контентом */
+          padding: 5px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .container div {
+          float: left;
+          margin-bottom: 3vh; /* расстояние между шапкой и самим сайтом */
+        }
+        .block1 {
+          /* стили для блока1 */
+          width: 100%;
+          background: #222222; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          border-bottom: 10px;
+          height: 15vh;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+        .block2 {
+          /* стили для бокового блока2 с навигацией и остальной информацией */
+          width: 18%;
+          background: #171717; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          height: 182vh;
+          float: left;
+          margin-right: 1%;
+          margin-left: 1%;
+          box-shadow: inset 0 0 50px rgba(8, 8, 8, 0);
+          display: none;
+        }
+        .block4 {
+          /* стили для блока4 */
+          width: 60%;
+          background: #343434; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+        }
+
+        .block3 {
+          /* стили для блока3 с основной информацией */
+          top: 27.3vh;
+          width: 100%;
+
+          background: #1a1a1a; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          overflow-y: scroll;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+
+        .card {
+          width: 98%;
+          margin: 1%;
+          min-height: 18vh;
+          box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
+          display: flex;
+          flex-direction: column; /* Размещаем элементы в колонку */
+          border-radius: 10px;
+          transition: 0.2s;
+          position: relative;
+          background: #212121;
+        }
+        /* При наведении на карточку - меняем цвет тени */
+        .card:hover {
+          box-shadow: 4px 8px 16px rgb(0, 0, 0);
+        }
+        .card__top {
+          flex: 0 0 220px; /* Задаем высоту 220px, запрещаем расширение и сужение по высоте */
+          position: relative;
+          overflow: hidden; /* Скрываем, что выходит за пределы */
+          border-radius: 10px;
+        }
+
+        /* Контейнер для картинки */
+        .card__image {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .card__image > img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain; /* Встраиваем картинку в контейнер card__image */
+          transition: 0.2s;
+        }
+
+        /* При наведении - увеличиваем картинку */
+        .card__image:hover > img {
+          transform: scale(1.1);
+        }
+
+        /* Размещаем скидку на товар относительно изображения */
+        .card__label {
+          padding: 4px 8px;
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          background: #ffffff; /* кнопка популярно */
+          border-radius: 4px;
+          font-weight: 400;
+          font-size: 16px;
+          color: #000000;
+        }
+
+        .card__bottom {
+          display: flex;
+          flex-direction: column;
+          flex: 1 0 auto; /* Занимаем всю оставшуюся высоту карточки */
+          padding: 10px;
+        }
+
+        .card__title {
+          display: block;
+          margin-bottom: 10px; /* название статьи */
+          font-weight: 400;
+          font-size: 17px;
+          line-height: 150%;
+          color: #feffff;
+        }
+
+        .card__title:hover {
+          color: rgb(196, 196, 196); /* название статьи */
+        }
+
+        .card__add {
+          display: block; /* кнопка читать */
+          width: 100%;
+          font-weight: 400;
+          font-size: 17px;
+          color: #000000;
+          padding: 10px;
+          text-align: center;
+          border: 1px solid #000000;
+          border-radius: 4px;
+          cursor: pointer; /* Меняем курсор при наведении */
+          transition: 0.2s;
+          margin-top: auto; /* Прижимаем кнопку к низу карточки */
+        }
+
+        .card__add:hover {
+          border: 1px solid #4b4b4b;
+          background-color: #555555; /* кнопка читать */
+          color: #fff;
+        }
+
+        .cards {
+          display: grid;
+          /* Автоматически заполняем на всю ширину grid-контейнера */
+          grid-template-columns: repeat(auto-fill, 225px);
+          width: 100%;
+          max-width: 1000px; /* Ширина grid-контейнера */
+          justify-content: center;
+          justify-items: center; /* Размещаем карточку по центру */
+          column-gap: 30px; /* Отступ между колонками */
+          row-gap: 40px; /* Отступ между рядами */
+          margin: 0 auto;
+        }
+      }
+      @media (max-width: 960px) and (min-width: 570px) {
+        .layer1 {
+          padding: 10px; /* стили для текста заглавия */
+          margin-top: 3px; /*  внешний отступ сверху элемента */
+          margin-bottom: 0.5px; /*  внешний отступ снизу элемента */
+          margin-left: 9%; /*  внешний отступ слева элемента */
+        }
+        .layer2 {
+          margin-left: 17%; /* стили для основных пунктов навигации */
+        }
+        .layer3 {
+          text-align: center;
+          font-size: 1em;
+        }
+        .navbar {
+          height: 50px;
+          padding: 1px;
+          position: fixed;
+          z-index: 500;
+          box-shadow: 0px 10px 10px #050104;
+          top: 0;
+          right: 0;
+          left: 0;
+        }
+        a {
+          outline: none;
+          text-decoration: none;
+          display: inline-block;
+          margin-right: 0.625%;
+          line-height: 1;
+          color: rgb(255, 255, 255);
+        }
+
+        .rounder-img {
+          will-change: 50%;
+          border-radius: 50%;
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          overflow-y: scroll;
+        }
+
+        .previy {
+          border-radius: 10px; /* Уголки */
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          margin-top: 1vh; /*  внешний отступ сверху элемента */
+          margin-bottom: 1vh; /*  внешний отступ снизу элемента */
+          margin-left: 1%; /*  внешний отступ слева элемента */
+          margin-right: 1%; /*  внешний отступ справа элемента */
+        }
+
+        .shapka {
+          width: 100%;
+          margin: 0 auto;
+          position: relative; /* Шапка сайта */
+          padding-left: 4%;
+          padding-right: 4%;
+          background: #1a1a1a;
+          margin-bottom: 10%;
+        }
+
+        .footer {
+          width: 100%;
+          background: #171717; /* Цвет фона */
+          color: #ffffff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          height: 15vh;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+          bottom: 0px;
+          text-align: center;
+          overflow: hidden;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 1300px; /* основной контейнер со всем контентом */
+          padding: 5px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .container div {
+          float: left;
+          margin-bottom: 3vh; /* расстояние между шапкой и самим сайтом */
+        }
+        .block1 {
+          /* стили для блока1 */
+          width: 100%;
+          background: #222222; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          border-bottom: 10px;
+          height: 20vh;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+        .block2 {
+          /* стили для бокового блока2 с навигацией и остальной информацией */
+          width: 18%;
+          background: #171717; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          height: 182vh;
+          float: left;
+          margin-right: 1%;
+          margin-left: 1%;
+          box-shadow: inset 0 0 50px rgba(8, 8, 8, 0);
+          display: none;
+        }
+        .block4 {
+          /* стили для блока4 */
+          width: 60%;
+          background: #343434; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+        }
+
+        .block3 {
+          /* стили для блока3 с основной информацией */
+          top: 27.3vh;
+          width: 100%;
+
+          background: #1a1a1a; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          overflow-y: scroll;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+
+        .card {
+          width: 48%;
+          margin: 1%;
+          min-height: 18vh;
+          box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
+          display: flex;
+          flex-direction: column; /* Размещаем элементы в колонку */
+          border-radius: 10px;
+          transition: 0.2s;
+          position: relative;
+          background: #212121;
+        }
+        /* При наведении на карточку - меняем цвет тени */
+        .card:hover {
+          box-shadow: 4px 8px 16px rgb(0, 0, 0);
+        }
+        .card__top {
+          flex: 0 0 220px; /* Задаем высоту 220px, запрещаем расширение и сужение по высоте */
+          position: relative;
+          overflow: hidden; /* Скрываем, что выходит за пределы */
+          border-radius: 10px;
+        }
+
+        /* Контейнер для картинки */
+        .card__image {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .card__image > img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain; /* Встраиваем картинку в контейнер card__image */
+          transition: 0.2s;
+        }
+
+        /* При наведении - увеличиваем картинку */
+        .card__image:hover > img {
+          transform: scale(1.1);
+        }
+
+        /* Размещаем скидку на товар относительно изображения */
+        .card__label {
+          padding: 4px 8px;
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          background: #ffffff; /* кнопка популярно */
+          border-radius: 4px;
+          font-weight: 400;
+          font-size: 16px;
+          color: #000000;
+        }
+
+        .card__bottom {
+          display: flex;
+          flex-direction: column;
+          flex: 1 0 auto; /* Занимаем всю оставшуюся высоту карточки */
+          padding: 10px;
+        }
+
+        .card__title {
+          display: block;
+          margin-bottom: 10px; /* название статьи */
+          font-weight: 400;
+          font-size: 17px;
+          line-height: 150%;
+          color: #feffff;
+        }
+
+        .card__title:hover {
+          color: rgb(196, 196, 196); /* название статьи */
+        }
+
+        .card__add {
+          display: block; /* кнопка читать */
+          width: 100%;
+          font-weight: 400;
+          font-size: 17px;
+          color: #000000;
+          padding: 10px;
+          text-align: center;
+          border: 1px solid #000000;
+          border-radius: 4px;
+          cursor: pointer; /* Меняем курсор при наведении */
+          transition: 0.2s;
+          margin-top: auto; /* Прижимаем кнопку к низу карточки */
+        }
+
+        .card__add:hover {
+          border: 1px solid #4b4b4b;
+          background-color: #555555; /* кнопка читать */
+          color: #fff;
+        }
+
+        .cards {
+          display: grid;
+          /* Автоматически заполняем на всю ширину grid-контейнера */
+          grid-template-columns: repeat(auto-fill, 225px);
+          width: 100%;
+          max-width: 1000px; /* Ширина grid-контейнера */
+          justify-content: center;
+          justify-items: center; /* Размещаем карточку по центру */
+          column-gap: 30px; /* Отступ между колонками */
+          row-gap: 40px; /* Отступ между рядами */
+          margin: 0 auto;
+        }
+      }
+      @media (min-width: 961px) and (max-width: 10000px) {
+        .layer1 {
+          padding: 10px; /* стили для текста заглавия */
+          margin-top: 3px; /*  внешний отступ сверху элемента */
+          margin-bottom: 0.5px; /*  внешний отступ снизу элемента */
+          margin-left: 9%; /*  внешний отступ слева элемента */
+        }
+        .layer2 {
+          margin-left: 17%; /* стили для основных пунктов навигации */
+        }
+        .layer3 {
+          text-align: center;
+        }
+
+        a {
+          outline: none;
+          text-decoration: none;
+          display: inline-block;
+          margin-right: 0.625%;
+          line-height: 1;
+          color: rgb(255, 255, 255);
+        }
+
+        .rounder-img {
+          will-change: 50%;
+          border-radius: 50%;
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          overflow-y: scroll;
+        }
+
+        .previy {
+          border-radius: 10px; /* Уголки */
+          border: 5px #534d4d solid; /* обводка для аватарки */
+          margin-top: 1vh; /*  внешний отступ сверху элемента */
+          margin-bottom: 1vh; /*  внешний отступ снизу элемента */
+          margin-left: 1%; /*  внешний отступ слева элемента */
+          margin-right: 1%; /*  внешний отступ справа элемента */
+        }
+
+        .navbar {
+          height: 50px;
+          padding: 1px;
+          padding-left: 4%;
+          padding-right: 4%;
+        }
+
+        .shapka {
+          width: 100%;
+          margin: 0 auto;
+          position: relative; /* Шапка сайта */
+
+          background: #1a1a1a;
+          margin-bottom: 2%;
+        }
+
+        .footer {
+          width: 98%;
+          background: #171717; /* Цвет фона */
+          color: #ffffff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          border-bottom: 10px;
+          height: 25vh;
+          margin-right: 1%;
+          margin-left: 1%;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+          text-align: center;
+          overflow: hidden;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 1300px; /* основной контейнер со всем контентом */
+          padding: 5px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .container div {
+          float: left;
+          margin-bottom: 1vh; /* расстояние между шапкой и самим сайтом */
+        }
+        .block1 {
+          /* стили для блока1 */
+          width: 60%;
+          background: #222222; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 0px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          float: left;
+          height: 25vh;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+        .block2 {
+          /* стили для бокового блока2 с навигацией и остальной информацией */
+          width: 18%;
+          background: #171717; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          height: 182vh;
+          float: left;
+          margin-right: 1%;
+          margin-left: 1%;
+          box-shadow: inset 0 0 50px rgba(8, 8, 8, 0);
+        }
+        .block4 {
+          /* стили для блока4 */
+          width: 60%;
+          background: #343434; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+        }
+
+        .block3 {
+          /* стили для блока3 с основной информацией */
+          position: absolute;
+          left: 20.25%;
+          top: 26vh;
+          width: 59.5%;
+          height: 155vh;
+          background: #1a1a1a; /* Цвет фона */
+          color: #fff; /* Цвет текста */
+          padding: 10px; /* Поля вокруг текста */
+          border-radius: 10px; /* Уголки */
+          border: 1px solid #363738;
+          overflow-y: scroll;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0);
+        }
+
+        .card {
+          width: 48%;
+          margin: 1%;
+          min-height: 18vh;
+          box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
+          display: flex;
+          flex-direction: column; /* Размещаем элементы в колонку */
+          border-radius: 10px;
+          transition: 0.2s;
+          position: relative;
+          background: #212121;
+        }
+        /* При наведении на карточку - меняем цвет тени */
+        .card:hover {
+          box-shadow: 4px 8px 16px rgb(0, 0, 0);
+        }
+        .card__top {
+          flex: 0 0 220px; /* Задаем высоту 220px, запрещаем расширение и сужение по высоте */
+          position: relative;
+          overflow: hidden; /* Скрываем, что выходит за пределы */
+          border-radius: 10px;
+        }
+
+        /* Контейнер для картинки */
+        .card__image {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .card__image > img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain; /* Встраиваем картинку в контейнер card__image */
+          transition: 0.2s;
+        }
+
+        /* При наведении - увеличиваем картинку */
+        .card__image:hover > img {
+          transform: scale(1.1);
+        }
+
+        /* Размещаем скидку на товар относительно изображения */
+        .card__label {
+          padding: 4px 8px;
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          background: #ffffff; /* кнопка популярно */
+          border-radius: 4px;
+          font-weight: 400;
+          font-size: 16px;
+          color: #000000;
+        }
+
+        .card__bottom {
+          display: flex;
+          flex-direction: column;
+          flex: 1 0 auto; /* Занимаем всю оставшуюся высоту карточки */
+          padding: 10px;
+        }
+
+        .card__title {
+          display: block;
+          margin-bottom: 10px; /* название статьи */
+          font-weight: 400;
+          font-size: 17px;
+          line-height: 150%;
+          color: #feffff;
+        }
+
+        .card__title:hover {
+          color: rgb(196, 196, 196); /* название статьи */
+        }
+
+        .card__add {
+          display: block; /* кнопка читать */
+          width: 100%;
+          font-weight: 400;
+          font-size: 17px;
+          color: #000000;
+          padding: 10px;
+          text-align: center;
+          border: 1px solid #000000;
+          border-radius: 4px;
+          cursor: pointer; /* Меняем курсор при наведении */
+          transition: 0.2s;
+          margin-top: auto; /* Прижимаем кнопку к низу карточки */
+        }
+
+        .card__add:hover {
+          border: 1px solid #4b4b4b;
+          background-color: #555555; /* кнопка читать */
+          color: #fff;
+        }
+
+        .cards {
+          display: grid;
+          /* Автоматически заполняем на всю ширину grid-контейнера */
+          grid-template-columns: repeat(auto-fill, 225px);
+          width: 100%;
+          max-width: 1000px; /* Ширина grid-контейнера */
+          justify-content: center;
+          justify-items: center; /* Размещаем карточку по центру */
+          column-gap: 30px; /* Отступ между колонками */
+          row-gap: 40px; /* Отступ между рядами */
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shapka">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark"
+        style="background-color: #1a1a1a"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">
+            <img
+              src="кубик.png"
+              alt="Logo"
+              width="40"
+              height="40"
+              class="d-inline-block"
+              href="index.html"
+            />
+          </a>
+          <a class="navbar-brand" href="index.html">KYBACTiK</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="ошибка.html">Fuck </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="ошибка.html"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Billy
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li>
+                    <a class="dropdown-item" href="#">Another action</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Поиск"
+                aria-label="Поиск"
+              />
+              <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+                Поиск
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="main">
+      <div class="container">
+        <div class="block2">
+          <h5 class="fw-light layer1 fw-bold">Основное меню</h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Галерея</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Библиотека</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Форум</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Обратная связь
+            </a>
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Определители</a
+            >
+          </h5>
+          <h5 class="fw-light layer1 fw-bold" href="ошибка.html">Навигация</h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Новое на сайте</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Блог</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Изображения</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Лучшее</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Объявления</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank">Мы</a>
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Карта сайта</a
+            >
+          </h5>
+          <h5>
+            <a href="ошибка.html" class="fw-light layer2" target="_blank"
+              >Новости</a
+            >
+          </h5>
+        </div>
+        <div class="block1">
+          <img
+            class="rounder-img"
+            src="4.jpg"
+            width="auto"
+            height="80%"
+            style="
+              margin-left: 2%;
+              margin-top: 2.5%;
+              margin-right: 4%;
+              margin-bottom: 2.5%;
+            "
+          />
+          .......
+        </div>
+        <div class="block2">
+          <h1
+            align="center"
+            class="fw-light"
+            style="margin-top: 2%; margin-bottom: 10%"
+          >
+            Страницы
+          </h1>
+
+          <h4 class="fw-light layer2">
+            <a href="Billy.html" target="_blank">BillyLight</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="Billy2.html" target="_blank">BillyLight2</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="BillyBlack.html" target="_blank">BillyBlack</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="Frost.html" target="_blank">FrostLight</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="FrostBlack.html" target="_blank">FrostBlack</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="квадратный.html" target="_blank">HomeWide1</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="квадратный2.html" target="_blank">HomeWide2</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="теест.html" target="_blank">HomeShort1</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="index.html" target="_blank">HomeShort2</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="ошибка.html" target="_blank">ErrorBlack</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="keril.html" target="_blank">КЕЕРИЛ СРОЧНО</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="Frost.html" target="_blank">ВАРИК 1</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="Frost shapka.html" target="_blank">ВАРИК 2</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="Frostmobil.html" target="_blank">МОБИЛКА</a>
+          </h4>
+          <h4 class="fw-light layer2">
+            <a href="adaptive.html" target="_blank">АДАПТИВНАЯ</a>
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="block3">
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img src="красный космос.jpg" alt="Цааарь гачи" />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">Статья про Билли Херрингтона</h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img
+                src="galaxy-astronomical-object-astronomy-outer-space-atmosphere-star-nebula-space-1366710 (2).jpg"
+                alt="Ну фрост так фрост"
+              />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">
+              Статья Frost (Фрост) – видеоблогер
+            </h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img src="зеленый космос.jpg" alt="Фроост" />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">
+              Статья Frost (Фрост) – видеоблогер
+            </h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img src="черный космос.jpg" alt="Фроооост" />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">
+              Статья Frost (Фрост) – видеоблогер
+            </h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img src="зеленый космос.jpg" alt="Фроооост" />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">
+              Статья Frost (Фрост) – видеоблогер
+            </h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <!-- Верхняя часть -->
+          <div class="card__top">
+            <!-- Изображение-ссылка товара -->
+            <a href="#" class="card__image">
+              <img src="зеленый космос.jpg" alt="Фроооост" />
+            </a>
+            <!-- Скидка на товар -->
+            <div class="card__label">Популярно</div>
+          </div>
+          <!-- Нижняя часть -->
+          <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <!-- Ссылка-название товара -->
+            <h1 href="#" class="card__title">
+              Статья Frost (Фрост) – видеоблогер
+            </h1>
+            <!-- Кнопка добавить в корзину -->
+            <button
+              class="card__add"
+              onclick="window.open('adaptive.html')"
+              value="Go to Google"
+            >
+              Читать
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer">
+        <h5 class="layer3">Денсеры</h5>
+        <img
+          src="fast-cat-cat-excited.gif"
+          width="28%"
+          height="80%"
+          alt="я джифка"
+        />
+        <img
+          src="fast-cat-cat-excited.gif"
+          width="28%"
+          height="80%"
+          alt="я джифка"
+        />
+        <img
+          src="fast-cat-cat-excited.gif"
+          width="28%"
+          height="80%"
+          alt="я джифка"
+        />
+        <img
+          src="fast-cat-cat-excited.gif"
+          width="28%"
+          height="80%"
+          alt="я джифка"
+        />
+      </div>
+    </div>
+  </body>
+</html>
