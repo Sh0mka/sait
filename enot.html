@@ -19,9 +19,6 @@
         margin: 0 auto;
         position: relative;
       }
-      .text {
-        font-size: 16px;
-      }
       .foto {
         border: 5px #000000 solid; /* обводка для аватарки */
         border-radius: 25px; /* Уголки */
@@ -35,30 +32,21 @@
         max-width: 750px;
         max-height: 350px;
       }
-      p {
-        font-family: Arial;
-        font-size: 26px;
-      }
-      p1 {
-        font-family: Arial;
-        font-size: 26px;
-      }
-      h1 {
-        font-family: Arial;
+      .blocktext {
         text-align: center;
-        font-size: 16px;
-      }
-      icn {
-        width: 2px;
-        height: 2px;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
       }
       /* стили для навигации */
       .layer1 {
-        padding: 10px; /* стили для текста заглавия */
-        margin-top: 3px; /*  внешний отступ сверху элемента */
-        margin-bottom: 0.5px; /*  внешний отступ снизу элемента */
-        margin-left: 9%; /*  внешний отступ слева элемента */
-        font-size: 116px;
+        text-align: center;
+        font-size: 26px;
+        font-family: Arial;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        font-weight: bold;
       }
       .layer2 {
         margin-left: 17%; /* стили для основных пунктов навигации */
@@ -70,32 +58,12 @@
         padding-top: 5px;
         font-size: 116px;
       }
-      .navbar {
-        height: 50px;
-        padding: 1px;
-        position: fixed;
-        z-index: 500;
-        box-shadow: 0px 1px 20px #050104;
-        top: 0;
-        right: 0;
-        left: 0;
-      }
-      .shapka {
-        width: 100%;
-        margin: 0 auto;
-        position: relative; /* Шапка сайта */
-        padding-left: 4%;
-        padding-right: 4%;
-        background: #1a1a1a;
-        margin-bottom: 4%;
-      }
       .rounder-img {
         width: 80%;
         height: auto;
         will-change: 50%;
         max-width: 350px;
         max-height: 350px;
-        text-align: center;
         overflow-y: scroll;
         margin-left: 10%;
         margin-right: 10%;
@@ -103,16 +71,34 @@
       .block1 {
         width: 100%;
         background: #1c4a09;
-        height: calc(100svh);
+        height: 100svh;
         background-image: linear-gradient(
           rgb(68, 199, 255) 53%,
           rgb(81, 134, 42) 57%
         );
+        color: #ffffff;
+        overflow: auto;
+        align-items: center;
+      }
+      .block2 {
+        width: 100%;
+        height: 75svh;
         float: left;
         color: #ffffff;
-        overflow: hidden;
-        display: flex;
+        border: solid 1px #c50909;
         align-items: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+      }
+      .block3 {
+        width: 100%;
+        height: 25svh;
+        float: left;
+        color: #ffffff;
+        border: solid 1px #c50909;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
       .knopka {
@@ -123,10 +109,8 @@
         height: 25vw;
         align-items: center;
         background: #ffffff;
-        border: solid 1px #000000;
+        border: solid 0px #000000;
         color: #ffffff;
-        position: absolute;
-        bottom: 45px;
         border-radius: 10px;
       }
       .knopka1 {
@@ -150,15 +134,19 @@
   </head>
   <body>
     <div class="block1">
-      <div class="text-center">
-        <p1><b>ЕНОТ</b></p1>
+      <div class="block2">
+        <div class="blocktext"><p1 class="layer1">ЕНОТ</p1></div>
         <img class="rounder-img" src="ЕНОТ.png" />
-        <a
-          href="https://minecraft.fandom.com/ru/wiki/IndustrialCraft_2"
-          target="_blank"
-          class="btn btn-primary"
-          ><b>КОРМИТЬ</b>
-        </a>
+        <div class="blocktext">
+          <a
+            href="https://minecraft.fandom.com/ru/wiki/IndustrialCraft_2"
+            target="_blank"
+            class="btn btn-primary"
+            ><b>КОРМИТЬ</b>
+          </a>
+        </div>
+      </div>
+      <div class="block3">
         <div class="knopka">
           <div class="knopka1">
             <img src="пустойкруг.png" width="70%" height="70%" />
