@@ -49,8 +49,8 @@
         font-weight: bold;
       }
       .layer2 {
-        margin-left: 17%; /* стили для основных пунктов навигации */
-        font-size: 116px;
+        margin-top: 5%; /*  внешний отступ сверху элемента */
+        margin-bottom: 30%; /*  внешний отступ снизу элемента */
       }
       .layer3 {
         text-align: center;
@@ -72,10 +72,8 @@
         width: 100%;
         background: #1c4a09;
         height: 100svh;
-        background-image: linear-gradient(
-          rgb(68, 199, 255) 53%,
-          rgb(81, 134, 42) 57%
-        );
+        background-size: 60%;
+        background-image: url("трава.jpg");
         color: #ffffff;
         overflow: auto;
         align-items: center;
@@ -85,7 +83,8 @@
         height: 75svh;
         float: left;
         color: #ffffff;
-        border: solid 1px #c50909;
+        border: solid 0px #c50909;
+        overflow: auto;
         align-items: center;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
@@ -94,7 +93,7 @@
         height: 25svh;
         float: left;
         color: #ffffff;
-        border: solid 1px #c50909;
+        border: solid 0px #c50909;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -135,7 +134,7 @@
   <body>
     <div class="block1">
       <div class="block2">
-        <div class="blocktext"><p1 class="layer1">ЕНОТ</p1></div>
+        <div class="blocktext layer2"><p1 class="layer1">ЕНОТ</p1></div>
         <img class="rounder-img" src="ЕНОТ.png" />
         <div class="blocktext">
           <a
