@@ -2,22 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Billy_Syper_Hero</title>
-    <link rel="shortcut icon" href="ахеренный вопрос.png" type="image/png" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      .container {
-        width: 100%;
-        max-width: 880px; /* основной контейнер со всем контентом */
-        padding: 5px;
-        margin: 0 auto;
-        position: relative;
+      body {
+        display: block;
+        margin: auto;
       }
       .foto {
         border: 5px #000000 solid; /* обводка для аватарки */
@@ -37,18 +28,23 @@
         width: 80%;
         margin-left: 10%;
         margin-right: 10%;
+        font-weight: bold;
+        font-family: Arial;
       }
+
       /* стили для навигации */
       .layer1 {
-        font-size: 46px;
-        font-family: Arial;
+        font-size: 38px;
         width: 80%;
         margin-left: 10%;
         margin-right: 10%;
         font-weight: bold;
+        font-family: Arial;
       }
       .layer2 {
         margin-top: 5%; /*  внешний отступ сверху элемента */
+        font-weight: bold;
+        font-family: Arial;
         margin-bottom: 5%; /*  внешний отступ снизу элемента */
       }
       .layer3 {
@@ -56,13 +52,14 @@
         padding-bottom: 6px;
         padding-top: 5px;
         font-size: 116px;
+        font-weight: bold;
+        font-family: Arial;
       }
       .rounder-img {
         width: 80%;
         height: auto;
         will-change: 50%;
-        max-width: 350px;
-        max-height: 350px;
+
         overflow-y: scroll;
         margin-left: 10%;
         margin-right: 10%;
@@ -74,7 +71,7 @@
         background-size: 60%;
         background-image: url("трава.png");
         color: #ffffff;
-        overflow: auto;
+        overflow: hidden;
       }
       .block2 {
         width: 100%;
@@ -98,16 +95,16 @@
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
       .block4 {
-        width: 96%;
+        width: 86%;
         height: 12svh;
         margin-top: 3svh;
-        margin-right: 2%;
-        margin-left: 2%;
+        margin-right: 7%;
+        margin-left: 7%;
         float: left;
         color: #ffffff;
-        border: solid 1px #c5090900;
-        background-color: #ffffff;
-        border-radius: 20px;
+        border: solid 0px #c50909;
+        background: #588157;
+        border-radius: 6px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -116,12 +113,12 @@
       }
       .balance {
         width: 30%;
-        height: 10svh;
+        height: 9svh;
         margin-right: 1%;
         margin-left: 1%;
         margin-top: 1svh;
         margin-bottom: 1svh;
-        border-radius: 20px;
+        border-radius: 6px;
         display: flex;
         cursor: pointer;
         justify-content: center;
@@ -129,28 +126,26 @@
         float: left;
         color: #ffffff;
         text-align: center;
-        background-color: rgb(44, 114, 34);
-        border: solid 1px #ffffff;
+        background-color: #386641;
+        border: solid 0px #ffffff;
       }
       .knopka {
-        margin-right: 2%;
-        margin-left: 2%;
-        margin-bottom: 2%;
-        width: 96%;
+        width: 90%;
         height: 20vw;
         align-items: center;
-        background: #ffffff;
+        background: #588157;
         border: solid 0px #000000;
         color: #ffffff;
         border-radius: 10px;
+        margin-bottom: 3svh;
       }
       .knopka1 {
-        width: 18%;
-        height: 18vw;
-        margin-right: 1%;
-        margin-left: 1%;
-        margin-top: 1vw;
-        margin-bottom: 1vw;
+        width: 16%;
+        height: 15vw;
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 2.25vw;
+        margin-bottom: 2.25vw;
         border-radius: 10px;
         cursor: pointer;
         display: flex;
@@ -159,16 +154,212 @@
         float: left;
         color: #ffffff;
         text-align: center;
-        background-color: rgb(44, 114, 34);
-        border: solid 1px #ffffff;
+        background-color: #386641;
+        border: solid 0vw #ffffff;
+      }
+      .korm {
+        width: 40%;
+        height: 5svh;
+        margin-top: 4svh;
+        margin-right: 30%;
+        margin-left: 30%;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        background-color: #386641;
+      }
+      .cpicok {
+        width: 90%;
+        height: 18svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 2svh;
+        margin-bottom: 0svh;
+        border-radius: 6px;
+        display: flex;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        text-align: center;
+        background-color: rgb(254, 250, 224);
+        border: solid 0px #ffffff;
+        font-weight: bold;
+        font-family: VERDANA;
+        text-shadow: 2px 2px 1px #05430500;
+        font-size: 16px;
+      }
+    </style>
+    <style>
+      /* стилизация содержимого страницы */
+
+      /* свойства модального окна по умолчанию */
+      .modal {
+        position: fixed; /* фиксированное положение */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5); /* цвет фона */
+        z-index: 1050;
+        opacity: 0; /* по умолчанию модальное окно прозрачно */
+        -webkit-transition: opacity 200ms ease-in;
+        -moz-transition: opacity 200ms ease-in;
+        transition: opacity 200ms ease-in; /* анимация перехода */
+        pointer-events: none; /* элемент невидим для событий мыши */
+        margin: 0;
+        padding: 0;
+      }
+      /* при отображении модального окно */
+      .modal:target {
+        opacity: 1; /* делаем окно видимым */
+        pointer-events: auto; /* элемент видим для событий мыши */
+        overflow-y: auto; /* добавляем прокрутку по y, когда элемент не помещается на страницу */
+      }
+      /* ширина модального окна и его отступы от экрана */
+      .modal-dialog {
+        position: relative;
+        width: auto;
+        margin-top: 7%;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+      /* свойства для блока, содержащего контент модального окна */
+      .modal-content {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 7px solid rgb(188, 108, 37);
+        border-radius: 6px;
+        outline: 0;
+        height: 87svh;
+        background-color: rgb(221, 161, 94);
+        overflow-y: scroll;
+      }
+      @media (min-width: 768px) {
+        .modal-content {
+          -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+      }
+      /* свойства для заголовка модального окна */
+      .modal-header {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 15px;
+        border-bottom: 0px solid rgb(188, 108, 37);
+      }
+      .modal-title {
+        margin-top: 0px;
+        margin-bottom: 0;
+        margin-left: 8%;
+        line-height: 1.5;
+        font-size: 1.55rem;
+        font-weight: 500;
+        font-family: VERDANA;
+        font-weight: bold;
+        color: rgb(254, 250, 224);
+        text-shadow: 2px 2px 1px #05430500;
+      }
+      /* свойства для кнопки "Закрыть" */
+      .close {
+        float: right;
+        font-family: sans-serif;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1;
+        color: #f3f6f3;
+        text-shadow: 2px 1px 0px #00000000;
+        opacity: 0.9;
+        text-decoration: none;
+      }
+      /* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
+      .close:focus,
+      .close:hover {
+        color: #ff0000;
+        text-decoration: none;
+        cursor: pointer;
+        opacity: 0.75;
+      }
+      /* свойства для блока, содержащего основное содержимое окна */
+      .modal-body {
+        position: relative;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 15px;
+        overflow: auto;
+        font-family: Arial;
+        font-weight: bold;
+        color: #ffffff;
+        font-size: 20px;
       }
     </style>
   </head>
   <body>
+    <div id="openModal" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Название</h3>
+            <a href="#close" title="Close" class="close">×</a>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+          <div class="cpicok">
+            <p>Содержимое модального окна...</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="block1">
       <div class="block4">
         <div
-          onclick="location.href='laura3.html'"
+          onclick="location.href='#openModal'"
           value="Go to Google"
           target="_blank"
           class="balance"
@@ -176,7 +367,7 @@
           <img src="пустойкруг.png" width="35%" height="auto" />
         </div>
         <div
-          onclick="location.href='laura3.html'"
+          onclick="location.href='#openModal'"
           value="Go to Google"
           target="_blank"
           class="balance"
@@ -184,7 +375,7 @@
           <img src="пустойкруг.png" width="35%" height="auto" />
         </div>
         <div
-          onclick="location.href='laura3.html'"
+          onclick="location.href='#openModal'"
           value="Go to Google"
           target="_blank"
           class="balance"
@@ -197,26 +388,27 @@
         <img class="rounder-img" src="ЕНОТ.png" />
         <div class="blocktext">
           <a
-            onclick="location.href='laura3.html'"
+            onclick="location.href='#openModal'"
             value="Go to Google"
             target="_blank"
-            class="btn btn-success"
+            class="korm"
             ><b>КОРМИТЬ</b>
           </a>
         </div>
       </div>
+
       <div class="block3">
         <div class="knopka">
           <div
             class="knopka1"
-            onclick="location.href='laura3.html'"
+            onclick="location.href='#openModal'"
             value="Go to Google"
             target="_blank"
           >
             <img src="пустойкруг.png" width="70%" height="70%" />
           </div>
           <div
-            onclick="location.href='laura3.html'"
+            onclick="location.href='#openModal'"
             value="Go to Google"
             target="_blank"
             class="knopka1"
@@ -225,7 +417,7 @@
           </div>
           <div
             class="knopka1"
-            onclick="location.href='laura3.html'"
+            onclick="location.href='enot.html'"
             value="Go to Google"
             target="_blank"
           >
@@ -233,7 +425,7 @@
           </div>
           <div
             class="knopka1"
-            onclick="location.href='laura3.html'"
+            onclick="location.href='#openModal'"
             value="Go to Google"
             target="_blank"
           >
@@ -241,7 +433,7 @@
           </div>
           <div
             class="knopka1"
-            onclick="location.href='laura3.html'"
+            onclick="location.href='#openModal'"
             value="Go to Google"
             target="_blank"
           >
@@ -252,4 +444,3 @@
     </div>
   </body>
 </html>
-
