@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Billy_Syper_Hero</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -250,6 +249,9 @@
         box-shadow: #422800 2px 2px 0 0;
         transform: translate(2px, 2px);
       }
+      .otstyp {
+        margin-top: 12svh;
+      }
     </style>
     <style>
       /* стилизация содержимого страницы */
@@ -327,12 +329,21 @@
         -ms-flex-pack: justify;
         justify-content: space-between;
         padding: 15px;
-        border-bottom: 0px solid rgb(188, 108, 37);
+        border-bottom: 1px solid rgb(188, 108, 37);
+        position: fixed;
+        z-index: 500;
+        width: 81%;
+        background-color: rgb(221, 162, 94);
+        border: 2px solid #422800;
+        border-radius: 24px;
+        box-shadow: #422800 2px 4px 0 0;
+        overflow-x: hidden;
       }
       .modal-title {
         margin-top: 0px;
         margin-bottom: 0;
-        margin-left: 8%;
+        margin-left: auto;
+        margin-right: auto;
         line-height: 1.5;
         font-size: 1.55rem;
         font-weight: 500;
@@ -382,10 +393,10 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title">Название</h3>
+            <h3 class="modal-title">МАГАЗИН</h3>
             <a href="#close" title="Close" class="close">×</a>
           </div>
-          <div class="cpicok">
+          <div class="cpicok otstyp">
             <p>Содержимое модального окна...</p>
           </div>
           <div class="cpicok">
