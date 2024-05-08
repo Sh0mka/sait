@@ -10,6 +10,12 @@
       type="image/png"
     />
     <style>
+      @media (min-width: 768px) {
+        .button-74 {
+          min-width: 120px;
+          padding: 0 25px;
+        }
+      }
       body {
         display: block;
         margin: auto;
@@ -73,24 +79,23 @@
       .block1 {
         width: 100%;
         background: #1c4a09;
-        height: 100svh;
+        height: calc(100svh - 2px);
         background-size: 60%;
         background-image: url("трава.png");
         color: #ffffff;
         overflow: hidden;
+        width: calc(100% - 2px);
+        border: solid 1px #c5090900;
+        overflow: hidden;
+        display: block;
       }
-      @media (min-width: 768px) {
-        .button-74 {
-          min-width: 120px;
-          padding: 0 25px;
-        }
-      }
+
       .block2 {
-        width: 100%;
+        width: calc(100% - 2px);
         height: 60svh;
         float: left;
         color: #ffffff;
-        border: solid 1px #c5090900;
+        border: solid 1px #096ac500;
         overflow: auto;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
@@ -232,6 +237,12 @@
         text-shadow: 2px 2px 1px #05430500;
         -webkit-tap-highlight-color: transparent;
       }
+      .info {
+        height: auto;
+        font-size: 15px;
+        text-align: left;
+        text-indent: 10px;
+      }
       .ton-balance {
         width: 29%;
         height: 8svh;
@@ -313,6 +324,28 @@
       .strelka:active {
         box-shadow: #422800 2px 2px 0 0;
         transform: translate(2px, 2px);
+      }
+      .referal-block-1:hover {
+        background-color: #8ca38c00;
+      }
+      .referal-block-1:active {
+        box-shadow: #42280000 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .referal-block-2:hover {
+        background-color: #8ca38c00;
+      }
+      .referal-block-2:active {
+        box-shadow: #42280000 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      h3 {
+        color: #8ca38c;
+        margin-top: 15%;
+        margin-bottom: 3%;
+      }
+      .info-otstyp {
+        margin-top: 0%;
       }
     </style>
     <style>
@@ -455,10 +488,135 @@
         color: #ffffff;
         font-size: 20px;
       }
+      .referal-block-1 {
+        width: 20%;
+        height: 100%;
+        border-right: 0px solid #422800;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        text-indent: 0px;
+      }
+      .referal-block-2 {
+        width: 60%;
+        border-left: 1px solid #422800;
+        border-right: 1px solid #422800;
+        text-indent: 0px;
+        padding-left: 4%;
+        padding-right: 4%;
+      }
+      .referal-user {
+        background-color: #ff8809;
+        border: 2px solid #422800;
+        width: 90%;
+        border-radius: 10px;
+        box-shadow: #422800 4px 4px 0 0;
+        cursor: pointer;
+        font-size: 18px;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 1svh;
+        margin-bottom: 1svh;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        font-weight: bold;
+        font-family: VERDANA;
+        text-shadow: 2px 2px 1px #05430500;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .block100 {
+        background-color: #fbeee0;
+        border: 2px solid #422800;
+        width: 90%;
+        border-radius: 10px;
+        box-shadow: #422800 4px 4px 0 0;
+        display: flex;
+        height: 14svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 1svh;
+        margin-bottom: 1svh;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        height: auto;
+        font-size: 15px;
+      }
+      .referal-ava {
+        width: 30%;
+        height: 100%;
+        border-left: 1px solid #422800;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        text-indent: 0px;
+      }
+      .referal-teg {
+        width: 40%;
+        border-left: 1px solid #422800;
+        border-right: 1px solid #422800;
+        text-indent: 0px;
+        padding-left: 4%;
+        padding-right: 4%;
+      }
+      .referal-img-ava {
+        width: 90%;
+        height: auto;
+        text-indent: 0px;
+        padding-left: 5%;
+        padding-right: 5%;
+        border-radius: 50%;
+      }
     </style>
   </head>
   <body>
-    <div id="openModal" class="modal">
+    <div id="info" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">ИНФОРМАЦИЯ</h3>
+            <a href="#close" title="Close" class="close">×</a>
+          </div>
+          <div class="cpicok otstyp1 info">
+            <div style="padding-right: 5%; padding-left: 5%">
+              <h3>О нас</h3>
+              <p class="info-otstyp">
+                Представь себе: каждая твоя покупка корма для енота превращается
+                в кучу TON и $eNOT. Просто корми пушистого друга, и когда он
+                сходит в лес, собирай свою прибыль - монеты становятся твоими!
+                На данный момент игра находится в 0 ФАЗЕ, и у нас есть 0 видов
+                корма
+              </p>
+              <h3>Бонусы</h3>
+              <p class="info-otstyp">
+                Пригласи друзей и добывайте коины вместе! За каждого нового
+                реферала ты получишь 0.05 $eNOT, а если твой друг сделает
+                покупку, то получишь еще 5 $eNOT разово. Кроме того, за каждую
+                покупку, сделанную твоими рефералами, ты будешь получать
+                двухуровневые вознаграждения в размере 0.5% - 0.2%.
+              </p>
+              <h3>Токеномика $eNOT</h3>
+              <p class="info-otstyp">
+                15% - PlayToAirdrop 35% - Fairlaunch 15% - DEX Листинг 7.5% -
+                Фарминг 12.5% - Для команды 5% - Маркетинг 10% - CEX
+              </p>
+              <h3>Листинг</h3>
+              <p class="info-otstyp">
+                Не пропусти первое выступление главы нашей команды, чтобы узнать
+                больше о том, как мы создали идеальную модель для заработка TON
+                всеми участниками. И помни, уже сейчас ты можешь отправляться
+                зарабатывать TON
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="shop" class="modal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -498,42 +656,108 @@
         </div>
       </div>
     </div>
-    <div id="openModal1" class="modal">
+    <div id="referal" class="modal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title">МАГАЗИН</h3>
+            <h3 class="modal-title">ДРУЗЬЯ</h3>
             <a href="#close" title="Close" class="close">×</a>
           </div>
-          <div class="cpicok otstyp1">
-            <p class="ton-balance">1 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">2 TON</p>
+          <div class="cpicok otstyp1 info">
+            <h3 style="margin: 4%">Твои друзья:</h3>
           </div>
-          <div class="cpicok">
-            <p class="ton-balance">2 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">3 TON</p>
+          <div class="cpicok info">
+            <div class="referal-block-1">
+              <p style="font-size: 18px">5</p>
+            </div>
+            <div class="referal-block-2">
+              <p style="text-align: center">"Пригласить больше людей"</p>
+            </div>
+            <div class="referal-block-1">
+              <p style="font-weight: bold; font-size: 20px">🡆</p>
+            </div>
           </div>
-          <div class="cpicok">
-            <p class="ton-balance">3 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">4 TON</p>
-          </div>
-          <div class="cpicok">
-            <p class="ton-balance">4 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">5 TON</p>
-          </div>
-          <div class="cpicok">
-            <p class="ton-balance">5 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">6 TON</p>
-          </div>
-          <div class="cpicok otstyp2">
-            <p class="ton-balance">10 TON</p>
-            <p class="strelka">⇆</p>
-            <p class="ton-balance">0 TON</p>
+          <div class="referal-user">
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">1</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="кот.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Nopipik</p>
+              </div>
+              <div class="referal-block-1">
+                <p style="font-weight: bold; font-size: 20px">🡆</p>
+              </div>
+            </div>
+
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">2</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="чел.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@woofah2</p>
+              </div>
+              <div class="referal-block-1">
+                <p style="font-weight: bold; font-size: 20px">🡆</p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">3</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="шома.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Sh0mka</p>
+              </div>
+              <div class="referal-block-1">
+                <p style="font-weight: bold; font-size: 20px">🡆</p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">4</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="трава.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@trava</p>
+              </div>
+              <div class="referal-block-1">
+                <p style="font-weight: bold; font-size: 20px">🡆</p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">5</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="собака.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@pesik</p>
+              </div>
+              <div class="referal-block-1">
+                <p style="font-weight: bold; font-size: 20px">🡆</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -557,7 +781,7 @@
           <img src="пустойкруг.png" width="35%" height="auto" />
         </div>
         <div
-          onclick="location.href='#openModal1'"
+          onclick="location.href='#shop'"
           value="Go to Google"
           target="_blank"
           class="balance"
@@ -583,14 +807,14 @@
         <div class="knopka">
           <div
             class="knopka1"
-            onclick="location.href='#openModal1'"
+            onclick="location.href='#shop'"
             value="Go to Google"
             target="_blank"
           >
             <img src="пустойкруг.png" width="70%" height="70%" />
           </div>
           <div
-            onclick="location.href='#openModal'"
+            onclick="location.href='#info'"
             value="Go to Google"
             target="_blank"
             class="knopka1"
@@ -615,7 +839,7 @@
           </div>
           <div
             class="knopka1"
-            onclick="location.href='#openModal'"
+            onclick="location.href='#referal'"
             value="Go to Google"
             target="_blank"
           >
