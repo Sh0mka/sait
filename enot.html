@@ -68,24 +68,22 @@
         font-family: Arial;
       }
       .rounder-img {
-        width: 80%;
+        width: 98%;
         height: auto;
-        will-change: 50%;
-
         overflow-y: scroll;
-        margin-left: 10%;
-        margin-right: 10%;
+        margin-left: 1%;
+        margin-right: 1%;
+        margin-top: 15svh;
+        margin-bottom: 15svh;
       }
       .block1 {
-        width: 100%;
-        background: #1c4a09;
-        height: calc(100svh - 2px);
+        background: #d5d2b0;
+        height: calc(100svh - 0px);
         background-size: 60%;
-        background-image: url("трава.png");
         color: #ffffff;
         overflow: hidden;
-        width: calc(100% - 2px);
-        border: solid 1px #c5090900;
+        width: calc(100% - 0px);
+        border: solid 0px #ffff00;
         overflow: hidden;
         display: block;
       }
@@ -96,48 +94,96 @@
         float: left;
         color: #ffffff;
         border: solid 1px #096ac500;
-        overflow: auto;
+        overflow: hidden;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
       .block3 {
-        width: 100%;
-        height: 25svh;
+        width: calc(100% - 2px);
+        height: calc(20svh - 5px);
         float: left;
         color: #ffffff;
-        border: solid 1px #c5090900;
+        border: solid 1px #ff000000;
         display: flex;
         justify-content: center;
-        align-items: center;
+        padding-top: 1svh;
         text-align: center;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
       }
       .block4 {
-        width: 86%;
-        height: 12svh;
-        margin-top: 3svh;
-        margin-right: 7%;
-        margin-left: 7%;
+        width: 90%;
+        height: 8vh;
+        margin-top: 1svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 1svh;
         float: left;
         color: #ffffff;
-        border: solid 0px #c50909;
-        background-color: rgb(221, 161, 94);
+        background-color: rgb(221, 162, 94);
         border-radius: 6px;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
         text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
-        border: solid 0vw #ffffff;
+        border: 0px solid #42280000;
+        box-shadow: #42280000 4px 4px 0 0;
         border: 2px solid #422800;
         box-shadow: #422800 4px 4px 0 0;
       }
-      .balance {
-        width: calc(30% - 4px);
-        height: calc(9svh - 4px);
-        margin-right: 1%;
-        margin-left: 1%;
+      .block5 {
+        background-color: rgba(221, 162, 94, 0);
+        border: 2px solid #42280000;
+        box-shadow: #42000000 4px 4px 0 0;
+      }
+      .block6 {
+        width: calc(20% - 4px);
+        height: calc(58svh - 4px);
         margin-top: 1svh;
+        margin-left: 5%;
+        margin-right: 2.5%;
         margin-bottom: 1svh;
+        float: left;
+        color: #ffffff;
+        background-color: rgb(221, 161, 94);
+        border-radius: 6px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+        border: solid 1px #000000;
+        border: 2px solid #422800;
+        box-shadow: #422800 4px 4px 0 0;
+      }
+      .block7 {
+        width: calc(65% - 4px);
+        height: calc(58vh - 4px);
+        margin-top: 1svh;
+        margin-left: 2.5%;
+        margin-right: 5%;
+        margin-bottom: 1svh;
+        float: left;
+        color: #ffffff;
+        background-color: rgb(221, 161, 94);
+        border-radius: 6px;
+
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+        border: solid 1px #000000;
+        background-size: 60%;
+        background-image: url("трава.png");
+        border: 2px solid #422800;
+        box-shadow: #422800 4px 4px 0 0;
+        overflow: hidden;
+      }
+      .balance {
+        width: calc(50% - 0px);
+        height: calc(8svh);
+        margin-top: 0svh;
+        margin-bottom: 0svh;
         border-radius: 6px;
         display: flex;
         cursor: pointer;
@@ -147,22 +193,31 @@
         color: #ffffff;
         text-align: center;
         background: #386641;
-        border: solid 0px #ffffff;
-        border: solid 0vw #ffffff;
+        -webkit-tap-highlight-color: transparent;
+        border: solid 1px #000000;
+      }
+      .balance-ton {
+        margin-left: 0%;
+        margin-right: 2.5%;
         border: 2px solid #422800;
         box-shadow: #422800 4px 4px 0 0;
-        -webkit-tap-highlight-color: transparent;
+      }
+      .balance-coin {
+        margin-left: 2.5%;
+        margin-right: 0%;
+        border: 2px solid #422800;
+        box-shadow: #422800 4px 4px 0 0;
       }
       .knopka {
-        width: 90%;
-        height: 20vw;
+        width: calc(90% - 4px);
+        height: calc(20vw - 4px);
         align-items: center;
         background-color: rgb(221, 161, 94);
         border: solid 0px #000000;
         color: #ffffff;
         border-radius: 10px;
-        margin-bottom: 3svh;
         border: solid 0vw #ffffff;
+        border: solid 1px #000000;
         border: 2px solid #422800;
         box-shadow: #422800 4px 4px 0 0;
       }
@@ -187,27 +242,46 @@
         box-shadow: #422800 4px 4px 0 0;
         -webkit-tap-highlight-color: transparent;
       }
-      .korm {
-        width: 40%;
-        height: 5svh;
-        margin-top: 4svh;
-        margin-right: 30%;
-        margin-left: 30%;
-        border-radius: 6px;
+      .knopka3 {
+        width: calc(14vw - 4px);
+        height: calc(14vw - 4px);
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 10px;
         cursor: pointer;
         display: flex;
         justify-content: center;
-        text-align: center;
         align-items: center;
         float: left;
         color: #ffffff;
-        background-color: #386641;
-        -webkit-tap-highlight-color: transparent;
+        text-align: center;
+        background: #386641;
+        border: solid 0vw #ffffff;
         border: 2px solid #422800;
-        border-radius: 10px;
-        box-shadow: #422800 3px 3px 0 0;
-        background-color: rgb(221, 161, 94);
-        text-shadow: 1px 2px 3px #422800;
+        box-shadow: #422800 4px 4px 0 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .knopka-block {
+        width: 99%;
+        height: calc(11.4svh - 1px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        background: #38664100;
+        border: 1px solid #422800;
+      }
+      .zarad {
+        width: calc(5% - 6px);
+        height: calc(6vh - 6px);
+        margin-left: 0.3%;
+        margin-right: 0.3%;
+        float: left;
+        background: #419e43;
+        border: 3px solid #422800;
+        border-radius: 5px;
       }
       .cpicok {
         background-color: #fbeee0;
@@ -343,6 +417,13 @@
         color: #8ca38c;
         margin-top: 15%;
         margin-bottom: 3%;
+      }
+      h2 {
+        color: #ffffff;
+        margin-top: 0%;
+        margin-bottom: 0%;
+        font-family: VERDANA;
+        font-size: 18px;
       }
       .info-otstyp {
         margin-top: 0%;
@@ -902,42 +983,112 @@
     </div>
     <div class="block1">
       <div class="block4">
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div
+          class="zarad"
+          style="
+            height: 2.5vh;
+            width: 1.4%;
+            border-radius: 4px;
+            background: #f1f8f2;
+          "
+        ></div>
+      </div>
+      <div class="block4 block5">
         <div
           onclick="location.href='#openModal'"
           value="Go to Google"
           target="_blank"
-          class="balance"
+          class="balance balance-ton"
         >
-          <img src="пустойкруг.png" width="35%" height="auto" />
+          <h2>7.5 TON</h2>
         </div>
-        <div
-          onclick="location.href='#openModal'"
-          value="Go to Google"
-          target="_blank"
-          class="balance"
-        >
-          <img src="пустойкруг.png" width="35%" height="auto" />
-        </div>
+
         <div
           onclick="location.href='#shop'"
           value="Go to Google"
           target="_blank"
-          class="balance"
+          class="balance balance-coin"
         >
-          <img src="пустойкруг.png" width="35%" height="auto" />
+          <h2>15 ENOT</h2>
         </div>
       </div>
       <div class="block2">
-        <div class="blocktext layer2"><p1 class="layer1">ЕНОТ</p1></div>
-        <img class="rounder-img" src="ЕНОТ.png" />
-        <div class="blocktext">
-          <a
-            onclick="location.href='#openModal'"
-            value="Go to Google"
-            target="_blank"
-            class="korm"
-            ><b>КОРМИТЬ</b>
-          </a>
+        <div class="block6">
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+        </div>
+        <div class="block7">
+          <img class="rounder-img" src="ЕНОТ.png" />
+          <div class="blocktext"></div>
         </div>
       </div>
 
