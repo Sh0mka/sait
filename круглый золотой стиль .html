@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Billy_Syper_Hero</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="img/ахеренный вопрос.png"
+      type="image/png"
+    />
+    <style>
+      @media (min-width: 768px) {
+        .button-74 {
+          min-width: 120px;
+          padding: 0 25px;
+        }
+      }
+      body {
+        display: block;
+        margin: auto;
+      }
+      .foto {
+        border: 5px #000000 solid; /* обводка для аватарки */
+        border-radius: 25px; /* Уголки */
+        text-align: center;
+        box-shadow: 0 0 10px #000000;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        width: 95%;
+        height: 80%;
+        padding: 3px;
+        max-width: 750px;
+        max-height: 350px;
+      }
+      .blocktext {
+        text-align: center;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        font-weight: bold;
+        font-family: Arial;
+      }
+
+      /* стили для навигации */
+      .layer1 {
+        font-size: 25px;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        font-weight: bold;
+        font-family: Arial;
+        color: #ffffff;
+        text-shadow: 1px 2.5px 1px #422800;
+      }
+      .layer2 {
+        margin-top: 5%; /*  внешний отступ сверху элемента */
+        font-weight: bold;
+        font-family: Arial;
+        margin-bottom: 5%; /*  внешний отступ снизу элемента */
+      }
+      .layer3 {
+        text-align: center;
+        padding-bottom: 6px;
+        padding-top: 5px;
+        font-size: 116px;
+        font-weight: bold;
+        font-family: Arial;
+      }
+      .rounder-img {
+        width: 98%;
+        height: auto;
+        overflow-y: scroll;
+        margin-left: 1%;
+        margin-right: 1%;
+        margin-top: 15svh;
+        margin-bottom: 15svh;
+      }
+      .block1 {
+        background: #e9dedc;
+        height: calc(100svh - 0px);
+        background-size: 60%;
+        color: #ffffff;
+        overflow: hidden;
+        width: calc(100% - 0px);
+        border: solid 0px #ffff00;
+        overflow: hidden;
+        display: block;
+      }
+
+      .block2 {
+        width: calc(100% - 2px);
+        height: 60svh;
+        float: left;
+        color: #ffffff;
+        border: solid 1px #096ac500;
+        overflow: hidden;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+      }
+      .block3 {
+        width: calc(100% - 2px);
+        height: calc(20svh - 5px);
+        float: left;
+        color: #ffffff;
+        border: solid 1px #ff000000;
+        display: flex;
+        justify-content: center;
+        padding-top: 1svh;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+      }
+      .block4 {
+        width: 90%;
+        height: 8vh;
+        margin-top: 1svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 1svh;
+        float: left;
+        color: #ffffff;
+        background-color: #f1ece9;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+        border: 0px solid #42280000;
+        box-shadow: #42280000 4px 4px 0 0;
+        border: 1px solid #c1b7b6;
+      }
+      .block5 {
+        background-color: rgba(221, 162, 94, 0);
+        border: 2px solid #42280000;
+        box-shadow: #42000000 4px 4px 0 0;
+      }
+      .block6 {
+        width: calc(20% - 2px);
+        height: calc(58svh - 2px);
+        margin-top: 1svh;
+        margin-left: 5%;
+        margin-right: 2.5%;
+        margin-bottom: 1svh;
+        float: left;
+        color: #ffffff;
+        background-color: #f1ece9;
+        border-radius: 15px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+        border: solid 1px #000000;
+        border: 1px solid #c1b7b6;
+        box-shadow: #c4babb00 9px 2px 0 0;
+      }
+      .block7 {
+        width: calc(65% - 2px);
+        height: calc(58vh - 2px);
+        margin-top: 1svh;
+        margin-left: 2.5%;
+        margin-right: 5%;
+        margin-bottom: 1svh;
+        float: left;
+        color: #ffffff;
+        background-color: #ebc53e;
+        border-radius: 15px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-shadow: rgba(0, 0, 0, 0) 2px 1.8px 2px;
+        border: solid 1px #000000;
+        background-size: 50%;
+        background-image: url("монетки фон1.png");
+        border: 1px solid #c4babb;
+        box-shadow: #c4babb 2px 2px 0 0;
+        overflow: hidden;
+      }
+      .balance {
+        width: calc(50% - 0px);
+        height: calc(8svh);
+        margin-top: 0svh;
+        margin-bottom: 0svh;
+        border-radius: 15px;
+        display: flex;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        background: #ebc53e;
+        -webkit-tap-highlight-color: transparent;
+        border: solid 1px #000000;
+      }
+      .balance-ton {
+        margin-left: 0%;
+        margin-right: 2.5%;
+        border: 1px solid #422800;
+        box-shadow: #422800 2px 2px 0 0;
+      }
+      .balance-coin {
+        margin-left: 2.5%;
+        margin-right: 0%;
+
+        border: 1px solid #422800;
+        box-shadow: #422800 2px 2px 0 0;
+      }
+      .knopka {
+        width: calc(90% - 2px);
+        height: calc(20vw - 2px);
+        align-items: center;
+        background-color: #f1ece9;
+        color: #ffffff;
+        border-radius: 15px;
+        border: 1px solid #c1b7b6;
+        box-shadow: #c4babb 0px 0px 0 0;
+        margin-bottom: 1svh;
+      }
+      .knopka1 {
+        width: calc(16% - 2px);
+        height: calc(15vw - 2px);
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 2.25vw;
+        border-radius: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        background: #ebc53e;
+        border: solid 0vw #ffffff;
+        border: 1px solid #422800;
+        box-shadow: #422800 2px 2px 0 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .knopka3 {
+        width: calc(14vw - 2px);
+        height: calc(14vw - 2px);
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        background: #ebc53e;
+        border: 1px solid #422800;
+        box-shadow: #422800 2px 2px 0 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .knopka-block {
+        width: 99%;
+        height: calc(11.4svh - 0px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        background: #38664100;
+        border-top: 1px solid #c1b7b6;
+      }
+      .zarad {
+        width: calc(6% - 7px);
+        height: calc(6vh - 6px);
+        margin-left: 0.3%;
+        margin-right: 0.3%;
+        float: left;
+        background: #ebc53e;
+        border: 2px solid #422800;
+        border-radius: 5px;
+      }
+      .cpicok {
+        background-color: #fbeee0;
+        border: 2px solid #422800;
+        width: 90%;
+        border-radius: 10px;
+        box-shadow: #422800 4px 4px 0 0;
+        cursor: pointer;
+        display: flex;
+        font-size: 18px;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        height: 14svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 1svh;
+        margin-bottom: 1svh;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        font-weight: bold;
+        font-family: VERDANA;
+        text-shadow: 2px 2px 1px #05430500;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .info {
+        height: auto;
+        font-size: 15px;
+        text-align: left;
+        text-indent: 10px;
+      }
+      .ton-balance {
+        width: 29%;
+        height: 8svh;
+        margin-top: 2svh;
+        margin-bottom: 2svh;
+        margin-right: 1%;
+        margin-left: 1%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        background-color: #386641;
+        -webkit-tap-highlight-color: transparent;
+        border: 2px solid #422800;
+        border-radius: 10px;
+        box-shadow: #422800 2px 2px 0 0;
+      }
+      .strelka {
+        display: flex;
+        width: calc(7svh - 4px);
+        height: calc(7svh - 4px);
+        margin-right: 4%;
+        margin-left: 4%;
+        margin-top: 2.25svh;
+        margin-bottom: 2.25svh;
+        border-radius: 10px;
+        cursor: pointer;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        background: #588157;
+        border: solid 0vw #ffffff;
+        border: 2px solid #422800;
+        box-shadow: #422800 2px 2px 0 0;
+        -webkit-tap-highlight-color: transparent;
+        font-size: 26px;
+        font-weight: bold;
+        font-family: Arial;
+      }
+      /* CSS */
+      .knopka1:hover {
+        background-color: #ffcd05de;
+      }
+      .knopka1:active {
+        box-shadow: #42280023 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .balance:hover {
+        background-color: #ffffff74;
+      }
+
+      .balance:active {
+        box-shadow: #422800 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .korm:hover {
+        background-color: #6f886e;
+      }
+
+      .korm:active {
+        box-shadow: #422800 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .otstyp1 {
+        margin-top: 12svh;
+      }
+      .otstyp2 {
+        margin-bottom: 3svh;
+      }
+      .strelka:hover {
+        background-color: #8ca38c;
+      }
+      .strelka:active {
+        box-shadow: #422800 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .referal-block-1:hover {
+        background-color: #8ca38c00;
+      }
+      .referal-block-1:active {
+        box-shadow: #42280000 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      .referal-block-2:hover {
+        background-color: #8ca38c00;
+      }
+      .referal-block-2:active {
+        box-shadow: #42280000 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+      h3 {
+        color: #8ca38c;
+        margin-top: 15%;
+        margin-bottom: 3%;
+      }
+      h2 {
+        color: #2e3233;
+        margin-top: 0%;
+        margin-bottom: 0%;
+        font-family: VERDANA;
+        font-size: 16px;
+      }
+      .info-otstyp {
+        margin-top: 0%;
+      }
+      .knopka3:hover {
+        background-color: #ffcd05de;
+      }
+      .knopka3:active {
+        box-shadow: #422800 2px 2px 0 0;
+        transform: translate(2px, 2px);
+      }
+    </style>
+    <style>
+      /* стилизация содержимого страницы */
+
+      /* свойства модального окна по умолчанию */
+      .modal {
+        position: fixed; /* фиксированное положение */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5); /* цвет фона */
+        z-index: 1050;
+        opacity: 0; /* по умолчанию модальное окно прозрачно */
+        -webkit-transition: opacity 200ms ease-in;
+        -moz-transition: opacity 200ms ease-in;
+        transition: opacity 200ms ease-in; /* анимация перехода */
+        pointer-events: none; /* элемент невидим для событий мыши */
+        margin: 0;
+        padding: 0;
+      }
+      /* при отображении модального окно */
+      .modal:target {
+        opacity: 1; /* делаем окно видимым */
+        pointer-events: auto; /* элемент видим для событий мыши */
+        overflow-y: auto; /* добавляем прокрутку по y, когда элемент не помещается на страницу */
+      }
+      /* ширина модального окна и его отступы от экрана */
+      .modal-dialog {
+        position: relative;
+        width: auto;
+        margin-top: 7%;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+      /* свойства для блока, содержащего контент модального окна */
+      .modal-content {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        outline: 0;
+        height: 89svh;
+        background-color: rgb(221, 161, 94);
+        overflow-y: scroll;
+        border: 2px solid #422800;
+        border-radius: 12px;
+        box-shadow: #422800 4px 4px 0 0;
+        overflow-x: hidden;
+        box-shadow: inset 0 0 50px rgba(255, 14, 14, 0.217);
+      }
+      @media (min-width: 768px) {
+        .modal-content {
+          -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+      }
+      /* свойства для заголовка модального окна */
+      .modal-header {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(188, 108, 37);
+        position: fixed;
+        z-index: 500;
+        width: calc(90% - 3px);
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #422800;
+        box-shadow: #422800 0px 0px 0 0;
+        overflow-x: hidden;
+        box-shadow: inset 0 0 50px rgba(255, 196, 0, 0);
+        background-color: #386641;
+        border-radius: 10px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+      .modal-title {
+        margin-top: 0px;
+        margin-bottom: 0;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.5;
+        font-size: 1.55rem;
+        font-weight: 500;
+        font-family: VERDANA;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+        text-shadow: 2px 2px 1px #05430500;
+        padding-left: calc(5% + 10px);
+      }
+      /* свойства для кнопки "Закрыть" */
+      .close {
+        float: right;
+        font-family: sans-serif;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1;
+        color: #f3f6f3;
+        text-shadow: 2px 1px 0px #00000000;
+        opacity: 0.9;
+        text-decoration: none;
+        padding-right: 5%;
+      }
+      /* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
+      .close:focus,
+      .close:hover {
+        color: #ff0000;
+        text-decoration: none;
+        cursor: pointer;
+        opacity: 0.75;
+      }
+      /* свойства для блока, содержащего основное содержимое окна */
+      .modal-body {
+        position: relative;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 15px;
+        overflow: auto;
+        font-family: Arial;
+        font-weight: bold;
+        color: #ffffff;
+        font-size: 20px;
+      }
+      .referal-block-1 {
+        width: 20%;
+        height: 100%;
+        border-right: 0px solid #422800;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        text-indent: 0px;
+      }
+      .referal-block-2 {
+        width: 60%;
+        border-left: 1px solid #422800;
+        border-right: 1px solid #422800;
+        text-indent: 0px;
+        padding-left: 4%;
+        padding-right: 4%;
+      }
+      .referal-user {
+        background-color: #ff8809;
+        border: 2px solid #422800;
+        width: 90%;
+        border-radius: 10px;
+        box-shadow: #422800 4px 4px 0 0;
+        cursor: pointer;
+        font-size: 18px;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 1svh;
+        margin-bottom: 1svh;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        font-weight: bold;
+        font-family: VERDANA;
+        text-shadow: 2px 2px 1px #05430500;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .block100 {
+        background-color: #fbeee0;
+        border: 2px solid #422800;
+        width: 90%;
+        border-radius: 10px;
+        box-shadow: #422800 4px 4px 0 0;
+        display: flex;
+        height: 14svh;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 1svh;
+        margin-bottom: 1svh;
+        align-items: center;
+        float: left;
+        color: rgb(188, 108, 37);
+        height: auto;
+        font-size: 15px;
+      }
+      .referal-ava {
+        width: 30%;
+        height: 100%;
+        border-left: 1px solid #422800;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        text-indent: 0px;
+      }
+      .referal-teg {
+        width: 40%;
+        border-left: 1px solid #422800;
+        border-right: 1px solid #422800;
+        text-indent: 0px;
+        padding-left: 4%;
+        padding-right: 4%;
+      }
+      .referal-img-ava {
+        width: 90%;
+        height: auto;
+        text-indent: 0px;
+        padding-left: 5%;
+        padding-right: 5%;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">ИНФОРМАЦИЯ</h3>
+            <a href="#close" title="Close" class="close">×</a>
+          </div>
+          <div class="cpicok otstyp1 info">
+            <div style="padding-right: 5%; padding-left: 5%">
+              <h3>О нас</h3>
+              <p class="info-otstyp">
+                Представь себе: каждая твоя покупка корма для енота превращается
+                в кучу TON и $eNOT. Просто корми пушистого друга, и когда он
+                сходит в лес, собирай свою прибыль - монеты становятся твоими!
+                На данный момент игра находится в 0 ФАЗЕ, и у нас есть 0 видов
+                корма
+              </p>
+              <h3>Бонусы</h3>
+              <p class="info-otstyp">
+                Пригласи друзей и добывайте коины вместе! За каждого нового
+                реферала ты получишь 0.05 $eNOT, а если твой друг сделает
+                покупку, то получишь еще 5 $eNOT разово. Кроме того, за каждую
+                покупку, сделанную твоими рефералами, ты будешь получать
+                двухуровневые вознаграждения в размере 0.5% - 0.2%.
+              </p>
+              <h3>Токеномика $eNOT</h3>
+              <p class="info-otstyp">
+                15% - PlayToAirdrop 35% - Fairlaunch 15% - DEX Листинг 7.5% -
+                Фарминг 12.5% - Для команды 5% - Маркетинг 10% - CEX
+              </p>
+              <h3>Листинг</h3>
+              <p class="info-otstyp">
+                Не пропусти первое выступление главы нашей команды, чтобы узнать
+                больше о том, как мы создали идеальную модель для заработка TON
+                всеми участниками. И помни, уже сейчас ты можешь отправляться
+                зарабатывать TON
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="shop" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">МАГАЗИН</h3>
+            <a href="#close" title="Close" class="close">×</a>
+          </div>
+          <div class="cpicok otstyp1">
+            <p class="ton-balance">1 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">2 TON</p>
+          </div>
+          <div class="cpicok">
+            <p class="ton-balance">2 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">3 TON</p>
+          </div>
+          <div class="cpicok">
+            <p class="ton-balance">3 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">4 TON</p>
+          </div>
+          <div class="cpicok">
+            <p class="ton-balance">4 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">5 TON</p>
+          </div>
+          <div class="cpicok">
+            <p class="ton-balance">5 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">6 TON</p>
+          </div>
+          <div class="cpicok otstyp2">
+            <p class="ton-balance">10 TON</p>
+            <p class="strelka">⇆</p>
+            <p class="ton-balance">0 TON</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="referal" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">ДРУЗЬЯ</h3>
+            <a href="#close" title="Close" class="close">×</a>
+          </div>
+          <div class="cpicok otstyp1 info">
+            <h3 style="margin: 4%">Твои друзья:</h3>
+          </div>
+          <div
+            class="cpicok info"
+            onclick="location.href='https://t.me/Nopipik'"
+          >
+            <div class="referal-block-1">
+              <p style="font-size: 18px">5</p>
+            </div>
+            <div class="referal-block-2">
+              <p style="text-align: center">"Пригласить больше людей"</p>
+            </div>
+            <div class="referal-block-1">
+              <p
+                style="font-weight: bold; font-size: 25px"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                ⇨
+              </p>
+            </div>
+          </div>
+          <div class="referal-user">
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">1</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="кот.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Nopipik</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">2</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="чел.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@woofah2</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">3</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="шома.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Sh0mka</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">4</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="трава.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@trava</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">5</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="собака.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@pesik</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">6</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="кот.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Nopipik</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">7</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="чел.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/woofah2'"
+              >
+                <p style="text-align: center">@woofah2</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">8</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="шома.jpg" />
+              </div>
+              <div
+                class="referal-block-2"
+                onclick="location.href='https://t.me/Nopipik'"
+              >
+                <p style="text-align: center">@Sh0mka</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">9</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="трава.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@trava</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+            <div class="block100">
+              <div class="referal-block-1">
+                <p style="font-size: 18px">10</p>
+              </div>
+              <div class="referal-ava">
+                <img class="referal-img-ava" src="собака.jpg" />
+              </div>
+              <div class="referal-block-2">
+                <p style="text-align: center">@pesik</p>
+              </div>
+              <div class="referal-block-1">
+                <p
+                  style="font-weight: bold; font-size: 25px"
+                  onclick="location.href='https://t.me/Nopipik'"
+                >
+                  ⇨
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block1">
+      <div class="block4">
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div class="zarad" style="background: #f1f8f2"></div>
+        <div
+          class="zarad"
+          style="
+            height: 2.5vh;
+            width: 1.4%;
+            border-radius: 4px;
+            background: #f1f8f2;
+          "
+        ></div>
+      </div>
+      <div class="block4 block5">
+        <div
+          onclick="location.href='#openModal'"
+          value="Go to Google"
+          target="_blank"
+          class="balance balance-ton"
+        >
+          <h2>7.5 TON</h2>
+        </div>
+
+        <div
+          onclick="location.href='#shop'"
+          value="Go to Google"
+          target="_blank"
+          class="balance balance-coin"
+        >
+          <h2>15 ENOT</h2>
+        </div>
+      </div>
+      <div class="block2">
+        <div class="block6">
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='#shop'"
+              value="Go to Google"
+              target="_blank"
+            >
+              <img src="пустойкруг.png" width="70%" height="70%" />
+            </div>
+          </div>
+
+          <div class="knopka-block">
+            <div
+              class="knopka3"
+              onclick="location.href='круглый золотой стиль .html'"
+              value="Go to Google"
+              target="_blank"
+              style="
+                background: #ebc53e;
+                background-color: rgba(234, 172, 26, 0.983);
+              "
+            >
+              <img src="монета.png" width="87%" height="87%" />
+            </div>
+          </div>
+
+          <div class="knopka-block" style="border: 0px">
+            <div
+              class="knopka3"
+              onclick="location.href='круглый зеленый стиль.html'"
+              value="Go to Google"
+              target="_blank"
+              style="background-color: #55b67c"
+            >
+              <img src="листок.png" width="70%" height="70%" />
+            </div>
+          </div>
+        </div>
+
+        <div class="block7">
+          <img class="rounder-img" src="" />
+          <div class="blocktext"></div>
+        </div>
+      </div>
+
+      <div class="block3">
+        <div class="knopka">
+          <div
+            class="knopka1"
+            onclick="location.href='#shop'"
+            value="Go to Google"
+            target="_blank"
+          >
+            <img src="пустойкруг.png" width="70%" height="70%" />
+          </div>
+          <div
+            onclick="location.href='#info'"
+            value="Go to Google"
+            target="_blank"
+            class="knopka1"
+          >
+            <img src="пустойквадрат.png" width="70%" height="70%" />
+          </div>
+          <div
+            class="knopka1"
+            onclick="location.href='enot.html'"
+            value="Go to Google"
+            target="_blank"
+          >
+            <img src="дом.png" width="80%" height="80%" />
+          </div>
+          <div
+            class="knopka1"
+            onclick="location.href='#openModal'"
+            value="Go to Google"
+            target="_blank"
+          >
+            <img src="контурмногоуг.png" width="80%" height="80%" />
+          </div>
+          <div
+            class="knopka1"
+            onclick="location.href='#referal'"
+            value="Go to Google"
+            target="_blank"
+          >
+            <img src="пустойтреугол.png" width="80%" height="80%" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
