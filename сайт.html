@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ENoT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="img/ахеренный вопрос.png"
+      type="image/png"
+    />
+
+    <style>
+      body {
+        display: block;
+        margin: 0%;
+        overflow-x: hidden;
+      }
+      .ag-format-container {
+        width: 1142px;
+        margin: 0 auto;
+      }
+
+      .centered-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: Arial;
+      }
+      .ag-courses_box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+
+        padding: 50px 0;
+      }
+      .ag-courses_item {
+        -ms-flex-preferred-size: calc(50% - 30px);
+        flex-basis: calc(50% - 30px);
+
+        margin: 0 15px 30px;
+
+        overflow: hidden;
+
+        border-radius: 28px;
+      }
+      .ag-courses-item_link {
+        display: block;
+        padding: 30px 20px;
+        background-color: #121212;
+
+        overflow: hidden;
+
+        position: relative;
+      }
+      .ag-courses-item_link:hover,
+      .ag-courses-item_link:hover .ag-courses-item_date {
+        text-decoration: none;
+        color: #fff;
+      }
+      .ag-courses-item_link:hover .ag-courses-item_bg {
+        -webkit-transform: scale(10);
+        -ms-transform: scale(10);
+        transform: scale(10);
+      }
+      .ag-courses-item_title {
+        min-height: 87px;
+        margin: 0 0 25px;
+
+        overflow: hidden;
+
+        font-weight: bold;
+        font-size: 30px;
+        color: #fff;
+
+        z-index: 2;
+        position: relative;
+      }
+      .ag-courses-item_date-box {
+        font-size: 18px;
+        color: #fff;
+
+        z-index: 2;
+        position: relative;
+      }
+      .ag-courses-item_date {
+        font-weight: bold;
+        color: #f9b234;
+
+        -webkit-transition: color 0.5s ease;
+        -o-transition: color 0.5s ease;
+        transition: color 0.5s ease;
+      }
+      .ag-courses-item_bg {
+        height: 128px;
+        width: 128px;
+        background-color: #f9b234;
+
+        z-index: 1;
+        position: absolute;
+        top: -75px;
+        right: -75px;
+
+        border-radius: 50%;
+
+        -webkit-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+      .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+        background-color: #3ecd5e;
+      }
+      .ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+        background-color: #e44002;
+      }
+      .ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+        background-color: #952aff;
+      }
+      .ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+        background-color: #cd3e94;
+      }
+      .ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+        background-color: #4c49ea;
+      }
+
+      @media only screen and (max-width: 979px) {
+        .ag-courses_item {
+          -ms-flex-preferred-size: calc(50% - 30px);
+          flex-basis: calc(50% - 30px);
+        }
+        .ag-courses-item_title {
+          font-size: 30px;
+        }
+      }
+
+      @media only screen and (max-width: 767px) {
+        .ag-format-container {
+          width: 96%;
+        }
+      }
+      @media only screen and (max-width: 639px) {
+        .ag-courses_item {
+          -ms-flex-preferred-size: 100%;
+          flex-basis: 100%;
+        }
+        .ag-courses-item_title {
+          min-height: 72px;
+          line-height: 1;
+
+          font-size: 30px;
+        }
+        .ag-courses-item_link {
+          padding: 22px 40px;
+        }
+        .ag-courses-item_date-box {
+          font-size: 16px;
+        }
+      }
+      .block {
+        height: 100svh;
+        width: 100%;
+        background-color: #000;
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        border: 1px solid #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content {
+        text-align: center;
+        background-image: url("фон.jpg");
+        background-size: cover;
+      }
+      .block2 {
+        height: auto;
+      }
+
+      .text-block {
+        flex: 1;
+        border: solid 1px #ffffff00;
+        width: 90%;
+        height: calc(10svh - 2px);
+        height: auto;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .image-block {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .image-block img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .textblock {
+        width: 80%;
+        height: auto;
+        padding: 0px;
+        border: solid 1px #ffffff00;
+        font-weight: bold;
+        font-family: "Arial", sans-serif;
+      }
+
+      .main-block {
+        display: flex;
+      }
+      .sub-block {
+        flex: 1;
+        height: auto;
+        background-color: #33333300;
+        border: solid 1px #ffffffec;
+        border-radius: 20px;
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        line-height: auto;
+        font-size: 1em;
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+      h1 {
+        font-size: 4em;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      h2 {
+        color: rgb(246, 180, 67);
+      }
+      .main-block {
+        display: flex;
+      }
+
+      .image-block {
+        flex: 1;
+      }
+
+      .image-block img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .text-block {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sub-block {
+        flex: 1;
+        background-color: #333;
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        line-height: 10px; /* Adjust as needed */
+      }
+      .sub-block2 {
+        flex: 1;
+        background-color: #ffffff00;
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        line-height: 80px; /* Adjust as needed */
+        font-size: 2em;
+        font-weight: bold;
+      }
+      .text-block2 {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #12121200;
+        width: auto;
+        height: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 40px;
+        border: solid 0px #ffffff;
+        margin-right: 40%;
+      }
+      .rt {
+        font-family: "Arial", sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        box-shadow: #e44002 5px 5px 0 0;
+        margin-top: 5%;
+        margin-right: -7%;
+      }
+      .ts {
+        font-family: "Arial", sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        box-shadow: #cd3e94 5px 5px 0 0;
+        margin-top: 5%;
+        margin-right: -7%;
+      }
+      .zl {
+        font-family: "Arial", sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        box-shadow: #8ac832 5px 5px 0 0;
+        margin-top: 5%;
+        margin-right: -7%;
+      }
+      .jl {
+        font-family: "Arial", sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        box-shadow: #f9b234 5px 5px 0 0;
+        margin-top: 5%;
+        margin-right: -7%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="block content">
+      <div class="textblock">
+        <div class="text-block"><h1>UNLEASH, PLAY, EARN</h1></div>
+        <div class="main-block">
+          <div class="sub-block">
+            <h2>5,6М</h2>
+            <p>Bot Users</p>
+          </div>
+          <div class="sub-block">
+            <h2>605.69K</h2>
+            <p>Daily Users</p>
+          </div>
+          <div class="sub-block">
+            <h2>629.76K</h2>
+            <p>Onchain Users</p>
+          </div>
+          <div class="sub-block">
+            <h2>7,2М</h2>
+            <p>Onchain Transaction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block block2">
+      <div class="ag-format-container">
+        <div class="ag-courses_box">
+          <div class="ag-courses_item">
+            <a href="#" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">
+                Phase 1. Implement PLAY-TO-EARN AIRDROP model.
+              </div>
+
+              <div class="ag-courses-item_date-box">
+                Start:
+                <span class="ag-courses-item_date"> 04.11.2022 </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a href="#" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">
+                Phase 2. Conduct token airdrop for early users and contributors.
+              </div>
+
+              <div class="ag-courses-item_date-box">
+                Start:
+                <span class="ag-courses-item_date"> 04.11.2022 </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a href="#" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">
+                Phase 3. Enable token staking for new game NFTs and airdrops.
+              </div>
+
+              <div class="ag-courses-item_date-box">
+                Start:
+                <span class="ag-courses-item_date"> 04.11.2022 </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a href="#" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">
+                Phase 4. Attract traditional users with innovative companionship
+                solutions.
+              </div>
+
+              <div class="ag-courses-item_date-box">
+                Start:
+                <span class="ag-courses-item_date"> 04.11.2022 </span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block content">
+      <div class="image-block">
+        <img
+          style="margin-left: 50%; width: 50%; height: 50%"
+          src="диаграмма.png"
+          alt="Image"
+        />
+      </div>
+      <div class="text-block">
+        <div class="text-block2">
+          <div class="sub-block2 jl">Miners</div>
+          <div class="sub-block2 zl">Developers</div>
+          <div class="sub-block2 ts">Marketing</div>
+          <div class="sub-block2 rt">Commissions</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
