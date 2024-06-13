@@ -86,13 +86,13 @@
         font-family: Arial;
       }
       .rounder-img {
-        width: 50%;
-        height: auto;
+        width: auto;
+        height: 16svh;
         overflow-y: scroll;
-        margin-left: 0%;
-        margin-right: 0%;
-        margin-top: 0svh;
-        margin-bottom: 0svh;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2svh;
+        margin-bottom: 2svh;
       }
       .block1 {
         background: #74a648;
@@ -198,6 +198,49 @@
         overflow: hidden;
         border: 1px solid #363738;
         box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
+        position: relative;
+      }
+      .block71 {
+        background: #74a64800;
+        height: 20svh;
+        background-size: 60%;
+        color: #efefef;
+        overflow: hidden;
+        width: calc(100% - 0px);
+        border: solid 0px #ff0000;
+        overflow: hidden;
+        position: relative;
+      }
+      .block72 {
+        background: #00000000;
+        height: 20svh;
+        background-size: 60%;
+        color: #efefef;
+        overflow: hidden;
+        width: calc(100% - 0px);
+        border: solid 0px #ff0000;
+        overflow: hidden;
+        position: relative;
+      }
+      .block73 {
+        background: #9819d700;
+        height: 17svh;
+        background-size: 60%;
+        color: #efefef;
+        overflow: hidden;
+        width: calc(100% - 0px);
+        border: solid 0px #ff0000;
+        overflow: hidden;
+        position: relative;
+      }
+      .blocktext {
+        background: #00000000;
+        height: 10svh;
+        width: auto;
+        border: solid 0px #ff0000;
+        margin-top: 5svh;
+        margin-bottom: 5svh;
+        position: relative;
       }
       .balance {
         width: calc(50% - 0px);
@@ -726,6 +769,47 @@
         border-radius: 50%;
       }
     </style>
+    <style>
+      #clickBtn {
+        padding: 0px 0px;
+        font-size: 16px;
+      }
+
+      #clickCount {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .image {
+        transition: transform 0.3s;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zoomed {
+        transform: scale(1.2);
+      }
+      .progress-bar {
+        width: 90%;
+        height: 30px;
+        background-color: #f1f1f1;
+        border-radius: 10px;
+        margin-top: 20px;
+        margin-left: 5%;
+        margin-right: 5%;
+        position: absolute;
+        bottom: 5%;
+      }
+      .progress {
+        height: calc(100% - 6px);
+        background-color: #7eae50;
+        width: 0%;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 20px;
+        color: white;
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
+    </style>
   </head>
   <body>
     <div id="info" class="modal">
@@ -1163,18 +1247,51 @@
         </div>
 
         <div class="block7">
-          <h2 style="font-size: 23px; padding-top: 10%; color: #7cac4e">
-            Click Counter
-          </h2>
+          <div>
+            <div class="block72">
+              <div class="blocktext">
+                <h2 style="font-size: 30px; padding-top: 0%; color: #7cac4e">
+                  Click ENOT
+                </h2>
+                <h2 style="font-size: 30px; margin-top: 0%; margin-bottom: 0%">
+                  <span id="click">0</span>
+                </h2>
+                <p style="display: none">
+                  Количество оставшихся кликов:
+                  <span id="click-count">100</span>
+                </p>
+              </div>
+            </div>
 
-          <h2 style="font-size: 26px; padding-top: 5%; padding-bottom: 20%" id="clickCount">0</h2>
-          <img
-            class="image rounder-img"
-            src="img/пустойкруг.png"
-            alt="Image"
-            id="clickBtn"
-            onclick="zoomImage()"
-          />
+            <div class="block71">
+              <img
+                alt="Изображение"
+                id="image"
+                style="max-width: auto"
+                class="image rounder-img"
+                src="/img/пустойкруг.png"
+                alt="Image"
+                id="clickBtn"
+                onclick="zoomImage()"
+              />
+            </div>
+            <div class="block73">
+              <div class="progress-bar">
+                <div
+                  class="progress"
+                  id="progress-bar"
+                  style="
+                    font-size: 26px;
+                    font-weight: bold;
+                    font-family: VERDANA;
+                    color: #f1f1f1;
+                  "
+                >
+                  100%
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="block3">
@@ -1223,6 +1340,42 @@
       </div>
     </div>
     <script>
+      let clickCount = 100;
+      let click = 0;
+      const maxClicks = 100;
+      const clickInterval = 1000;
+      document.getElementById("image").addEventListener("click", function () {
+        if (clickCount > 0) {
+          clickCount--;
+          click++;
+          updateClickCount();
+          updateProgressBar();
+          updateClick();
+        }
+      });
+      function updateClickCount() {
+        document.getElementById("click-count").textContent = clickCount;
+      }
+      function updateClick() {
+        document.getElementById("click").textContent = click;
+      }
+      function updateProgressBar() {
+        const progressPercentage = (clickCount / maxClicks) * 100;
+        document.getElementById("progress-bar").style.width =
+          progressPercentage + "%";
+        document.getElementById("progress-bar").textContent =
+          Math.round(progressPercentage) + "%";
+      }
+      function restoreClick() {
+        if (clickCount < maxClicks) {
+          clickCount++;
+          updateClickCount();
+          updateProgressBar();
+        }
+      }
+      setInterval(restoreClick, clickInterval);
+    </script>
+    <script>
       function zoomImage() {
         const image = document.querySelector(".image");
         if (!image.classList.contains("zoomed")) {
@@ -1231,15 +1384,6 @@
           image.classList.remove("zoomed");
         }
       }
-
-      let clickCount = 0;
-      const clickBtn = document.getElementById("clickBtn");
-      const clickCountDisplay = document.getElementById("clickCount");
-
-      clickBtn.addEventListener("click", function () {
-        clickCount++;
-        clickCountDisplay.textContent = clickCount;
-      });
     </script>
   </body>
 </html>
