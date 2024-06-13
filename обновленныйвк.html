@@ -219,7 +219,7 @@
         overflow: hidden;
         width: calc(100% - 0px);
         border: solid 0px #ff0000;
-        overflow: hidden;
+        overflow: scroll;
         position: relative;
       }
       .block73 {
@@ -797,17 +797,20 @@
         margin-right: 5%;
         position: absolute;
         bottom: 5%;
+        text-align: center;
+        overflow: hidden;
       }
       .progress {
         height: calc(100% - 6px);
         background-color: #7eae50;
-        width: 0%;
+        width: 100%;
         border-radius: 10px;
         text-align: center;
         line-height: 20px;
         color: white;
         padding-top: 3px;
         padding-bottom: 3px;
+        text-align: center;
       }
     </style>
   </head>
@@ -1250,7 +1253,14 @@
           <div>
             <div class="block72">
               <div class="blocktext">
-                <h2 style="font-size: 30px; padding-top: 0%; color: #7cac4e">
+                <h2
+                  style="
+                    font-size: 30px;
+                    padding-top: 0%;
+                    color: #7cac4e;
+                    font-family: VERDANA;
+                  "
+                >
                   Click ENOT
                 </h2>
                 <h2 style="font-size: 30px; margin-top: 0%; margin-bottom: 0%">
@@ -1284,7 +1294,7 @@
                     font-size: 26px;
                     font-weight: bold;
                     font-family: VERDANA;
-                    color: #f1f1f1;
+                    color: rgb(33, 33, 33);
                   "
                 >
                   100%
