@@ -48,6 +48,29 @@
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
       }
+      .d1 {
+        width: calc(14vh - 6px);
+        height: calc(14vh - 6px);
+        background: #efefef;
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1.6vh;
+        margin-bottom: 0vh;
+        padding: 1vh;
+        border: 3px solid #363738;
+        box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.444);
+      }
+      .d2 {
+        width: calc(14vh - 6px);
+        height: calc(14vh - 6px);
+        background: #7dad4f;
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0vh;
+        margin-bottom: 0vh;
+      }
       .zoomed {
         transform: scale(1.2);
       }
@@ -87,12 +110,13 @@
       }
       .rounder-img {
         width: auto;
-        height: 16svh;
+        height: calc(11vh - 6px);
         overflow-y: scroll;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 2svh;
-        margin-bottom: 2svh;
+        margin-top: 2vh;
+        margin-bottom: 0%;
+        -webkit-tap-highlight-color: transparent;
       }
       .block1 {
         background: #74a648;
@@ -219,7 +243,6 @@
         overflow: hidden;
         width: calc(100% - 0px);
         border: solid 0px #ff0000;
-        overflow: scroll;
         position: relative;
       }
       .block73 {
@@ -258,7 +281,6 @@
         background: #212121;
         -webkit-tap-highlight-color: transparent;
         border: solid 1px #000000;
-
         width: calc(45% - 0px);
         height: calc(6.5svh);
         margin-top: 0svh;
@@ -1255,15 +1277,15 @@
               <div class="blocktext">
                 <h2
                   style="
-                    font-size: 30px;
+                    font-size: 20px;
                     padding-top: 0%;
                     color: #7cac4e;
                     font-family: VERDANA;
                   "
                 >
-                  Click ENOT
+                  CLICK ENOT
                 </h2>
-                <h2 style="font-size: 30px; margin-top: 0%; margin-bottom: 0%">
+                <h2 style="font-size: 30px; margin-top: 6%; margin-bottom: 0%">
                   <span id="click">0</span>
                 </h2>
                 <p style="display: none">
@@ -1274,16 +1296,20 @@
             </div>
 
             <div class="block71">
-              <img
-                alt="Изображение"
-                id="image"
-                style="max-width: auto"
-                class="image rounder-img"
-                src="img/пустойкруг.png"
-                alt="Image"
-                id="clickBtn"
-                onclick="zoomImage()"
-              />
+              <div class="d1 image">
+                <div class="d2 image">
+                  <img
+                    alt="Изображение"
+                    id="image"
+                    style="max-width: auto"
+                    class="image rounder-img"
+                    src="img/енотик.png"
+                    alt="Image"
+                    id="clickBtn"
+                    onclick="zoomImage()"
+                  />
+                </div>
+              </div>
             </div>
             <div class="block73">
               <div class="progress-bar">
