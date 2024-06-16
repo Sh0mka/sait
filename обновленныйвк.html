@@ -43,6 +43,7 @@
         font-size: 20px;
         font-weight: bold;
       }
+
       .image {
         transition: transform 0.3s;
         cursor: pointer;
@@ -71,8 +72,11 @@
         margin-top: 0vh;
         margin-bottom: 0vh;
       }
-      .zoomed {
+      .zoomed1 {
         transform: scale(1.2);
+      }
+      .zoomed {
+        transform: scale(0.835);
       }
       .blocktext {
         text-align: center;
@@ -801,14 +805,7 @@
         font-size: 20px;
         font-weight: bold;
       }
-      .image {
-        transition: transform 0.3s;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-      }
-      .zoomed {
-        transform: scale(1.2);
-      }
+
       .progress-bar {
         width: 90%;
         height: 30px;
@@ -833,6 +830,17 @@
         padding-top: 3px;
         padding-bottom: 3px;
         text-align: center;
+      }
+      .image {
+        transition: all 0.17s;
+      }
+
+      .shrink {
+        transform: scale(0.85);
+      }
+
+      .expand {
+        transform: scale(1);
       }
     </style>
   </head>
@@ -1280,7 +1288,8 @@
                     font-size: 20px;
                     padding-top: 0%;
                     color: #7cac4e;
-                    font-family: VERDANA;
+                    font-family: YS Text, Helvetica, Arial, sans-serif;
+                    font-weight: bolder;
                   "
                 >
                   CLICK ENOT
@@ -1295,9 +1304,9 @@
               </div>
             </div>
 
-            <div class="block71">
-              <div class="d1 image">
-                <div class="d2 image">
+            <div class="block71 zoomed1">
+              <div class="d1 image" onclick="shrinkAndExpand(this)">
+                <div class="d2 image" onclick="shrinkAndExpand(this)">
                   <img
                     alt="Изображение"
                     id="image"
@@ -1306,7 +1315,7 @@
                     src="img/енотик.png"
                     alt="Image"
                     id="clickBtn"
-                    onclick="zoomImage()"
+                    onclick="shrinkAndExpand(this)"
                   />
                 </div>
               </div>
@@ -1412,13 +1421,15 @@
       setInterval(restoreClick, clickInterval);
     </script>
     <script>
-      function zoomImage() {
-        const image = document.querySelector(".image");
-        if (!image.classList.contains("zoomed")) {
-          image.classList.add("zoomed");
-        } else {
-          image.classList.remove("zoomed");
-        }
+      function shrinkAndExpand(element) {
+        element.classList.add("shrink");
+        setTimeout(function () {
+          element.classList.remove("shrink");
+          element.classList.add("expand");
+          setTimeout(function () {
+            element.classList.remove("expand");
+          }, 100);
+        }, 100);
       }
     </script>
   </body>
