@@ -227,6 +227,7 @@
         border: 1px solid #363738;
         box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
         position: relative;
+        -webkit-tap-highlight-color: transparent;
       }
       .block71 {
         background: #74a64800;
@@ -238,6 +239,7 @@
         border: solid 0px #ff0000;
         overflow: hidden;
         position: relative;
+        -webkit-tap-highlight-color: transparent;
       }
       .block72 {
         background: #00000000;
@@ -658,8 +660,8 @@
         box-shadow: inset 0 0 50px rgba(255, 196, 0, 0);
         background-color: #212121;
         border-radius: 10px;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 1px;
+        border-bottom-right-radius: 1px;
         background-color: #8ac538;
       }
       .modal-title {
@@ -794,6 +796,9 @@
         padding-right: 5%;
         border-radius: 50%;
       }
+      img::selection {
+        background: transparent;
+      }
     </style>
     <style>
       #clickBtn {
@@ -808,7 +813,7 @@
 
       .progress-bar {
         width: 90%;
-        height: 30px;
+        height: 20px;
         background-color: #f1f1f1;
         border-radius: 10px;
         margin-top: 20px;
@@ -818,6 +823,9 @@
         bottom: 5%;
         text-align: center;
         overflow: hidden;
+        border: 2px solid #383b3f;
+        border-radius: 12px;
+        box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.54);
       }
       .progress {
         height: calc(100% - 6px);
@@ -830,6 +838,8 @@
         padding-top: 3px;
         padding-bottom: 3px;
         text-align: center;
+        overflow: hidden;
+        box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.54);
       }
       .image {
         transition: all 0.17s;
@@ -1291,16 +1301,10 @@
                     font-family: YS Text, Helvetica, Arial, sans-serif;
                     font-weight: bolder;
                   "
-                >
-                  CLICK ENOT
-                </h2>
+                ></h2>
                 <h2 style="font-size: 30px; margin-top: 6%; margin-bottom: 0%">
                   <span id="click">0</span>
                 </h2>
-                <p style="display: none">
-                  Количество оставшихся кликов:
-                  <span id="click-count">100</span>
-                </p>
               </div>
             </div>
 
@@ -1315,21 +1319,45 @@
                     src="img/енотик.png"
                     alt="Image"
                     id="clickBtn"
-                    onclick="shrinkAndExpand(this)"
                   />
                 </div>
               </div>
             </div>
+
             <div class="block73">
-              <div class="progress-bar">
+              <block
+                style="
+                  width: 50%;
+                  height: auto;
+                  margin-left: -25%;
+                  text-align: center;
+                  bottom: calc(5% + 10px);
+                  border: 0px solid #ffffff00;
+                  position: absolute;
+                  overflow: hidden;
+                "
+              >
+                <p
+                  style="
+                    font-size: 15px;
+                    color: #ffffff;
+                    font-family: YS Text, Helvetica, Arial, sans-serif;
+                    font-weight: bolder;
+                  "
+                >
+                  <span id="click-count" style="font-size: 20px">100</span>/100
+                </p>
+              </block>
+
+              <div class="progress-bar" style="margin-top: 0%">
                 <div
                   class="progress"
                   id="progress-bar"
                   style="
-                    font-size: 26px;
+                    font-size: 15px;
                     font-weight: bold;
                     font-family: VERDANA;
-                    color: rgb(33, 33, 33);
+                    color: rgba(33, 33, 33, 0);
                   "
                 >
                   100%
