@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Пятнашки</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        position: relative;
+      }
+
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 90%;
+      }
+      .game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 96px);
+        grid-template-rows: repeat(4, 96px);
+        gap: 5px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .game-board .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .game-board .tile:hover {
+        background-color: #e0e0e0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header-block {
+        align-items: center;
+        gap: 10px;
+        flex: 1; /* Equal width for each block */
+        cursor: pointer; /* Make the blocks clickable */
+        padding: 10px; /* Add padding to the blocks */
+        border-radius: 5px; /* Add rounded corners to the blocks */
+        background-color: #f5f5f500; /* Add a background color to the blocks */
+        transition: background-color 0.3s; /* Add a hover effect */
+        text-align: center;
+      }
+      .header-block:hover {
+        background-color: #e0e0e0; /* Change background color on hover */
+      }
+      .header button {
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .header button:hover {
+        background-color: #45a049;
+      }
+      .timer {
+        margin-left: 0;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+      .win-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 100;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .win-modal h2 {
+        margin-bottom: 10px;
+      }
+      .win-modal .time {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .win-modal button {
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .win-modal button:hover {
+        background-color: #45a049;
+      }
+
+      /* Media Query for smaller screens */
+      @media (max-width: 600px) {
+        .game-board {
+          font-size: 24px;
+        }
+        .game-board .tile {
+          font-size: 20px;
+        }
+        .win-modal {
+          font-size: 16px;
+        }
+        .win-modal h2 {
+          font-size: 18px;
+        }
+        .controls button {
+          font-size: 14px;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .header-block {
+          margin-bottom: 10px;
+        }
+      }
+      @media (max-width: 880px), (max-height: 604px) {
+        .game-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          max-width: 90%; /* Limit container width on smaller screens */
+        }
+        .game-board {
+          display: grid;
+          grid-template-columns: repeat(4, 10vh);
+          grid-template-rows: repeat(4, 10vh);
+          gap: 5px;
+          background-color: #fff;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          background-color: #fff;
+          padding: 5px;
+
+          margin-bottom: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-block {
+          align-items: center;
+          gap: 10px;
+          flex: 1; /* Equal width for each block */
+          cursor: pointer; /* Make the blocks clickable */
+          padding: 1px; /* Add padding to the blocks */
+          border-radius: 5px; /* Add rounded corners to the blocks */
+          background-color: #f5f5f500; /* Add a background color to the blocks */
+          transition: background-color 0.3s; /* Add a hover effect */
+          text-align: center;
+        }
+        .header-block:hover {
+          background-color: #e0e0e0; /* Change background color on hover */
+        }
+        .header button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .header button:hover {
+          background-color: #45a049;
+        }
+        .header-block {
+          margin-bottom: 0px;
+        }
+        .win-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+          display: none;
+          z-index: 100;
+          max-width: 90%;
+          margin: 0 auto;
+          width: 60%;
+        }
+        .win-modal h2 {
+          margin-bottom: 10px;
+        }
+        .win-modal .time {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+        .win-modal button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .win-modal button:hover {
+          background-color: #45a049;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="header">
+        <div class="header-block" id="shuffleBlock">
+          <button class="shuffle-btn">НОВАЯ</button>
+        </div>
+        <div class="header-block" id="startBlock">
+          <button class="reset-btn">СТАРТ</button>
+        </div>
+        <div class="header-block" id="recordsBlock">
+          <div><button>РЕКОРДЫ</button></div>
+        </div>
+        <div class="header-block" id="statsBlock">
+          <div><button>СТАТ</button></div>
+        </div>
+      </div>
+      <div class="game-board"></div>
+      <div class="timer">00:00:0</div>
+    </div>
+    <div class="win-modal">
+      <h2>Поздравляю! Вы победили!</h2>
+      <div class="time"></div>
+      <button class="close-modal">Закрыть</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+<script>
+  // Проверка победы
+  function checkWin() {
+    for (let i = 0; i < tiles.length - 1; i++) {
+      if (tiles[i].textContent !== String(i + 1)) {
+        return false;
+      }
+    }
+    return true;
+  }
+</script>
+<script>
+  // Движение плитки
+  function moveTile(event) {
+    const clickedTile = event.target;
+    const clickedIndex = tiles.indexOf(clickedTile);
+    if (
+      (clickedIndex === emptyTileIndex - 1 && clickedIndex % 4 !== 3) ||
+      (clickedIndex === emptyTileIndex + 1 && clickedIndex % 4 !== 0) ||
+      clickedIndex === emptyTileIndex - 4 ||
+      clickedIndex === emptyTileIndex + 4
+    ) {
+      [tiles[clickedIndex].style.order, tiles[emptyTileIndex].style.order] = [
+        tiles[emptyTileIndex].style.order,
+        tiles[clickedIndex].style.order,
+      ];
+      [tiles[clickedIndex], tiles[emptyTileIndex]] = [
+        tiles[emptyTileIndex],
+        tiles[clickedIndex],
+      ];
+      emptyTileIndex = clickedIndex;
+      if (checkWin()) {
+        clearInterval(timerInterval);
+        showWinModal();
+      }
+    }
+  }
+</script>
+
+<script>
+  const gameBoard = document.querySelector(".game-board");
+  const shuffleBtn = document.querySelector(".shuffle-btn");
+  const resetBtn = document.querySelector(".reset-btn");
+  const timerElement = document.querySelector(".timer");
+  const winModal = document.querySelector(".win-modal");
+  const closeModalBtn = document.querySelector(".close-modal");
+  const shuffleBlock = document.getElementById("shuffleBlock");
+  const startBlock = document.getElementById("startBlock");
+  const recordsBlock = document.getElementById("recordsBlock");
+  const statsBlock = document.getElementById("statsBlock");
+  let tiles = [];
+  let emptyTileIndex = 15;
+  let milliseconds = 0;
+  let timerInterval;
+  let gameStarted = false;
+
+  // Инициализация игрового поля
+  function initializeBoard() {
+    for (let i = 0; i < 16; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.textContent = i === 15 ? "" : i + 1;
+      tile.addEventListener("click", moveTile);
+      gameBoard.appendChild(tile);
+      tiles.push(tile);
+    }
+  }
+
+  // Перемешивание плиток
+  function shuffleBoard() {
+    for (let i = tiles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+      tiles[i].style.order = i;
+      tiles[j].style.order = j;
+    }
+    // Find the new position of the empty tile
+    emptyTileIndex = tiles.findIndex((tile) => tile.textContent === "");
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+  }
+
+  // Сброс игры
+  function resetBoard() {
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i].style.order = i;
+      tiles[i].textContent = i === 15 ? "" : i + 1;
+    }
+    emptyTileIndex = 15;
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+    hideWinModal();
+  }
+
+  // Обновление таймера
+  function updateTimer() {
+    milliseconds += 10;
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timerElement.textContent = `${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+  }
+
+  // Показать модальное окно победы
+  function showWinModal() {
+    const timeElement = winModal.querySelector(".time");
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timeElement.textContent = `Время: ${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+    winModal.style.display = "block";
+  }
+
+  // Скрыть модальное окно победы
+  function hideWinModal() {
+    winModal.style.display = "none";
+  }
+
+  // Инициализация игры
+  initializeBoard();
+  shuffleBoard();
+  // Обработчики событий
+  shuffleBtn.addEventListener("click", shuffleBoard);
+  resetBtn.addEventListener("click", resetBoard);
+  closeModalBtn.addEventListener("click", hideWinModal);
+
+  // Start timer on first tile click after shuffle
+  gameBoard.addEventListener("click", function (event) {
+    if (!gameStarted) {
+      gameStarted = true;
+      milliseconds = 0;
+      timerElement.textContent = "00:00:0";
+      timerInterval = setInterval(updateTimer, 10);
+    }
+  });
+
+  // Event listeners for header blocks
+  shuffleBlock.addEventListener("click", shuffleBoard);
+  startBlock.addEventListener("click", resetBoard);
+  recordsBlock.addEventListener("click", () => {
+    alert("Скоро тут будут рекорды!"); // Placeholder for future functionality
+  });
+  statsBlock.addEventListener("click", () => {
+    alert("Скоро тут будет статистика!"); // Placeholder for future functionality
+  });
+</script>
