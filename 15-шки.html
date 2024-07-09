@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Пятнашки</title>
+    <title>15</title>
     <link rel="stylesheet" href="style.css" />
     <style>
       body {
@@ -354,6 +354,15 @@
         cursor: pointer;
         transition: background-color 0.3s;
       }
+      .game-board .tile.empty {
+        /* Style for the empty tile */
+        background-color: #ddd;
+      }
+      .game-board .tile.correct {
+        /* Style for a tile in the correct position */
+        background-color: #4caf50; /* Green color */
+        color: #fff;
+      }
     </style>
   </head>
   <body>
@@ -479,7 +488,13 @@
   function resetBoard() {
     for (let i = 0; i < tiles.length; i++) {
       tiles[i].style.order = i;
+      tiles[i].classList.remove("correct"); // Удаляем класс "correct"
       tiles[i].textContent = i === 15 ? "" : i + 1;
+      if (i === 15) {
+        tiles[i].classList.add("empty"); // Добавляем класс "empty" для пустой плитки
+      } else {
+        tiles[i].classList.remove("empty"); // Удаляем класс "empty" для плиток с цифрами
+      }
     }
     emptyTileIndex = 15;
     milliseconds = 0;
