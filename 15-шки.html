@@ -346,22 +346,21 @@
         border-radius: 5%;
       }
       .header.dark-mode button {
-        padding: 8px 15px;
         background-color: #0b0d7800;
         color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
       }
-      .game-board .tile.empty {
-        /* Style for the empty tile */
-        background-color: #ddd;
-      }
+
       .game-board .tile.correct {
         /* Style for a tile in the correct position */
         background-color: #4caf50; /* Green color */
         color: #fff;
+      }
+      .game-board.dark-mode .tile.empty {
+        background-color: #373737;
+      }
+      .game-board .tile.empty {
+        /* Style for the empty tile */
+        background-color: #fff;
       }
     </style>
   </head>
@@ -396,7 +395,6 @@
       <div class="time"></div>
       <button class="close-modal">Закрыть</button>
     </div>
-    <script src="script.js"></script>
   </body>
 </html>
 
@@ -476,7 +474,7 @@
       tiles[i].style.order = i;
       tiles[j].style.order = j;
     }
-    // Find the new position of the empty tile
+    // Найдите новое положение пустой плитки
     emptyTileIndex = tiles.findIndex((tile) => tile.textContent === "");
     milliseconds = 0;
     timerElement.textContent = "00:00:0";
@@ -546,7 +544,7 @@
   resetBtn.addEventListener("click", resetBoard);
   closeModalBtn.addEventListener("click", hideWinModal);
 
-  // Start timer on first tile click after shuffle
+  // Запуск таймера при первом щелчке по плитке после перетасовки
   gameBoard.addEventListener("click", function (event) {
     if (!gameStarted) {
       gameStarted = true;
@@ -556,20 +554,18 @@
     }
   });
 
-  // Event listeners for header blocks
+  // Прослушиватели событий для блоков заголовков
   shuffleBlock.addEventListener("click", shuffleBoard);
   startBlock.addEventListener("click", resetBoard);
   recordsBlock.addEventListener("click", () => {
-    alert("Скоро тут будут рекорды!"); // Placeholder for future functionality
+    alert("Скоро тут будут рекорды!"); // Заполнитель для будущей функциональности
   });
   statsBlock.addEventListener("click", () => {
-    alert("Скоро тут будет статистика!"); // Placeholder for future functionality
+    alert("Скоро тут будет статистика!"); // Заполнитель для будущей функциональности
   });
 </script>
 <script>
-  // ... previous JavaScript code ...
-
-  // Dark Mode Toggle
+  // Переключение в темный режим
   const themeSwitch = document.getElementById("theme-switch");
   themeSwitch.addEventListener("change", () => {
     document.body.classList.toggle("dark-mode");
@@ -584,3 +580,4 @@
     document.querySelector(".win-modal .time").classList.toggle("dark-mode");
   });
 </script>
+<script></script>
