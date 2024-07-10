@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>15</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>15safdsad</title>
     <link rel="stylesheet" href="style.css" />
     <style>
       body {
@@ -15,6 +19,7 @@
         background-color: #f0f0f0;
         font-family: Arial, sans-serif;
         position: relative;
+        margin: 0px;
       }
 
       .game-container {
@@ -32,7 +37,7 @@
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        -webkit-tap-highlight-color: #37373706;
+        -webkit-tap-highlight-color: #00000000;
       }
       .game-board .tile {
         display: flex;
@@ -43,6 +48,7 @@
         background-color: #f0f0f0;
         cursor: pointer;
         transition: background-color 0.3s;
+        border-radius: 5%;
       }
       .game-board .tile:hover {
         background-color: #e0e0e0;
@@ -53,10 +59,11 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-        padding: 10px;
+        padding: 0px;
         margin-bottom: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 5px;
       }
       .header-block {
         align-items: center;
@@ -68,18 +75,21 @@
         background-color: #f5f5f500; /* Add a background color to the blocks */
         transition: background-color 0.3s; /* Add a hover effect */
         text-align: center;
+        margin-bottom: 0px;
+        padding: 3px;
       }
       .header-block:hover {
         background-color: #e0e0e0; /* Change background color on hover */
       }
       .header button {
         padding: 8px 15px;
-        background-color: #4caf50;
+        background-color: #8bc089;
         color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s;
+        font-weight: bold;
       }
       .header button:hover {
         background-color: #4562a0;
@@ -125,8 +135,47 @@
         background-color: #45a049;
       }
 
-      /* Media Query for smaller screens */
-      @media (max-width: 600px) {
+      label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 75px;
+        height: 35px;
+        background: rgb(82, 82, 82);
+        display: block;
+        border-radius: 100px;
+        position: relative;
+        background-color: #45a0499e;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      label:after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 25px;
+        height: 25px;
+        background: #f0f0f0;
+        border-radius: 90px;
+        transition: 0.3s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      input:checked + label {
+        background: #f0f0f0;
+      }
+
+      input:checked + label:after {
+        left: calc(100% - 5px);
+        transform: translateX(-100%);
+        background: rgb(82, 82, 82);
+      }
+
+      label:active:after {
+        width: 35px;
+      }
+      @media (max-width: 880px), (max-height: 604px) {
         .game-board {
           font-size: 24px;
         }
@@ -149,44 +198,6 @@
         .header-block {
           margin-bottom: 10px;
         }
-        .theme-switch {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          cursor: pointer;
-        }
-        .theme-switch input {
-          display: none;
-        }
-        .theme-switch label {
-          background-color: #ccc;
-          border-radius: 50%;
-          height: 20px;
-          width: 20px;
-          position: relative;
-          transition: background-color 0.3s;
-        }
-        .theme-switch input:checked + label {
-          background-color: #4caf50;
-        }
-        .theme-switch .slider {
-          position: absolute;
-          top: 5px;
-          left: 5px;
-          height: 10px;
-          width: 10px;
-          background-color: #fff;
-          border-radius: 50%;
-          transition: transform 0.3s;
-        }
-        .theme-switch input:checked + label .slider {
-          transform: translateX(10px);
-        }
-      }
-      @media (max-width: 880px), (max-height: 604px) {
         .game-container {
           display: flex;
           flex-direction: column;
@@ -242,6 +253,7 @@
           cursor: pointer;
           transition: background-color 0.3s;
           font-weight: bold;
+          background-color: #8bc089;
         }
         .header button:hover {
           background-color: #3db143;
@@ -292,6 +304,42 @@
           cursor: pointer;
           transition: background-color 0.3s;
         }
+        .theme-switch {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+        }
+        .theme-switch input {
+          display: none;
+        }
+        .theme-switch label {
+          background-color: #ccc;
+          border-radius: 50%;
+          height: 20px;
+          width: 20px;
+          position: relative;
+          transition: background-color 0.3s;
+        }
+        .theme-switch input:checked + label {
+          background-color: #4caf50;
+        }
+        .theme-switch .slider {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          height: 10px;
+          width: 10px;
+          background-color: #fff;
+          border-radius: 50%;
+          transition: transform 0.3s;
+        }
+        .theme-switch input:checked + label .slider {
+          transform: translateX(10px);
+        }
       }
     </style>
     <style>
@@ -303,6 +351,7 @@
       .game-board.dark-mode {
         background-color: #373737;
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        -webkit-tap-highlight-color: #ffffff1d;
       }
       .game-board .tile.dark-mode {
         background-color: #44444400;
@@ -362,6 +411,9 @@
         /* Style for the empty tile */
         background-color: #fff;
       }
+      .body {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -382,11 +434,11 @@
       </div>
       <div class="game-board"></div>
       <div class="timer">00:00:0</div>
-      <div class="theme-switch">
-        <input type="checkbox" id="theme-switch" />
-        <label for="theme-switch">
-          <div class="slider"></div>
-        </label>
+      <div>
+        <input type="checkbox" id="theme-switch" style="display: none" /><label
+          for="theme-switch"
+          >Toggle</label
+        >
       </div>
     </div>
 
