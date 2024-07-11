@@ -440,11 +440,13 @@
           >Toggle</label
         >
       </div>
+      <p>Ходов сделано: <span id="movesCount">0</span></p>
     </div>
 
     <div class="win-modal">
       <h2>Поздравляю! Вы победили!</h2>
       <div class="time"></div>
+      <!-- <p>Ходов сделано: <span id="movesCount">0</span></p> -->
       <button class="close-modal">Закрыть</button>
     </div>
   </body>
@@ -462,7 +464,7 @@
   }
 </script>
 <script>
-  // Движение плитки
+  // движение плитки с отображением количества Ходы: в
   function moveTile(event) {
     const clickedTile = event.target;
     const clickedIndex = tiles.indexOf(clickedTile);
@@ -481,6 +483,8 @@
         tiles[clickedIndex],
       ];
       emptyTileIndex = clickedIndex;
+      movesCounter++; // увеличиваем счетчик Ходы: в
+      movesCountElement.textContent = "" + movesCounter; // отображаем количество Ходы: в
       if (checkWin()) {
         clearInterval(timerInterval);
         showWinModal();
@@ -505,6 +509,8 @@
   let milliseconds = 0;
   let timerInterval;
   let gameStarted = false;
+  let movesCounter = 0;
+  const movesCountElement = document.getElementById("movesCount");
 
   // Инициализация игрового поля
   function initializeBoard() {
@@ -533,10 +539,13 @@
     timerElement.textContent = "00:00:0";
     clearInterval(timerInterval);
     gameStarted = false;
+    movesCounter = 0;
   }
 
-  // Сброс игры
+  // Ссброс игры и счетчика Ходы: в
   function resetBoard() {
+    movesCounter = 0; // сбрасываем счетчик Ходы: в
+    movesCountElement.textContent = "0"; // обновляем отображение количества Ходы: в
     for (let i = 0; i < tiles.length; i++) {
       tiles[i].style.order = i;
       tiles[i].classList.remove("correct"); // Удаляем класс "correct"
@@ -581,6 +590,8 @@
       .padStart(2, "0")}:${remainingSeconds
       .toString()
       .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+
+    movesCountElement.textContent = "" + movesCounter; // отображаем количество ходов
     winModal.style.display = "block";
   }
 
@@ -595,6 +606,7 @@
   // Обработчики событий
   shuffleBtn.addEventListener("click", shuffleBoard);
   resetBtn.addEventListener("click", resetBoard);
+  closeModalBtn.addEventListener("click", resetBoard);
   closeModalBtn.addEventListener("click", hideWinModal);
 
   // Запуск таймера при первом щелчке по плитке после перетасовки
@@ -617,6 +629,7 @@
     alert("Скоро тут будет статистика!"); // Заполнитель для будущей функциональности
   });
 </script>
+
 <script>
   const themeSwitch = document.getElementById("theme-switch");
   const body = document.body;
@@ -665,6 +678,7 @@
     }
   });
 </script>
+
 <script>
   resetBoard();
 </script>
