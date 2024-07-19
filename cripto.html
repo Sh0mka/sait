@@ -129,6 +129,7 @@
           display: flex; /* Добавляем это свойство */
           align-items: center; /* Центрируем элементы по вертикали */
           flex-wrap: wrap; /* Добавляем это свойство */
+          flex-direction: column;
         }
 
         .big-text {
@@ -372,7 +373,7 @@
           <div class="text-block">
             <div class="big-text">
               <span class="symbol dollar">$</span>
-              <span id="bitcoin"></span>
+              <span id="bitcoin">...</span>
             </div>
             <div class="info-line1">
               <span
@@ -391,7 +392,7 @@
           <div class="text-block">
             <div class="big-text">
               <span class="symbol dollar">$</span>
-              <span id="ethereum"></span>
+              <span id="ethereum">...</span>
             </div>
             <div class="info-line1">
               <span
@@ -410,7 +411,7 @@
           <div class="text-block">
             <div class="big-text">
               <span class="symbol dollar">$</span>
-              <span id="toncoin"></span>
+              <span id="the-open-network">...</span>
             </div>
             <div class="info-line1">
               <span
@@ -454,7 +455,7 @@
     <script>
       const bitcoinPriceElement = document.getElementById("bitcoin");
       const ethereumPriceElement = document.getElementById("ethereum");
-      const toncoinPriceElement = document.getElementById("toncoin");
+      const toncoinPriceElement = document.getElementById("the-open-network");
 
       function fetchPrice(crypto, currency) {
         const xhr = new XMLHttpRequest();
@@ -472,12 +473,12 @@
               this.status,
               this.statusText
             );
-            updatePrice(crypto, "Ошибка");
+            updatePrice(crypto, "...");
           }
         };
         xhr.onerror = function () {
           console.error("Ошибка сети при запросе цены");
-          updatePrice(crypto, "Ошибка");
+          updatePrice(crypto, "...");
         };
         xhr.send();
       }
@@ -485,29 +486,38 @@
       function updatePrice(crypto, price) {
         switch (crypto) {
           case "bitcoin":
-            bitcoinPriceElement.textContent = isNaN(price) ? "..." : price;
+            bitcoinPriceElement.textContent = isNaN(price)
+              ? "..."
+              : formatNumber(price);
             break;
           case "ethereum":
             ethereumPriceElement.textContent = isNaN(price)
               ? "..."
-              : Math.floor(price);
+              : formatNumber(Math.floor(price));
             break;
-          case "toncoin":
-            toncoinPriceElement.textContent = isNaN(price) ? "..." : price;
+          case "the-open-network":
+            toncoinPriceElement.textContent = isNaN(price)
+              ? "..."
+              : formatNumber(price);
             break;
         }
+      }
+
+      // Функция для форматирования числа с разделителем разрядов
+      function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
       }
 
       // Вызываем функцию обновления при загрузке страницы
       fetchPrice("bitcoin", "usd");
       fetchPrice("ethereum", "usd");
-      fetchPrice("toncoin", "usd");
+      fetchPrice("the-open-network", "usd");
 
       // Обновляем цены каждые 60 секунд (1 минута)
       setInterval(() => {
         fetchPrice("bitcoin", "usd");
         fetchPrice("ethereum", "usd");
-        fetchPrice("toncoin", "usd");
+        fetchPrice("the-open-network", "usd");
       }, 60000);
     </script>
   </body>
