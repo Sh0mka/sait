@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Кнопки с переходами</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .button {
+        width: 100px;
+        height: 100px;
+        background-color: #c0c0c0;
+        color: white;
+        border: rgb(0, 0, 0) solid 0px;
+        border-radius: 5%;
+        font-size: 18px;
+        text-align: center;
+        line-height: 100px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-size: cover;
+      }
+
+      .button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="https://sh0mka.github.io/sait/cripto.html" target="_blank">
+        <img
+          class="button"
+          style="background-image: url('bit.png'); border-radius: 5%"
+        />
+      </a>
+      <a href="https://sh0mka.github.io/sait/15-шки.html" target="_blank">
+        <img class="button" style="background-image: url('пятнашки.png')" />
+      </a>
+      <a
+        href="https://sh0mka.github.io/sait/обновленныйвк.html#close"
+        target="_blank"
+      >
+        <img class="button" style="background-image: url('енотик.jpg')" />
+      </a>
+      <a href="https://www.instagram.com" target="_blank">
+        <img class="button" style="background-image: url('')" />
+      </a>
+      <a href="https://www.twitter.com" target="_blank">
+        <img class="button" style="background-image: url('')" />
+      </a>
+      <a href="https://www.amazon.com" target="_blank">
+        <img class="button" style="background-image: url('')" />
+      </a>
+      <a href="https://www.wikipedia.org" target="_blank">
+        <img class="button" style="background-image: url('')" />
+      </a>
+      <a href="https://www.reddit.com" target="_blank">
+        <img class="button" style="background-image: url('')" />
+      </a>
+    </div>
+  </body>
+</html>
