@@ -358,7 +358,18 @@
           text-align: center;
           margin-top: 0px;
           font-family: "La";
-          font-size: 6vw;
+          font-size: 5.5vw;
+        }
+        .arrow-icon {
+          width: 18px;
+          height: 18px;
+          margin-right: 5px;
+        }
+        .positive {
+          color: #38af75;
+        }
+        .negative {
+          color: #f2595c;
         }
       }
     </style>
@@ -376,12 +387,16 @@
               <span id="bitcoin">...</span>
             </div>
             <div class="info-line1">
-              <span
-                ><img
+              <span>
+                <img
+                  id="bitcoin-arrow"
+                  class="arrow-icon"
                   style="width: 18px; height: 18px; margin-right: 5px"
-                  src="стрелка вверх.png"
-              /></span>
-              <span class="small-text">1.98%</span>
+                  src=""
+                  alt=""
+                />
+              </span>
+              <span class="small-text" id="bitcoin-growth">...</span>
             </div>
           </div>
         </div>
@@ -397,10 +412,13 @@
             <div class="info-line1">
               <span
                 ><img
+                  id="ethereum-arrow"
+                  class="arrow-icon"
                   style="width: 18px; height: 18px; margin-right: 5px"
-                  src="стрелка вверх.png"
+                  src=""
+                  alt=""
               /></span>
-              <span class="small-text">1.76%</span>
+              <span class="small-text" id="ethereum-growth">...</span>
             </div>
           </div>
         </div>
@@ -416,10 +434,13 @@
             <div class="info-line1">
               <span
                 ><img
+                  id="the-open-network-arrow"
+                  class="arrow-icon"
                   style="width: 18px; height: 18px; margin-right: 5px"
-                  src="стрелка вверх.png"
+                  src=""
+                  alt=""
               /></span>
-              <span class="small-text">0.20%</span>
+              <span class="small-text" id="the-open-network-growth">...</span>
             </div>
           </div>
         </div>
@@ -455,7 +476,7 @@
     <script>
       const bitcoinPriceElement = document.getElementById("bitcoin");
       const ethereumPriceElement = document.getElementById("ethereum");
-      const toncoinPriceElement = document.getElementById("the-open-network");
+      const tonPriceElement = document.getElementById("the-open-network");
 
       function fetchPrice(crypto, currency) {
         const xhr = new XMLHttpRequest();
@@ -496,7 +517,7 @@
               : formatNumber(Math.floor(price));
             break;
           case "the-open-network":
-            toncoinPriceElement.textContent = isNaN(price)
+            tonPriceElement.textContent = isNaN(price)
               ? "..."
               : formatNumber(price);
             break;
@@ -519,6 +540,67 @@
         fetchPrice("ethereum", "usd");
         fetchPrice("the-open-network", "usd");
       }, 60000);
+
+      const cryptoGrowthElements = {
+        bitcoin: {
+          growth: document.getElementById("bitcoin-growth"),
+          arrow: document.getElementById("bitcoin-arrow"),
+        },
+        ethereum: {
+          growth: document.getElementById("ethereum-growth"),
+          arrow: document.getElementById("ethereum-arrow"),
+        },
+        ["the-open-network"]: {
+          growth: document.getElementById("the-open-network-growth"),
+          arrow: document.getElementById("the-open-network-arrow"),
+        },
+      };
+
+      async function updateCryptoGrowth(crypto) {
+        try {
+          const response = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" +
+              crypto
+          );
+          const data = await response.json();
+          const cryptoData = data[0];
+
+          const previousPrice = cryptoData.high_24h;
+          const currentPrice = cryptoData.current_price;
+
+          const growth = ((currentPrice - previousPrice) / previousPrice) * 100;
+          const growthFormatted = growth.toFixed(2);
+
+          cryptoGrowthElements[
+            crypto
+          ].growth.textContent = `${growthFormatted}%`;
+
+          if (growth >= 0) {
+            cryptoGrowthElements[crypto].growth.classList.add("positive");
+            cryptoGrowthElements[crypto].growth.classList.remove("negative");
+            cryptoGrowthElements[crypto].arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            cryptoGrowthElements[crypto].growth.classList.add("negative");
+            cryptoGrowthElements[crypto].growth.classList.remove("positive");
+            cryptoGrowthElements[crypto].arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+        } catch (error) {
+          console.error("Ошибка получения данных:", error);
+          cryptoGrowthElements[crypto].growth.textContent = "...";
+        }
+      }
+
+      function updateAllCryptoGrowth() {
+        updateCryptoGrowth("bitcoin");
+        updateCryptoGrowth("ethereum");
+        updateCryptoGrowth("the-open-network");
+      }
+
+      // Вызываем функцию обновления при загрузке страницы
+      updateAllCryptoGrowth();
+
+      // Обновляем данные каждые 60 секунд (1 минута)
+      setInterval(updateAllCryptoGrowth, 60000);
     </script>
   </body>
 </html>
