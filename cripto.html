@@ -550,7 +550,7 @@
         fetchPrice("bitcoin", "usd");
         fetchPrice("ethereum", "usd");
         fetchPrice("the-open-network", "usd");
-      }, 60000);
+      }, 150000);
 
       const cryptoGrowthElements = {
         bitcoin: {
@@ -611,7 +611,7 @@
       updateAllCryptoGrowth();
 
       // Обновляем данные каждые 60 секунд (1 минута)
-      setInterval(updateAllCryptoGrowth, 60000);
+      setInterval(updateAllCryptoGrowth, 150000);
     </script>
   </body>
 </html>
