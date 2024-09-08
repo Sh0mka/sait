@@ -183,6 +183,14 @@
         .negative {
           color: #f2595c;
         }
+        .positive1 {
+          color: #38af75;
+          color: white;
+        }
+        .negative1 {
+          color: #f2595c;
+          color: white;
+        }
       }
     </style>
     <style>
@@ -382,6 +390,14 @@
         .negative {
           color: #f2595c;
         }
+        .positive1 {
+          color: #38af75;
+          color: white;
+        }
+        .negative1 {
+          color: #f2595c;
+          color: white;
+        }
       }
     </style>
   </head>
@@ -463,16 +479,26 @@
             <div class="h2">КУРС ВАЛЮТ</div>
             <div class="info-line">
               <span class="gray">$</span>
-              <span>87.74</span>
+              <span id="usd-value" class="currency-value"></span>
               <span class="green-arrow"
-                ><img style="width: 20px; height: 20px" src="стрелка вниз.png"
+                ><img
+                  style="width: 20px; height: 20px"
+                  id="usd-arrow"
+                  class="arrow-icon"
+                  src=""
+                  alt=""
               /></span>
             </div>
             <div class="info-line">
               <span class="gray">€</span>
-              <span>95.75</span>
+              <span id="eur-value" class="currency-value"></span>
               <span class="red-arrow"
-                ><img style="width: 20px; height: 20px" src="стрелка вверх.png"
+                ><img
+                  style="width: 20px; height: 20px"
+                  id="eur-arrow"
+                  class="arrow-icon"
+                  src=""
+                  alt=""
               /></span>
             </div>
           </div>
@@ -549,8 +575,9 @@
       setInterval(() => {
         fetchPrice("bitcoin", "usd");
         fetchPrice("ethereum", "usd");
+        fetchPrice("ethereum", "usd");
         fetchPrice("the-open-network", "usd");
-      }, 150000);
+      }, 180000);
 
       const cryptoGrowthElements = {
         bitcoin: {
@@ -611,7 +638,76 @@
       updateAllCryptoGrowth();
 
       // Обновляем данные каждые 60 секунд (1 минута)
-      setInterval(updateAllCryptoGrowth, 150000);
+      setInterval(updateAllCryptoGrowth, 180000);
+
+      const currencyElements = {
+        usd: {
+          value: document.getElementById("usd-value"),
+          arrow: document.getElementById("usd-arrow"),
+        },
+        eur: {
+          value: document.getElementById("eur-value"),
+          arrow: document.getElementById("eur-arrow"),
+        },
+      };
+
+      const apiKey = "YOUR_API_KEY"; // Замените на ваш API-ключ
+
+      async function updateCurrencyValues() {
+        try {
+          const response = await fetch(
+            `https://api.exchangerate-api.com/v4/latest/RUB?apiKey=${apiKey}`
+          );
+          const data = await response.json();
+
+          // Храним предыдущие значения курсов для сравнения
+          const previousUsdRate =
+            currencyElements.usd.value.textContent ||
+            (1 / data.rates.USD).toFixed(2);
+          const previousEurRate =
+            currencyElements.eur.value.textContent ||
+            (1 / data.rates.EUR).toFixed(2);
+
+          // Обновляем значения курсов
+          currencyElements.usd.value.textContent = `${(
+            1 / data.rates.USD
+          ).toFixed(2)} `;
+          currencyElements.eur.value.textContent = `${(
+            1 / data.rates.EUR
+          ).toFixed(2)} `;
+
+          // Сравниваем значения и обновляем изображения стрелок
+          if (1 / data.rates.USD > parseFloat(previousUsdRate)) {
+            currencyElements.usd.value.classList.add("positive1");
+            currencyElements.usd.value.classList.remove("negative1");
+            currencyElements.usd.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            currencyElements.usd.value.classList.add("negative1");
+            currencyElements.usd.value.classList.remove("positive1");
+            currencyElements.usd.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+
+          if (1 / data.rates.EUR > parseFloat(previousEurRate)) {
+            currencyElements.eur.value.classList.add("positive1");
+            currencyElements.eur.value.classList.remove("negative1");
+            currencyElements.eur.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            currencyElements.eur.value.classList.add("negative1");
+            currencyElements.eur.value.classList.remove("positive1");
+            currencyElements.eur.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+        } catch (error) {
+          console.error("Ошибка получения данных:", error);
+          currencyElements.usd.value.textContent = "...";
+          currencyElements.eur.value.textContent = "...";
+        }
+      }
+
+      // Вызываем функцию обновления при загрузке страницы
+      updateCurrencyValues();
+
+      // Обновляем данные каждые 60 секунд (1 минута)
+      setInterval(updateCurrencyValues, 180000);
     </script>
   </body>
 </html>
