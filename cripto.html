@@ -378,6 +378,7 @@
           margin-top: 0px;
           font-family: "La";
           font-size: 5.5vw;
+          letter-spacing: 1px;
         }
         .arrow-icon {
           width: 18px;
@@ -503,8 +504,8 @@
             </div>
           </div>
           <div class="square2">
-            <div class="big-number">13</div>
-            <div class="month">ИЮЛЯ</div>
+            <div class="big-number" id="current-day">13</div>
+            <div class="month" id="month">ИЮЛЯ</div>
           </div>
         </div>
       </div>
@@ -696,10 +697,14 @@
             currencyElements.eur.value.classList.remove("positive1");
             currencyElements.eur.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
           }
+          // Сохраняем текущие значения курсов как предыдущие
+          previousUsdRate = currencyElements.usd.value.textContent;
+          previousEurRate = currencyElements.eur.value.textContent;
         } catch (error) {
           console.error("Ошибка получения данных:", error);
-          currencyElements.usd.value.textContent = "...";
-          currencyElements.eur.value.textContent = "...";
+          // Если ошибка, используем предыдущие значения
+          currencyElements.usd.value.textContent = previousUsdRate || "Ошибка";
+          currencyElements.eur.value.textContent = previousEurRate || "Ошибка";
         }
       }
 
@@ -708,6 +713,28 @@
 
       // Обновляем данные каждые 60 секунд (1 минута)
       setInterval(updateCurrencyValues, 180000);
+    </script>
+    <script>
+      const currentDate = new Date();
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1; // Месяцы начинаются с 0, поэтому прибавляем 1
+      const monthNames = [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+      ];
+
+      document.getElementById("current-day").textContent = day;
+      document.getElementById("month").textContent = monthNames[month - 1];
     </script>
   </body>
 </html>
