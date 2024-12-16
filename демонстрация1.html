@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>15</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        position: relative;
+        margin: 0px;
+      }
+
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 90%;
+      }
+      .game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 96px);
+        grid-template-rows: repeat(4, 96px);
+        gap: 5px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: #00000000;
+      }
+      .game-board .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border-radius: 5%;
+      }
+      .game-board .tile:hover {
+        background-color: #e0e0e0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: #fff;
+        padding: 0px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+      }
+      .header-block {
+        align-items: center;
+        gap: 10px;
+        flex: 1; /* Equal width for each block */
+        cursor: pointer; /* Make the blocks clickable */
+        padding: 10px; /* Add padding to the blocks */
+        border-radius: 5px; /* Add rounded corners to the blocks */
+        background-color: #f5f5f500; /* Add a background color to the blocks */
+        transition: background-color 0.3s; /* Add a hover effect */
+        text-align: center;
+        margin-bottom: 0px;
+        padding: 3px;
+      }
+      .header-block:hover {
+        background-color: #e0e0e0; /* Change background color on hover */
+      }
+      .header button {
+        padding: 8px 15px;
+        background-color: #8bc089;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+      }
+      .header button:hover {
+        background-color: #4562a0;
+      }
+      .timer {
+        margin-left: 0;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+      .win-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 100;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .win-modal h2 {
+        margin-bottom: 10px;
+      }
+      .win-modal .time {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .win-modal button {
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .win-modal button:hover {
+        background-color: #45a049;
+      }
+
+      label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 75px;
+        height: 35px;
+        background: rgb(82, 82, 82);
+        display: block;
+        border-radius: 100px;
+        position: relative;
+        background-color: #45a0499e;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      label:after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 25px;
+        height: 25px;
+        background: #f0f0f0;
+        border-radius: 90px;
+        transition: 0.3s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      input:checked + label {
+        background: #f0f0f0;
+      }
+
+      input:checked + label:after {
+        left: calc(100% - 5px);
+        transform: translateX(-100%);
+        background: rgb(82, 82, 82);
+      }
+
+      label:active:after {
+        width: 35px;
+      }
+      @media (max-width: 880px), (max-height: 604px) {
+        .game-board {
+          font-size: 24px;
+        }
+        .game-board .tile {
+          font-size: 32px;
+        }
+        .win-modal {
+          font-size: 16px;
+        }
+        .win-modal h2 {
+          font-size: 18px;
+        }
+        .controls button {
+          font-size: 14px;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .header-block {
+          margin-bottom: 10px;
+        }
+        .game-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          max-width: 90%; /* Limit container width on smaller screens */
+        }
+        .game-board {
+          display: grid;
+          grid-template-columns: repeat(4, 10vh);
+          grid-template-rows: repeat(4, 10vh);
+          gap: 5px;
+          background-color: #fff;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          background-color: #fff;
+          padding: 5px;
+
+          margin-bottom: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-block {
+          align-items: center;
+          gap: 10px;
+          flex: 1; /* Equal width for each block */
+          cursor: pointer; /* Make the blocks clickable */
+          padding: 1px; /* Add padding to the blocks */
+          border-radius: 5px; /* Add rounded corners to the blocks */
+          background-color: #f5f5f500; /* Add a background color to the blocks */
+          transition: background-color 0.3s; /* Add a hover effect */
+          text-align: center;
+        }
+        .header-block:hover {
+          background-color: #e0e0e0; /* Change background color on hover */
+        }
+        .header button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-weight: bold;
+          background-color: #8bc089;
+        }
+        .header button:hover {
+          background-color: #3db143;
+        }
+        .header-block {
+          margin-bottom: 0px;
+        }
+        .win-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+          display: none;
+          z-index: 100;
+          max-width: 90%;
+          margin: 0 auto;
+          width: 60%;
+        }
+        .win-modal h2 {
+          margin-bottom: 10px;
+        }
+        .win-modal .time {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+        .win-modal button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .win-modal button:hover {
+          background-color: #45a049;
+        }
+        .win-modal.dark-mode button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .theme-switch {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+        }
+        .theme-switch input {
+          display: none;
+        }
+        .theme-switch label {
+          background-color: #ccc;
+          border-radius: 50%;
+          height: 20px;
+          width: 20px;
+          position: relative;
+          transition: background-color 0.3s;
+        }
+        .theme-switch input:checked + label {
+          background-color: #4caf50;
+        }
+        .theme-switch .slider {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          height: 10px;
+          width: 10px;
+          background-color: #fff;
+          border-radius: 50%;
+          transition: transform 0.3s;
+        }
+        .theme-switch input:checked + label .slider {
+          transform: translateX(10px);
+        }
+      }
+    </style>
+    <style>
+      /* Dark Mode Styles */
+      body.dark-mode {
+        background-color: #535353;
+        color: #ffffff;
+      }
+      .game-board.dark-mode {
+        background-color: #373737;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        -webkit-tap-highlight-color: #ffffff1d;
+      }
+      .game-board .tile.dark-mode {
+        background-color: #44444400;
+        color: #fff;
+      }
+      .header.dark-mode {
+        background-color: #333;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      }
+      .header-block.dark-mode {
+        background-color: #44444400;
+        color: #fff;
+      }
+      .header button.dark-mode {
+        background-color: #57575700;
+      }
+      .timer.dark-mode {
+        color: #fff;
+      }
+      .win-modal.dark-mode {
+        background-color: #333;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .win-modal h2.dark-mode {
+        color: #fff;
+      }
+      .win-modal .time.dark-mode {
+        color: #fff;
+      }
+      .game-board.dark-mode .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #535353;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: solid 0px #eeeeee;
+        border-radius: 5%;
+      }
+      .header.dark-mode button {
+        background-color: #0b0d7800;
+        color: #fff;
+      }
+
+      .game-board .tile.correct {
+        /* Style for a tile in the correct position */
+        background-color: #4caf50; /* Green color */
+        color: #fff;
+      }
+      .game-board.dark-mode .tile.empty {
+        background-color: #373737;
+      }
+      .game-board .tile.empty {
+        /* Style for the empty tile */
+        background-color: #fff;
+      }
+      .body {
+        margin: 0;
+      }
+    </style>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .control-buttons {
+        position: fixed; /* Fixed positioning */
+        top: 10px;
+        left: 10px;
+        z-index: 1000; /* Ensure it's on top */
+        background-color: rgb(255, 255, 255); /* Semi-transparent background */
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 2%;
+        left: 80%;
+        color: #333;
+      }
+
+      .section {
+        margin-top: 50px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: none; /* Initially hidden */
+      }
+
+      .section.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="control-buttons">
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация3.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация2.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация1.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS & JS
+      </div>
+    </div>
+
+    <div class="game-container">
+      <div class="header">
+        <div class="header-block" id="shuffleBlock">
+          <button class="shuffle-btn">НОВАЯ</button>
+        </div>
+        <div class="header-block" id="startBlock">
+          <button class="reset-btn">СТАРТ</button>
+        </div>
+        <div class="header-block" id="recordsBlock">
+          <div><button>РЕКОРДЫ</button></div>
+        </div>
+        <div class="header-block" id="statsBlock">
+          <div><button>СТАТ</button></div>
+        </div>
+      </div>
+      <div class="game-board"></div>
+      <div class="timer">00:00:0</div>
+      <div>
+        <input type="checkbox" id="theme-switch" style="display: none" /><label
+          for="theme-switch"
+          >Toggle</label
+        >
+      </div>
+    </div>
+
+    <div class="win-modal">
+      <h2>Поздравляю! Вы победили!</h2>
+      <div class="time"></div>
+      <button class="close-modal">Закрыть</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  // Проверка победы
+  function checkWin() {
+    for (let i = 0; i < tiles.length - 1; i++) {
+      if (tiles[i].textContent !== String(i + 1)) {
+        return false;
+      }
+    }
+    return true;
+  }
+</script>
+<script>
+  // Движение плитки
+  function moveTile(event) {
+    const clickedTile = event.target;
+    const clickedIndex = tiles.indexOf(clickedTile);
+    if (
+      (clickedIndex === emptyTileIndex - 1 && clickedIndex % 4 !== 3) ||
+      (clickedIndex === emptyTileIndex + 1 && clickedIndex % 4 !== 0) ||
+      clickedIndex === emptyTileIndex - 4 ||
+      clickedIndex === emptyTileIndex + 4
+    ) {
+      [tiles[clickedIndex].style.order, tiles[emptyTileIndex].style.order] = [
+        tiles[emptyTileIndex].style.order,
+        tiles[clickedIndex].style.order,
+      ];
+      [tiles[clickedIndex], tiles[emptyTileIndex]] = [
+        tiles[emptyTileIndex],
+        tiles[clickedIndex],
+      ];
+      emptyTileIndex = clickedIndex;
+      if (checkWin()) {
+        clearInterval(timerInterval);
+        showWinModal();
+      }
+    }
+  }
+</script>
+
+<script>
+  const gameBoard = document.querySelector(".game-board");
+  const shuffleBtn = document.querySelector(".shuffle-btn");
+  const resetBtn = document.querySelector(".reset-btn");
+  const timerElement = document.querySelector(".timer");
+  const winModal = document.querySelector(".win-modal");
+  const closeModalBtn = document.querySelector(".close-modal");
+  const shuffleBlock = document.getElementById("shuffleBlock");
+  const startBlock = document.getElementById("startBlock");
+  const recordsBlock = document.getElementById("recordsBlock");
+  const statsBlock = document.getElementById("statsBlock");
+  let tiles = [];
+  let emptyTileIndex = 15;
+  let milliseconds = 0;
+  let timerInterval;
+  let gameStarted = false;
+
+  // Инициализация игрового поля
+  function initializeBoard() {
+    for (let i = 0; i < 16; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.textContent = i === 15 ? "" : i + 1;
+      tile.addEventListener("click", moveTile);
+      gameBoard.appendChild(tile);
+      tiles.push(tile);
+    }
+  }
+
+  // Перемешивание плиток
+  function shuffleBoard() {
+    for (let i = tiles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+      tiles[i].style.order = i;
+      tiles[j].style.order = j;
+    }
+
+    // Найдите новое положение пустой плитки
+    emptyTileIndex = tiles.findIndex((tile) => tile.textContent === "");
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+  }
+
+  // Сброс игры
+  function resetBoard() {
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i].style.order = i;
+      tiles[i].classList.remove("correct"); // Удаляем класс "correct"
+      tiles[i].textContent = i === 15 ? "" : i + 1;
+      if (i === 15) {
+        tiles[i].classList.add("empty"); // Добавляем класс "empty" для пустой плитки
+      } else {
+        tiles[i].classList.remove("empty"); // Удаляем класс "empty" для плиток с цифрами
+      }
+    }
+    emptyTileIndex = 15;
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+    hideWinModal();
+  }
+
+  // Обновление таймера
+  function updateTimer() {
+    milliseconds += 10;
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timerElement.textContent = `${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+  }
+
+  // Показать модальное окно победы
+  function showWinModal() {
+    const timeElement = winModal.querySelector(".time");
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timeElement.textContent = `Время: ${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+    winModal.style.display = "block";
+  }
+
+  // Скрыть модальное окно победы
+  function hideWinModal() {
+    winModal.style.display = "none";
+  }
+
+  // Инициализация игры
+  initializeBoard();
+  shuffleBoard();
+  // Обработчики событий
+  shuffleBtn.addEventListener("click", shuffleBoard);
+  resetBtn.addEventListener("click", resetBoard);
+  closeModalBtn.addEventListener("click", hideWinModal);
+
+  // Запуск таймера при первом щелчке по плитке после перетасовки
+  gameBoard.addEventListener("click", function (event) {
+    if (!gameStarted) {
+      gameStarted = true;
+      milliseconds = 0;
+      timerElement.textContent = "00:00:0";
+      timerInterval = setInterval(updateTimer, 10);
+    }
+  });
+
+  // Прослушиватели событий для блоков заголовков
+  shuffleBlock.addEventListener("click", shuffleBoard);
+  startBlock.addEventListener("click", resetBoard);
+  recordsBlock.addEventListener("click", () => {
+    alert("Скоро тут будут рекорды!"); // Заполнитель для будущей функциональности
+  });
+  statsBlock.addEventListener("click", () => {
+    alert("Скоро тут будет статистика!"); // Заполнитель для будущей функциональности
+  });
+</script>
+<script>
+  const themeSwitch = document.getElementById("theme-switch");
+  const body = document.body;
+  const header = document.querySelector(".header");
+  const headerBlocks = document.querySelectorAll(".header-block");
+  const timer = document.querySelector(".timer");
+  const winModalH2 = document.querySelector(".win-modal h2");
+  const winModalTime = document.querySelector(".win-modal .time");
+
+  // Загружаем текущую тему из локального хранилища
+  const currentTheme = localStorage.getItem("theme");
+  if (currentTheme === "dark") {
+    body.classList.add("dark-mode");
+    gameBoard.classList.add("dark-mode");
+    header.classList.add("dark-mode");
+    headerBlocks.forEach((block) => block.classList.add("dark-mode"));
+    timer.classList.add("dark-mode");
+    winModal.classList.add("dark-mode");
+    winModalH2.classList.add("dark-mode");
+    winModalTime.classList.add("dark-mode");
+    themeSwitch.checked = true;
+  }
+
+  // Обработчик события изменения темы
+  themeSwitch.addEventListener("change", () => {
+    if (themeSwitch.checked) {
+      body.classList.add("dark-mode");
+      gameBoard.classList.add("dark-mode");
+      header.classList.add("dark-mode");
+      headerBlocks.forEach((block) => block.classList.add("dark-mode"));
+      timer.classList.add("dark-mode");
+      winModal.classList.add("dark-mode");
+      winModalH2.classList.add("dark-mode");
+      winModalTime.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
+    } else {
+      body.classList.remove("dark-mode");
+      gameBoard.classList.remove("dark-mode");
+      header.classList.remove("dark-mode");
+      headerBlocks.forEach((block) => block.classList.remove("dark-mode"));
+      timer.classList.remove("dark-mode");
+      winModal.classList.remove("dark-mode");
+      winModalH2.classList.remove("dark-mode");
+      winModalTime.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    }
+  });
+</script>

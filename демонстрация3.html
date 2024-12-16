@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>15</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .control-buttons {
+        position: fixed; /* Fixed positioning */
+        top: 10px;
+        left: 10px;
+        z-index: 1000; /* Ensure it's on top */
+        background-color: rgb(255, 255, 255); /* Semi-transparent background */
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 2%;
+        left: 80%;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="control-buttons">
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация3.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация2.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация1.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS & JS
+      </div>
+    </div>
+
+    <div class="game-container">
+      <div class="header">
+        <div class="header-block" id="shuffleBlock">
+          <button class="shuffle-btn">НОВАЯ</button>
+        </div>
+        <div class="header-block" id="startBlock">
+          <button class="reset-btn">СТАРТ</button>
+        </div>
+        <div class="header-block" id="recordsBlock">
+          <div><button>РЕКОРДЫ</button></div>
+        </div>
+        <div class="header-block" id="statsBlock">
+          <div><button>СТАТ</button></div>
+        </div>
+      </div>
+      <div class="game-board"></div>
+      <div class="timer">00:00:0</div>
+      <div>
+        <input type="checkbox" id="theme-switch" style="display: none" /><label
+          for="theme-switch"
+          >Toggle</label
+        >
+      </div>
+    </div>
+
+    <div class="win-modal">
+      <h2>Поздравляю! Вы победили!</h2>
+      <div class="time"></div>
+      <button class="close-modal">Закрыть</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  // Проверка победы
+  function checkWin() {
+    for (let i = 0; i < tiles.length - 1; i++) {
+      if (tiles[i].textContent !== String(i + 1)) {
+        return false;
+      }
+    }
+    return true;
+  }
+</script>
+<script>
+  // Движение плитки
+  function moveTile(event) {
+    const clickedTile = event.target;
+    const clickedIndex = tiles.indexOf(clickedTile);
+    if (
+      (clickedIndex === emptyTileIndex - 1 && clickedIndex % 4 !== 3) ||
+      (clickedIndex === emptyTileIndex + 1 && clickedIndex % 4 !== 0) ||
+      clickedIndex === emptyTileIndex - 4 ||
+      clickedIndex === emptyTileIndex + 4
+    ) {
+      [tiles[clickedIndex].style.order, tiles[emptyTileIndex].style.order] = [
+        tiles[emptyTileIndex].style.order,
+        tiles[clickedIndex].style.order,
+      ];
+      [tiles[clickedIndex], tiles[emptyTileIndex]] = [
+        tiles[emptyTileIndex],
+        tiles[clickedIndex],
+      ];
+      emptyTileIndex = clickedIndex;
+      if (checkWin()) {
+        clearInterval(timerInterval);
+        showWinModal();
+      }
+    }
+  }
+</script>
+
+<script>
+  const gameBoard = document.querySelector(".game-board");
+  const shuffleBtn = document.querySelector(".shuffle-btn");
+  const resetBtn = document.querySelector(".reset-btn");
+  const timerElement = document.querySelector(".timer");
+  const winModal = document.querySelector(".win-modal");
+  const closeModalBtn = document.querySelector(".close-modal");
+  const shuffleBlock = document.getElementById("shuffleBlock");
+  const startBlock = document.getElementById("startBlock");
+  const recordsBlock = document.getElementById("recordsBlock");
+  const statsBlock = document.getElementById("statsBlock");
+  let tiles = [];
+  let emptyTileIndex = 15;
+  let milliseconds = 0;
+  let timerInterval;
+  let gameStarted = false;
+
+  // Инициализация игрового поля
+  function initializeBoard() {
+    for (let i = 0; i < 16; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.textContent = i === 15 ? "" : i + 1;
+      tile.addEventListener("click", moveTile);
+      gameBoard.appendChild(tile);
+      tiles.push(tile);
+    }
+  }
+
+  // Перемешивание плиток
+  function shuffleBoard() {
+    for (let i = tiles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+      tiles[i].style.order = i;
+      tiles[j].style.order = j;
+    }
+
+    // Найдите новое положение пустой плитки
+    emptyTileIndex = tiles.findIndex((tile) => tile.textContent === "");
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+  }
+
+  // Сброс игры
+  function resetBoard() {
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i].style.order = i;
+      tiles[i].classList.remove("correct"); // Удаляем класс "correct"
+      tiles[i].textContent = i === 15 ? "" : i + 1;
+      if (i === 15) {
+        tiles[i].classList.add("empty"); // Добавляем класс "empty" для пустой плитки
+      } else {
+        tiles[i].classList.remove("empty"); // Удаляем класс "empty" для плиток с цифрами
+      }
+    }
+    emptyTileIndex = 15;
+    milliseconds = 0;
+    timerElement.textContent = "00:00:0";
+    clearInterval(timerInterval);
+    gameStarted = false;
+    hideWinModal();
+  }
+
+  // Обновление таймера
+  function updateTimer() {
+    milliseconds += 10;
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timerElement.textContent = `${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+  }
+
+  // Показать модальное окно победы
+  function showWinModal() {
+    const timeElement = winModal.querySelector(".time");
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const remainingMilliseconds = Math.floor((milliseconds % 1000) / 100);
+    timeElement.textContent = `Время: ${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}:${remainingMilliseconds.toString().padStart(1, "0")}`;
+    winModal.style.display = "block";
+  }
+
+  // Скрыть модальное окно победы
+  function hideWinModal() {
+    winModal.style.display = "none";
+  }
+
+  // Инициализация игры
+  initializeBoard();
+  shuffleBoard();
+  // Обработчики событий
+  shuffleBtn.addEventListener("click", shuffleBoard);
+  resetBtn.addEventListener("click", resetBoard);
+  closeModalBtn.addEventListener("click", hideWinModal);
+
+  // Запуск таймера при первом щелчке по плитке после перетасовки
+  gameBoard.addEventListener("click", function (event) {
+    if (!gameStarted) {
+      gameStarted = true;
+      milliseconds = 0;
+      timerElement.textContent = "00:00:0";
+      timerInterval = setInterval(updateTimer, 10);
+    }
+  });
+
+  // Прослушиватели событий для блоков заголовков
+  shuffleBlock.addEventListener("click", shuffleBoard);
+  startBlock.addEventListener("click", resetBoard);
+  recordsBlock.addEventListener("click", () => {
+    alert("Скоро тут будут рекорды!"); // Заполнитель для будущей функциональности
+  });
+  statsBlock.addEventListener("click", () => {
+    alert("Скоро тут будет статистика!"); // Заполнитель для будущей функциональности
+  });
+</script>
+<script>
+  const themeSwitch = document.getElementById("theme-switch");
+  const body = document.body;
+  const header = document.querySelector(".header");
+  const headerBlocks = document.querySelectorAll(".header-block");
+  const timer = document.querySelector(".timer");
+  const winModalH2 = document.querySelector(".win-modal h2");
+  const winModalTime = document.querySelector(".win-modal .time");
+
+  // Загружаем текущую тему из локального хранилища
+  const currentTheme = localStorage.getItem("theme");
+  if (currentTheme === "dark") {
+    body.classList.add("dark-mode");
+    gameBoard.classList.add("dark-mode");
+    header.classList.add("dark-mode");
+    headerBlocks.forEach((block) => block.classList.add("dark-mode"));
+    timer.classList.add("dark-mode");
+    winModal.classList.add("dark-mode");
+    winModalH2.classList.add("dark-mode");
+    winModalTime.classList.add("dark-mode");
+    themeSwitch.checked = true;
+  }
+
+  // Обработчик события изменения темы
+  themeSwitch.addEventListener("change", () => {
+    if (themeSwitch.checked) {
+      body.classList.add("dark-mode");
+      gameBoard.classList.add("dark-mode");
+      header.classList.add("dark-mode");
+      headerBlocks.forEach((block) => block.classList.add("dark-mode"));
+      timer.classList.add("dark-mode");
+      winModal.classList.add("dark-mode");
+      winModalH2.classList.add("dark-mode");
+      winModalTime.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
+    } else {
+      body.classList.remove("dark-mode");
+      gameBoard.classList.remove("dark-mode");
+      header.classList.remove("dark-mode");
+      headerBlocks.forEach((block) => block.classList.remove("dark-mode"));
+      timer.classList.remove("dark-mode");
+      winModal.classList.remove("dark-mode");
+      winModalH2.classList.remove("dark-mode");
+      winModalTime.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    }
+  });
+</script>

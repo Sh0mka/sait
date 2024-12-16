@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>15</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        position: relative;
+        margin: 0px;
+      }
+
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 90%;
+      }
+      .game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 96px);
+        grid-template-rows: repeat(4, 96px);
+        gap: 5px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: #00000000;
+      }
+      .game-board .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border-radius: 5%;
+      }
+      .game-board .tile:hover {
+        background-color: #e0e0e0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: #fff;
+        padding: 0px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+      }
+      .header-block {
+        align-items: center;
+        gap: 10px;
+        flex: 1; /* Equal width for each block */
+        cursor: pointer; /* Make the blocks clickable */
+        padding: 10px; /* Add padding to the blocks */
+        border-radius: 5px; /* Add rounded corners to the blocks */
+        background-color: #f5f5f500; /* Add a background color to the blocks */
+        transition: background-color 0.3s; /* Add a hover effect */
+        text-align: center;
+        margin-bottom: 0px;
+        padding: 3px;
+      }
+      .header-block:hover {
+        background-color: #e0e0e0; /* Change background color on hover */
+      }
+      .header button {
+        padding: 8px 15px;
+        background-color: #8bc089;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+      }
+      .header button:hover {
+        background-color: #4562a0;
+      }
+      .timer {
+        margin-left: 0;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+      .win-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 100;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .win-modal h2 {
+        margin-bottom: 10px;
+      }
+      .win-modal .time {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .win-modal button {
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .win-modal button:hover {
+        background-color: #45a049;
+      }
+
+      label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 75px;
+        height: 35px;
+        background: rgb(82, 82, 82);
+        display: block;
+        border-radius: 100px;
+        position: relative;
+        background-color: #45a0499e;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      label:after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 25px;
+        height: 25px;
+        background: #f0f0f0;
+        border-radius: 90px;
+        transition: 0.3s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      input:checked + label {
+        background: #f0f0f0;
+      }
+
+      input:checked + label:after {
+        left: calc(100% - 5px);
+        transform: translateX(-100%);
+        background: rgb(82, 82, 82);
+      }
+
+      label:active:after {
+        width: 35px;
+      }
+      @media (max-width: 880px), (max-height: 604px) {
+        .game-board {
+          font-size: 24px;
+        }
+        .game-board .tile {
+          font-size: 32px;
+        }
+        .win-modal {
+          font-size: 16px;
+        }
+        .win-modal h2 {
+          font-size: 18px;
+        }
+        .controls button {
+          font-size: 14px;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .header-block {
+          margin-bottom: 10px;
+        }
+        .game-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          max-width: 90%; /* Limit container width on smaller screens */
+        }
+        .game-board {
+          display: grid;
+          grid-template-columns: repeat(4, 10vh);
+          grid-template-rows: repeat(4, 10vh);
+          gap: 5px;
+          background-color: #fff;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          background-color: #fff;
+          padding: 5px;
+
+          margin-bottom: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-block {
+          align-items: center;
+          gap: 10px;
+          flex: 1; /* Equal width for each block */
+          cursor: pointer; /* Make the blocks clickable */
+          padding: 1px; /* Add padding to the blocks */
+          border-radius: 5px; /* Add rounded corners to the blocks */
+          background-color: #f5f5f500; /* Add a background color to the blocks */
+          transition: background-color 0.3s; /* Add a hover effect */
+          text-align: center;
+        }
+        .header-block:hover {
+          background-color: #e0e0e0; /* Change background color on hover */
+        }
+        .header button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-weight: bold;
+          background-color: #8bc089;
+        }
+        .header button:hover {
+          background-color: #3db143;
+        }
+        .header-block {
+          margin-bottom: 0px;
+        }
+        .win-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+          display: none;
+          z-index: 100;
+          max-width: 90%;
+          margin: 0 auto;
+          width: 60%;
+        }
+        .win-modal h2 {
+          margin-bottom: 10px;
+        }
+        .win-modal .time {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+        .win-modal button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .win-modal button:hover {
+          background-color: #45a049;
+        }
+        .win-modal.dark-mode button {
+          padding: 8px 15px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .theme-switch {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+        }
+        .theme-switch input {
+          display: none;
+        }
+        .theme-switch label {
+          background-color: #ccc;
+          border-radius: 50%;
+          height: 20px;
+          width: 20px;
+          position: relative;
+          transition: background-color 0.3s;
+        }
+        .theme-switch input:checked + label {
+          background-color: #4caf50;
+        }
+        .theme-switch .slider {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          height: 10px;
+          width: 10px;
+          background-color: #fff;
+          border-radius: 50%;
+          transition: transform 0.3s;
+        }
+        .theme-switch input:checked + label .slider {
+          transform: translateX(10px);
+        }
+      }
+    </style>
+    <style>
+      /* Dark Mode Styles */
+      body.dark-mode {
+        background-color: #535353;
+        color: #ffffff;
+      }
+      .game-board.dark-mode {
+        background-color: #373737;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        -webkit-tap-highlight-color: #ffffff1d;
+      }
+      .game-board .tile.dark-mode {
+        background-color: #44444400;
+        color: #fff;
+      }
+      .header.dark-mode {
+        background-color: #333;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      }
+      .header-block.dark-mode {
+        background-color: #44444400;
+        color: #fff;
+      }
+      .header button.dark-mode {
+        background-color: #57575700;
+      }
+      .timer.dark-mode {
+        color: #fff;
+      }
+      .win-modal.dark-mode {
+        background-color: #333;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .win-modal h2.dark-mode {
+        color: #fff;
+      }
+      .win-modal .time.dark-mode {
+        color: #fff;
+      }
+      .game-board.dark-mode .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #535353;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: solid 0px #eeeeee;
+        border-radius: 5%;
+      }
+      .header.dark-mode button {
+        background-color: #0b0d7800;
+        color: #fff;
+      }
+
+      .game-board .tile.correct {
+        /* Style for a tile in the correct position */
+        background-color: #4caf50; /* Green color */
+        color: #fff;
+      }
+      .game-board.dark-mode .tile.empty {
+        background-color: #373737;
+      }
+      .game-board .tile.empty {
+        /* Style for the empty tile */
+        background-color: #fff;
+      }
+      .body {
+        margin: 0;
+      }
+    </style>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .control-buttons {
+        position: fixed; /* Fixed positioning */
+        top: 10px;
+        left: 10px;
+        z-index: 1000; /* Ensure it's on top */
+        background-color: rgb(255, 255, 255); /* Semi-transparent background */
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 2%;
+        left: 80%;
+        color: #333;
+      }
+
+      .section {
+        margin-top: 50px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: none; /* Initially hidden */
+      }
+
+      .section.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="control-buttons">
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация3.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация2.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='демонстрация1.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS & JS
+      </div>
+    </div>
+
+    <div class="game-container">
+      <div class="header">
+        <div class="header-block" id="shuffleBlock">
+          <button class="shuffle-btn">НОВАЯ</button>
+        </div>
+        <div class="header-block" id="startBlock">
+          <button class="reset-btn">СТАРТ</button>
+        </div>
+        <div class="header-block" id="recordsBlock">
+          <div><button>РЕКОРДЫ</button></div>
+        </div>
+        <div class="header-block" id="statsBlock">
+          <div><button>СТАТ</button></div>
+        </div>
+      </div>
+      <div class="game-board"></div>
+      <div class="timer">00:00:0</div>
+      <div>
+        <input type="checkbox" id="theme-switch" style="display: none" /><label
+          for="theme-switch"
+          >Toggle</label
+        >
+      </div>
+    </div>
+
+    <div class="win-modal">
+      <h2>Поздравляю! Вы победили!</h2>
+      <div class="time"></div>
+      <button class="close-modal">Закрыть</button>
+    </div>
+  </body>
+</html>
