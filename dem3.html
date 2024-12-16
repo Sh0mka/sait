@@ -196,6 +196,20 @@
           color: #f2595c;
           color: white;
         }
+        .control-buttons {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          z-index: 1000;
+          background-color: rgb(255, 255, 255);
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+          position: absolute;
+          top: 2%;
+          left: 80%;
+          color: #333;
+        }
       }
     </style>
     <style>
@@ -408,6 +422,32 @@
     </style>
   </head>
   <body>
+    <div class="control-buttons">
+      <div
+        id="disable-button"
+        onclick="location.href='dem1.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='dem2.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS
+      </div>
+      <div
+        id="disable-button"
+        onclick="location.href='dem3.html'"
+        value="Go to Google"
+        target="_blank"
+      >
+        HTML & CSS & JS
+      </div>
+    </div>
     <div class="main-block">
       <div class="left-block">
         <div class="container">
