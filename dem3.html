@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Трекер Курсов Криптовалют</title>
+
+    <style>
+      @media (min-width: 768px) {
+        .main-block {
+          height: 60vh;
+          border: 0px solid #e5f1fd;
+          float: left;
+          justify-content: space-between;
+        }
+        .left-block {
+          width: 360px;
+          /*height: 60vh;*/
+          border: 0px solid #e5f1fd;
+          float: left;
+          overflow: hidden;
+          position: relative;
+        }
+        .right-block {
+          width: 30vh;
+          height: 420px;
+          border: 0px solid #e5f1fd;
+          float: right;
+          /* overflow: hidden;*/
+          position: relative;
+        }
+        .square {
+          width: calc(25vh - 20px);
+          height: calc(25vh - 20px);
+          margin-bottom: 2.5vh;
+          margin-top: 15px;
+          margin-left: 1vh;
+          background-color: #4c9cfd;
+          background-color: #1a3351;
+          border-radius: 20px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+          padding: 10px; /* Добавляем отступ внутри квадрата */
+        }
+
+        .h2 {
+          margin-top: 7px;
+          margin-bottom: 9px;
+          font-family: "La";
+          font-size: 22px;
+          letter-spacing: 2px;
+          color: #b7c5d6;
+        }
+
+        .info-line {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 27px;
+        }
+
+        .gray {
+          color: #b7c5d6; /* Серый цвет для символа */
+          margin-right: 10px; /* Отступ справа для символа */
+          margin-left: 15px;
+          line-height: 50px;
+        }
+
+        .green-arrow {
+          color: #38af75; /* Зеленая стрелка вверх */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+
+        .red-arrow {
+          color: #f2595c; /* Красная стрелка вниз */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+
+        .square2 {
+          width: 25vh;
+          height: 25vh;
+          /* margin-bottom: 2.5vh; */
+          /* margin-top: 31px; */
+          margin-left: 1vh;
+          background-color: #4c9cfd;
+          border-radius: 20px;
+          position: relative;
+          padding: 10px;
+          width: calc(25vh - 20px);
+          height: calc(25vh - 20px);
+          bottom: 0;
+          position: absolute;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+        }
+        .big-number {
+          padding-top: 50px;
+          font-size: 60px;
+          font-weight: bold;
+          text-align: center;
+          line-height: 40px;
+        }
+
+        .month {
+          text-align: center;
+          margin-top: 20px;
+          font-family: "La";
+          font-size: 25px;
+        }
+        .container {
+          padding: 20px;
+          display: flex;
+          align-items: center;
+          border: 2px solid #e5f1fd;
+          background-color: #e5f1fd;
+          margin: 15px;
+          text-align: center;
+          border-radius: 20px;
+          width: 290px;
+          height: 80px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+        }
+        body {
+          background-color: #127efc;
+          color: white;
+          text-align: center;
+          margin: 0px;
+        }
+
+        .image-block {
+          margin-right: 20px;
+        }
+
+        .text-block {
+          text-align: right;
+          flex-grow: 1; /* Добавляем эту строку */
+          display: flex; /* Добавляем это свойство */
+          align-items: center; /* Центрируем элементы по вертикали */
+          flex-wrap: wrap; /* Добавляем это свойство */
+          flex-direction: column;
+        }
+
+        .big-text {
+          font-size: 34px;
+          font-family: "JELLEE";
+          color: #222222;
+          margin-left: auto; /* Добавляем это свойство */
+        }
+        .info-line1 {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 0px;
+
+          color: #36b97b;
+
+          margin-left: auto;
+        }
+        .small-text {
+          font-size: 18px;
+          color: #36b97b;
+          font-family: "JELLEE";
+          margin-left: auto; /* Добавляем это свойство */
+          display: flex;
+          align-items: center;
+          text-align: center;
+        }
+
+        .symbol {
+          margin-right: 0px; /* Расстояние между символом и текстом */
+        }
+
+        .symbol.dollar {
+          font-size: 34px; /* Размер символа доллара */
+          color: #70787c;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .symbol.arrow {
+          font-size: 18px; /* Размер символа стрелки */
+          margin-right: 1px; /* Расстояние между символом и текстом */
+        }
+        .arrow-icon {
+          width: 18px;
+          height: 18px;
+          margin-right: 5px;
+        }
+        .positive {
+          color: #38af75;
+        }
+        .negative {
+          color: #f2595c;
+        }
+        .positive1 {
+          color: #38af75;
+          color: white;
+        }
+        .negative1 {
+          color: #f2595c;
+          color: white;
+        }
+      }
+    </style>
+    <style>
+      @font-face {
+        font-family: "JELLEE";
+        src: local("JELLEE"), url(Jellee-Roman.otf);
+      }
+      @font-face {
+        font-family: "La";
+        src: local("La"), url(vag-world-bold.ttf);
+      }
+      body {
+        font-family: "JELLEE", sans-serif; /* применяем шрифт к всему документу */
+      }
+    </style>
+    <style>
+      @media (max-width: 768px), (max-height: 604px) {
+        body {
+          background-color: #127efc;
+          color: white;
+          text-align: center;
+          margin: 0px;
+        }
+
+        .image-block {
+          margin-right: 20px;
+        }
+
+        .text-block {
+          text-align: right;
+          flex-grow: 1; /* Добавляем эту строку */
+          display: flex; /* Добавляем это свойство */
+          align-items: center; /* Центрируем элементы по вертикали */
+          flex-wrap: wrap; /* Добавляем это свойство */
+          flex-direction: column;
+        }
+
+        .big-text {
+          font-size: 10vw;
+          font-family: "JELLEE";
+          color: #222222;
+          margin-left: auto; /* Добавляем это свойство */
+        }
+        .info-line1 {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 0px;
+
+          color: #36b97b;
+
+          margin-left: auto;
+        }
+        .small-text {
+          font-size: 6vw;
+          color: #36b97b;
+          font-family: "JELLEE";
+          margin-left: auto; /* Добавляем это свойство */
+          display: flex;
+          align-items: center;
+          text-align: center;
+        }
+
+        .symbol {
+          margin-right: 5px; /* Расстояние между символом и текстом */
+        }
+
+        .symbol.dollar {
+          font-size: 9.5vw; /* Размер символа доллара */
+          color: #70787c;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .symbol.arrow {
+          font-size: 18px; /* Размер символа стрелки */
+          margin-right: 1px; /* Расстояние между символом и текстом */
+        }
+        .main-block {
+          height: 60vh;
+          border: 0px solid #e5f1fd;
+          float: left;
+          justify-content: space-between;
+        }
+        .left-block {
+          width: 90%;
+          /*height: 60vh;*/
+          border: 0px solid #e5f1fd;
+          float: left;
+          overflow: hidden;
+          position: relative;
+          margin: 5%;
+        }
+        .right-block {
+          width: 100%;
+          /*height: 60vh;*/
+          height: 100vh;
+          border: 0px solid #e5f1fd;
+          float: left;
+          overflow: hidden;
+          position: relative;
+        }
+        .square {
+          width: 37vw;
+          height: 37vw;
+          margin-bottom: 2.5vh;
+          margin-top: 15px;
+          margin: 4%;
+          margin-right: 0%;
+          background-color: #4c9cfd;
+          background-color: #1a3351;
+          border-radius: 20px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+          padding: 2.5%; /* Добавляем отступ внутри квадрата */
+          float: left;
+        }
+        .square2 {
+          width: 37vw;
+          height: 37vw;
+          margin-bottom: 2.5vh;
+          margin-top: 15px;
+          margin-left: 0vh;
+          background-color: #4c9cfd;
+          border-radius: 20px;
+          position: relative; /* Добавляем позиционирование для вложенных элементов */
+          float: right;
+          padding: 2.5%;
+          margin: 4%;
+          margin-left: 0%;
+        }
+        .container {
+          padding: 5vw;
+          display: flex;
+          align-items: center;
+          border: 0px solid #e5f1fd;
+          background-color: #e5f1fd;
+          margin: 0%;
+          margin-top: 5%;
+          text-align: center;
+          border-radius: 20px;
+          width: 80vw;
+          height: 15vw;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+        }
+        .h2 {
+          margin-top: 1vw;
+          margin-bottom: 1vw;
+          font-family: "La";
+          font-size: 16px;
+          letter-spacing: 0.3vw;
+          color: #b7c5d6;
+        }
+
+        .info-line {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 18px;
+        }
+
+        .gray {
+          color: #b7c5d6; /* Серый цвет для символа */
+          margin-right: 10px; /* Отступ справа для символа */
+          margin-left: 2vw;
+          line-height: 10vw;
+        }
+
+        .green-arrow {
+          color: #38af75; /* Зеленая стрелка вверх */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+
+        .red-arrow {
+          color: #f2595c; /* Красная стрелка вниз */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+        .big-number {
+          padding-top: 10vw;
+          font-size: 15vw;
+          font-weight: bold;
+          text-align: center;
+          line-height: 10vw;
+        }
+
+        .month {
+          text-align: center;
+          margin-top: 0px;
+          font-family: "La";
+          font-size: 5.5vw;
+          letter-spacing: 1px;
+        }
+        .arrow-icon {
+          width: 18px;
+          height: 18px;
+          margin-right: 5px;
+        }
+        .positive {
+          color: #38af75;
+        }
+        .negative {
+          color: #f2595c;
+        }
+        .positive1 {
+          color: #38af75;
+          color: white;
+        }
+        .negative1 {
+          color: #f2595c;
+          color: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-block">
+      <div class="left-block">
+        <div class="container">
+          <div class="image-block">
+            <img src="bitcoin.png" alt="Your Image" width="65" height="65" />
+          </div>
+          <div class="text-block">
+            <div class="big-text">
+              <span class="symbol dollar">$</span>
+              <span id="bitcoin">...</span>
+            </div>
+            <div class="info-line1">
+              <span>
+                <img
+                  id="bitcoin-arrow"
+                  class="arrow-icon"
+                  style="width: 18px; height: 18px; margin-right: 5px"
+                  src=""
+                  alt=""
+                />
+              </span>
+              <span class="small-text" id="bitcoin-growth">...</span>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="image-block">
+            <img src="ethereum.png" alt="Your Image" width="65" height="65" />
+          </div>
+          <div class="text-block">
+            <div class="big-text">
+              <span class="symbol dollar">$</span>
+              <span id="ethereum">...</span>
+            </div>
+            <div class="info-line1">
+              <span
+                ><img
+                  id="ethereum-arrow"
+                  class="arrow-icon"
+                  style="width: 18px; height: 18px; margin-right: 5px"
+                  src=""
+                  alt=""
+              /></span>
+              <span class="small-text" id="ethereum-growth">...</span>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="image-block">
+            <img src="ton.png" alt="Your Image" width="65" height="65" />
+          </div>
+          <div class="text-block">
+            <div class="big-text">
+              <span class="symbol dollar">$</span>
+              <span id="the-open-network">...</span>
+            </div>
+            <div class="info-line1">
+              <span
+                ><img
+                  id="the-open-network-arrow"
+                  class="arrow-icon"
+                  style="width: 18px; height: 18px; margin-right: 5px"
+                  src=""
+                  alt=""
+              /></span>
+              <span class="small-text" id="the-open-network-growth">...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-block">
+        <!-- ... ваш существующий код для правого блока ... -->
+        <div class="right-block">
+          <div class="square">
+            <div class="h2">КУРС ВАЛЮТ</div>
+            <div class="info-line">
+              <span class="gray">$</span>
+              <span id="usd-value" class="currency-value"></span>
+              <span class="green-arrow"
+                ><img
+                  style="width: 20px; height: 20px"
+                  id="usd-arrow"
+                  class="arrow-icon"
+                  src=""
+                  alt=""
+              /></span>
+            </div>
+            <div class="info-line">
+              <span class="gray">€</span>
+              <span id="eur-value" class="currency-value"></span>
+              <span class="red-arrow"
+                ><img
+                  style="width: 20px; height: 20px"
+                  id="eur-arrow"
+                  class="arrow-icon"
+                  src=""
+                  alt=""
+              /></span>
+            </div>
+          </div>
+          <div class="square2">
+            <div class="big-number" id="current-day">13</div>
+            <div class="month" id="month">ИЮЛЯ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const bitcoinPriceElement = document.getElementById("bitcoin");
+      const ethereumPriceElement = document.getElementById("ethereum");
+      const tonPriceElement = document.getElementById("the-open-network");
+
+      function fetchPrice(crypto, currency) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(
+          "GET",
+          `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=${currency}`
+        );
+        xhr.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+            const data = JSON.parse(this.response);
+            updatePrice(crypto, data[crypto][currency]);
+          } else {
+            console.error(
+              "Ошибка при получении цены:",
+              this.status,
+              this.statusText
+            );
+            updatePrice(crypto, "...");
+          }
+        };
+        xhr.onerror = function () {
+          console.error("Ошибка сети при запросе цены");
+          updatePrice(crypto, "...");
+        };
+        xhr.send();
+      }
+
+      function updatePrice(crypto, price) {
+        switch (crypto) {
+          case "bitcoin":
+            bitcoinPriceElement.textContent = isNaN(price)
+              ? "..."
+              : formatNumber(price);
+            break;
+          case "ethereum":
+            ethereumPriceElement.textContent = isNaN(price)
+              ? "..."
+              : formatNumber(Math.floor(price));
+            break;
+          case "the-open-network":
+            tonPriceElement.textContent = isNaN(price)
+              ? "..."
+              : formatNumber(price);
+            break;
+        }
+      }
+
+      // Функция для форматирования числа с разделителем разрядов
+      function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      }
+
+      // Вызываем функцию обновления при загрузке страницы
+      fetchPrice("bitcoin", "usd");
+      fetchPrice("ethereum", "usd");
+      fetchPrice("the-open-network", "usd");
+
+      // Обновляем цены каждые 60 секунд (1 минута)
+      setInterval(() => {
+        fetchPrice("bitcoin", "usd");
+        fetchPrice("ethereum", "usd");
+        fetchPrice("ethereum", "usd");
+        fetchPrice("the-open-network", "usd");
+      }, 180000);
+
+      const cryptoGrowthElements = {
+        bitcoin: {
+          growth: document.getElementById("bitcoin-growth"),
+          arrow: document.getElementById("bitcoin-arrow"),
+        },
+        ethereum: {
+          growth: document.getElementById("ethereum-growth"),
+          arrow: document.getElementById("ethereum-arrow"),
+        },
+        ["the-open-network"]: {
+          growth: document.getElementById("the-open-network-growth"),
+          arrow: document.getElementById("the-open-network-arrow"),
+        },
+      };
+
+      async function updateCryptoGrowth(crypto) {
+        try {
+          const response = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" +
+              crypto
+          );
+          const data = await response.json();
+          const cryptoData = data[0];
+
+          const previousPrice = cryptoData.high_24h;
+          const currentPrice = cryptoData.current_price;
+
+          const growth = ((currentPrice - previousPrice) / previousPrice) * 100;
+          const growthFormatted = growth.toFixed(2);
+
+          cryptoGrowthElements[
+            crypto
+          ].growth.textContent = `${growthFormatted}%`;
+
+          if (growth >= 0) {
+            cryptoGrowthElements[crypto].growth.classList.add("positive");
+            cryptoGrowthElements[crypto].growth.classList.remove("negative");
+            cryptoGrowthElements[crypto].arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            cryptoGrowthElements[crypto].growth.classList.add("negative");
+            cryptoGrowthElements[crypto].growth.classList.remove("positive");
+            cryptoGrowthElements[crypto].arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+        } catch (error) {
+          console.error("Ошибка получения данных:", error);
+          cryptoGrowthElements[crypto].growth.textContent = "...";
+        }
+      }
+
+      function updateAllCryptoGrowth() {
+        updateCryptoGrowth("bitcoin");
+        updateCryptoGrowth("ethereum");
+        updateCryptoGrowth("the-open-network");
+      }
+
+      // Вызываем функцию обновления при загрузке страницы
+      updateAllCryptoGrowth();
+
+      // Обновляем данные каждые 60 секунд (1 минута)
+      setInterval(updateAllCryptoGrowth, 180000);
+
+      const currencyElements = {
+        usd: {
+          value: document.getElementById("usd-value"),
+          arrow: document.getElementById("usd-arrow"),
+        },
+        eur: {
+          value: document.getElementById("eur-value"),
+          arrow: document.getElementById("eur-arrow"),
+        },
+      };
+
+      const apiKey = "YOUR_API_KEY"; // Замените на ваш API-ключ
+
+      async function updateCurrencyValues() {
+        try {
+          const response = await fetch(
+            `https://api.exchangerate-api.com/v4/latest/RUB?apiKey=${apiKey}`
+          );
+          const data = await response.json();
+
+          // Храним предыдущие значения курсов для сравнения
+          const previousUsdRate =
+            currencyElements.usd.value.textContent ||
+            (1 / data.rates.USD).toFixed(2);
+          const previousEurRate =
+            currencyElements.eur.value.textContent ||
+            (1 / data.rates.EUR).toFixed(2);
+
+          // Обновляем значения курсов
+          currencyElements.usd.value.textContent = `${(
+            1 / data.rates.USD
+          ).toFixed(2)} `;
+          currencyElements.eur.value.textContent = `${(
+            1 / data.rates.EUR
+          ).toFixed(2)} `;
+
+          // Сравниваем значения и обновляем изображения стрелок
+          if (1 / data.rates.USD > parseFloat(previousUsdRate)) {
+            currencyElements.usd.value.classList.add("positive1");
+            currencyElements.usd.value.classList.remove("negative1");
+            currencyElements.usd.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            currencyElements.usd.value.classList.add("negative1");
+            currencyElements.usd.value.classList.remove("positive1");
+            currencyElements.usd.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+
+          if (1 / data.rates.EUR > parseFloat(previousEurRate)) {
+            currencyElements.eur.value.classList.add("positive1");
+            currencyElements.eur.value.classList.remove("negative1");
+            currencyElements.eur.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
+          } else {
+            currencyElements.eur.value.classList.add("negative1");
+            currencyElements.eur.value.classList.remove("positive1");
+            currencyElements.eur.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
+          }
+          // Сохраняем текущие значения курсов как предыдущие
+          previousUsdRate = currencyElements.usd.value.textContent;
+          previousEurRate = currencyElements.eur.value.textContent;
+        } catch (error) {
+          console.error("Ошибка получения данных:", error);
+          // Если ошибка, используем предыдущие значения
+          currencyElements.usd.value.textContent = previousUsdRate || "Ошибка";
+          currencyElements.eur.value.textContent = previousEurRate || "Ошибка";
+        }
+      }
+
+      // Вызываем функцию обновления при загрузке страницы
+      updateCurrencyValues();
+
+      // Обновляем данные каждые 60 секунд (1 минута)
+      setInterval(updateCurrencyValues, 180000);
+    </script>
+    <script>
+      const currentDate = new Date();
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1; // Месяцы начинаются с 0, поэтому прибавляем 1
+      const monthNames = [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+      ];
+
+      document.getElementById("current-day").textContent = day;
+      document.getElementById("month").textContent = monthNames[month - 1];
+    </script>
+  </body>
+</html>
