@@ -700,12 +700,12 @@
         },
       };
 
-      const apiKey = "a3cf49cda669415dd9a1d115"; // Замените на ваш API-ключ
+      const apiKey = "81a8af550da570a252f5047e"; // Замените на ваш API-ключ
 
       async function updateCurrencyValues() {
         try {
           const response = await fetch(
-            `https://v6.exchangerate-api.com/v6/a3cf49cda669415dd9a1d115/latest/USD}`
+            `https://api.exchangerate-api.com/v4/latest/RUB?apiKey=${apiKey}`
           );
           const data = await response.json();
 
