@@ -711,49 +711,46 @@ async function updateCurrencyValues() {
 
     if (data.result === "success") {
       // Получаем курсы валют
-      const usdToRub = data.conversion_rates.RUB; // Курс USD к RUB
-      const eurToRub = data.conversion_rates.EUR; // Курс EUR к RUB
-
-      // Вычисляем обратные значения (сколько рублей стоит 1 USD и 1 EUR)
-      const rubToUsd = (1 / usdToRub).toFixed(2); // 1 USD в RUB
-      const rubToEur = (1 / eurToRub).toFixed(2); // 1 EUR в RUB
+      const usdToRub = data.conversion_rates.RUB; // Курс USD к RUB (сколько рублей стоит 1 доллар)
+      const eurToUsd = data.conversion_rates.EUR; // Курс EUR к USD
+      const eurToRub = usdToRub / eurToUsd; // Курс EUR к RUB (сколько рублей стоит 1 евро)
 
       // Обновляем значения курсов
-      currencyElements.usd.value.textContent = rubToUsd;
-      currencyElements.eur.value.textContent = rubToEur;
+      currencyElements.usd.value.textContent = usdToRub.toFixed(2); // 1 USD в RUB
+      currencyElements.eur.value.textContent = eurToRub.toFixed(2); // 1 EUR в RUB
 
       // Сравниваем значения и обновляем изображения стрелок
-      if (previousUsdRate !== null && rubToUsd > previousUsdRate) {
+      if (previousUsdRate !== null && usdToRub > previousUsdRate) {
         currencyElements.usd.value.classList.add("positive1");
         currencyElements.usd.value.classList.remove("negative1");
         currencyElements.usd.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
-      } else if (previousUsdRate !== null && rubToUsd < previousUsdRate) {
+      } else if (previousUsdRate !== null && usdToRub < previousUsdRate) {
         currencyElements.usd.value.classList.add("negative1");
         currencyElements.usd.value.classList.remove("positive1");
         currencyElements.usd.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
       }
 
-      if (previousEurRate !== null && rubToEur > previousEurRate) {
+      if (previousEurRate !== null && eurToRub > previousEurRate) {
         currencyElements.eur.value.classList.add("positive1");
         currencyElements.eur.value.classList.remove("negative1");
         currencyElements.eur.arrow.src = "стрелка вверх.png"; // Замените на путь к вашей картинке
-      } else if (previousEurRate !== null && rubToEur < previousEurRate) {
+      } else if (previousEurRate !== null && eurToRub < previousEurRate) {
         currencyElements.eur.value.classList.add("negative1");
         currencyElements.eur.value.classList.remove("positive1");
         currencyElements.eur.arrow.src = "стрелка вниз.png"; // Замените на путь к вашей картинке
       }
 
       // Сохраняем текущие значения курсов как предыдущие
-      previousUsdRate = rubToUsd;
-      previousEurRate = rubToEur;
+      previousUsdRate = usdToRub;
+      previousEurRate = eurToRub;
     } else {
       console.error("Ошибка получения данных:", data);
     }
   } catch (error) {
     console.error("Ошибка получения данных:", error);
     // Если ошибка, используем предыдущие значения
-    currencyElements.usd.value.textContent = previousUsdRate !== null ? previousUsdRate : "Ошибка";
-    currencyElements.eur.value.textContent = previousEurRate !== null ? previousEurRate : "Ошибка";
+    currencyElements.usd.value.textContent = previousUsdRate !== null ? previousUsdRate.toFixed(2) : "Ошибка";
+    currencyElements.eur.value.textContent = previousEurRate !== null ? previousEurRate.toFixed(2) : "Ошибка";
   }
 }
 
