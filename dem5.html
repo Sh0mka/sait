@@ -6,7 +6,6 @@
     <title>Трекер Курсов Криптовалют</title>
 
     <style>
-      /* Ваши стили */
       @media (min-width: 500px) {
         .main-block {
           height: 60vh;
@@ -16,6 +15,7 @@
         }
         .left-block {
           width: 360px;
+          /*height: 60vh;*/
           border: 0px solid #e5f1fd;
           float: left;
           overflow: hidden;
@@ -26,6 +26,7 @@
           height: 420px;
           border: 0px solid #e5f1fd;
           float: right;
+          /* overflow: hidden;*/
           position: relative;
         }
         .square {
@@ -34,11 +35,13 @@
           margin-bottom: 2.5vh;
           margin-top: 15px;
           margin-left: 1vh;
+          background-color: #4c9cfd;
           background-color: #1a3351;
           border-radius: 20px;
           box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
-          padding: 10px;
+          padding: 10px; /* Добавляем отступ внутри квадрата */
         }
+
         .h2 {
           margin-top: 7px;
           margin-bottom: 9px;
@@ -47,35 +50,45 @@
           letter-spacing: 2px;
           color: #b7c5d6;
         }
+
         .info-line {
-          display: flex;
-          align-items: center;
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
           font-size: 27px;
         }
+
         .gray {
-          color: #b7c5d6;
-          margin-right: 10px;
+          color: #b7c5d6; /* Серый цвет для символа */
+          margin-right: 10px; /* Отступ справа для символа */
           margin-left: 15px;
           line-height: 50px;
         }
+
         .green-arrow {
-          color: #38af75;
-          margin-left: auto;
+          color: #38af75; /* Зеленая стрелка вверх */
+          margin-left: auto; /* Помещаем стрелку вправо */
         }
+
         .red-arrow {
-          color: #f2595c;
-          margin-left: auto;
+          color: #f2595c; /* Красная стрелка вниз */
+          margin-left: auto; /* Помещаем стрелку вправо */
         }
+
         .square2 {
-          width: calc(25vh - 20px);
-          height: calc(25vh - 20px);
+          width: 25vh;
+          height: 25vh;
+          /* margin-bottom: 2.5vh; */
+          /* margin-top: 31px; */
           margin-left: 1vh;
           background-color: #4c9cfd;
           border-radius: 20px;
-          position: absolute;
-          bottom: 0;
-          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+          position: relative;
           padding: 10px;
+          width: calc(25vh - 20px);
+          height: calc(25vh - 20px);
+          bottom: 0;
+          position: absolute;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
         }
         .big-number {
           padding-top: 50px;
@@ -84,6 +97,7 @@
           text-align: center;
           line-height: 40px;
         }
+
         .month {
           text-align: center;
           margin-top: 20px;
@@ -109,51 +123,59 @@
           text-align: center;
           margin: 0px;
         }
+
         .image-block {
           margin-right: 20px;
         }
+
         .text-block {
           text-align: right;
-          flex-grow: 1;
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
+          flex-grow: 1; /* Добавляем эту строку */
+          display: flex; /* Добавляем это свойство */
+          align-items: center; /* Центрируем элементы по вертикали */
+          flex-wrap: wrap; /* Добавляем это свойство */
           flex-direction: column;
         }
+
         .big-text {
           font-size: 34px;
           font-family: "JELLEE";
           color: #222222;
-          margin-left: auto;
+          margin-left: auto; /* Добавляем это свойство */
         }
         .info-line1 {
-          display: flex;
-          align-items: center;
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
           font-size: 0px;
+
           color: #36b97b;
+
           margin-left: auto;
         }
         .small-text {
           font-size: 18px;
           color: #36b97b;
           font-family: "JELLEE";
-          margin-left: auto;
+          margin-left: auto; /* Добавляем это свойство */
           display: flex;
           align-items: center;
           text-align: center;
         }
+
         .symbol {
-          margin-right: 0px;
+          margin-right: 0px; /* Расстояние между символом и текстом */
         }
+
         .symbol.dollar {
-          font-size: 34px;
+          font-size: 34px; /* Размер символа доллара */
           color: #70787c;
           justify-content: center;
           align-items: center;
         }
+
         .symbol.arrow {
-          font-size: 18px;
-          margin-right: 1px;
+          font-size: 18px; /* Размер символа стрелки */
+          margin-right: 1px; /* Расстояние между символом и текстом */
         }
         .arrow-icon {
           width: 18px;
@@ -167,9 +189,11 @@
           color: #f2595c;
         }
         .positive1 {
+          color: #38af75;
           color: white;
         }
         .negative1 {
+          color: #f2595c;
           color: white;
         }
         .control-buttons {
@@ -187,9 +211,6 @@
           color: #333;
         }
       }
-      @media (max-width: 500px) {
-        /* Ваши стили для мобильных устройств */
-      }
     </style>
     <style>
       @font-face {
@@ -201,7 +222,205 @@
         src: local("La"), url(vag-world-bold.ttf);
       }
       body {
-        font-family: "JELLEE", sans-serif;
+        font-family: "JELLEE", sans-serif; /* применяем шрифт к всему документу */
+      }
+    </style>
+    <style>
+      @media (max-width: 500px) {
+        body {
+          background-color: #127efc;
+          color: white;
+          text-align: center;
+          margin: 0px;
+        }
+
+        .image-block {
+          margin-right: 20px;
+        }
+
+        .text-block {
+          text-align: right;
+          flex-grow: 1; /* Добавляем эту строку */
+          display: flex; /* Добавляем это свойство */
+          align-items: center; /* Центрируем элементы по вертикали */
+          flex-wrap: wrap; /* Добавляем это свойство */
+          flex-direction: column;
+        }
+
+        .big-text {
+          font-size: 10vw;
+          font-family: "JELLEE";
+          color: #222222;
+          margin-left: auto; /* Добавляем это свойство */
+        }
+        .info-line1 {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 0px;
+
+          color: #36b97b;
+
+          margin-left: auto;
+        }
+        .small-text {
+          font-size: 6vw;
+          color: #36b97b;
+          font-family: "JELLEE";
+          margin-left: auto; /* Добавляем это свойство */
+          display: flex;
+          align-items: center;
+          text-align: center;
+        }
+
+        .symbol {
+          margin-right: 5px; /* Расстояние между символом и текстом */
+        }
+
+        .symbol.dollar {
+          font-size: 9.5vw; /* Размер символа доллара */
+          color: #70787c;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .symbol.arrow {
+          font-size: 18px; /* Размер символа стрелки */
+          margin-right: 1px; /* Расстояние между символом и текстом */
+        }
+        .main-block {
+          height: 60vh;
+          border: 0px solid #e5f1fd;
+          float: left;
+          justify-content: space-between;
+        }
+        .left-block {
+          width: 90%;
+          /*height: 60vh;*/
+          border: 0px solid #e5f1fd;
+          float: left;
+          overflow: hidden;
+          position: relative;
+          margin: 5%;
+        }
+        .right-block {
+          width: 100%;
+          /*height: 60vh;*/
+          height: 100vh;
+          border: 0px solid #e5f1fd;
+          float: left;
+          overflow: hidden;
+          position: relative;
+        }
+        .square {
+          width: 37vw;
+          height: 37vw;
+          margin-bottom: 2.5vh;
+          margin-top: 15px;
+          margin: 4%;
+          margin-right: 0%;
+          background-color: #4c9cfd;
+          background-color: #1a3351;
+          border-radius: 20px;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+          padding: 2.5%; /* Добавляем отступ внутри квадрата */
+          float: left;
+        }
+        .square2 {
+          width: 37vw;
+          height: 37vw;
+          margin-bottom: 2.5vh;
+          margin-top: 15px;
+          margin-left: 0vh;
+          background-color: #4c9cfd;
+          border-radius: 20px;
+          position: relative; /* Добавляем позиционирование для вложенных элементов */
+          float: right;
+          padding: 2.5%;
+          margin: 4%;
+          margin-left: 0%;
+        }
+        .container {
+          padding: 5vw;
+          display: flex;
+          align-items: center;
+          border: 0px solid #e5f1fd;
+          background-color: #e5f1fd;
+          margin: 0%;
+          margin-top: 5%;
+          text-align: center;
+          border-radius: 20px;
+          width: 80vw;
+          height: 15vw;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.027);
+        }
+        .h2 {
+          margin-top: 1vw;
+          margin-bottom: 1vw;
+          font-family: "La";
+          font-size: 16px;
+          letter-spacing: 0.3vw;
+          color: #b7c5d6;
+        }
+
+        .info-line {
+          display: flex; /* Организация строк внутри квадрата с использованием flexbox */
+          align-items: center; /* Выравнивание элементов по вертикали */
+          font-size: 18px;
+        }
+
+        .gray {
+          color: #b7c5d6; /* Серый цвет для символа */
+          margin-right: 10px; /* Отступ справа для символа */
+          margin-left: 2vw;
+          line-height: 10vw;
+        }
+
+        .green-arrow {
+          color: #38af75; /* Зеленая стрелка вверх */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+
+        .red-arrow {
+          color: #f2595c; /* Красная стрелка вниз */
+          margin-left: auto; /* Помещаем стрелку вправо */
+        }
+        .big-number {
+          padding-top: 10vw;
+          font-size: 15vw;
+          font-weight: bold;
+          text-align: center;
+          line-height: 10vw;
+        }
+
+        .month {
+          text-align: center;
+          margin-top: 0px;
+          font-family: "La";
+          font-size: 5.5vw;
+          letter-spacing: 1px;
+        }
+        .arrow-icon {
+          width: 18px;
+          height: 18px;
+          margin-right: 5px;
+        }
+        .positive {
+          color: #38af75;
+        }
+        .negative {
+          color: #f2595c;
+        }
+        .positive1 {
+          color: #38af75;
+          color: white;
+        }
+        .negative1 {
+          color: #f2595c;
+          color: white;
+        }
+        .control-buttons {
+          display: none
+        }
       }
     </style>
   </head>
