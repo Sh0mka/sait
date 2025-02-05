@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мини-игра: Закрась текст</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Основные стили */
+      body {
+        font-family: "Montserrat", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+        color: #ffffff;
+        margin: 0;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 20px;
+        display: none; /* Скрываем по умолчанию */
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 10px;
+        background: #444;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: #4caf50;
+        width: 100%;
+        transition: width 1s linear;
+      }
+
+      .timer {
+        font-size: 1rem;
+        margin-top: 10px;
+        color: #4caf50;
+        display: none; /* Скрываем таймер по умолчанию */
+      }
+
+      .text-container {
+        font-size: 24px; /* Изначальный размер текста */
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 800px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+      }
+
+      .word {
+        display: inline-block; /* Каждое слово оборачиваем в span */
+        white-space: nowrap; /* Запрещаем перенос внутри слова */
+        margin-right: 5px; /* Добавляем небольшой отступ между словами */
+      }
+
+      .letter {
+        padding: 0 2px;
+        transition: color 0.3s ease, border-color 0.3s ease;
+        font-weight: 700;
+        border-bottom: none; /* Изначально отключаем подчеркивание */
+      }
+
+      .correct {
+        color: #4caf50;
+      }
+
+      .incorrect {
+        color: #ff5252;
+      }
+
+      .stats {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .buttons button {
+        width: 50px;
+        height: 50px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .buttons button:hover {
+        background: #45a049;
+        transform: scale(1.1);
+      }
+
+      .timer-buttons {
+        display: none;
+        margin-top: 10px;
+        gap: 5px;
+      }
+
+      .timer-buttons button {
+        width: 50px;
+        height: 50px;
+        background: #444;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .timer-buttons button:hover {
+        background: #555;
+        transform: scale(1.1);
+      }
+
+      /* Стили для финальной панели */
+      .result-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .result-content {
+        background: #2a2a40;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .result-content h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+      }
+
+      /* Контейнер для результатов */
+      .results-container {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Центрируем по горизонтали */
+        gap: 40px; /* Расстояние между диаграммой и показателями */
+        margin-bottom: 20px;
+      }
+
+      /* Стили для кругового графика */
+      .accuracy-chart {
+        width: 150px;
+        height: 150px;
+      }
+
+      .chart {
+        width: 100%;
+        height: 100%;
+      }
+
+      .chart-background {
+        fill: none;
+        stroke: #444;
+        stroke-width: 10;
+      }
+
+      .chart-progress {
+        fill: none;
+        stroke: #4caf50;
+        stroke-width: 10;
+        stroke-dasharray: 283; /* 2 * π * r (45) */
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.5s ease;
+      }
+
+      .chart-text {
+        font-size: 20px;
+        fill: #ffffff;
+        font-weight: bold;
+      }
+
+      /* Стили для показателей скорости и точности */
+      .stats-results {
+        font-size: 1.2rem;
+        text-align: left;
+      }
+
+      .stats-results div {
+        margin-bottom: 10px;
+      }
+
+      /* Стили для визуализации клавиатуры */
+      .keyboard-visualization {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Центрируем клавиатуру */
+        gap: 5px;
+        margin-top: 20px;
+      }
+
+      .keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .key {
+        width: 40px;
+        height: 40px;
+        background: #444;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: white;
+        transition: background 0.3s ease;
+      }
+
+      .key.missed {
+        background: #ff5252;
+      }
+
+      /* Стили для кнопки "Продолжить" */
+      .result-content button {
+        padding: 10px 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        margin-top: 20px; /* Добавляем отступ сверху */
+      }
+
+      .result-content button:hover {
+        background: #45a049;
+        transform: scale(1.05);
+      }
+
+      /* Стили для текста "Приготовьтесь! Поехали!" */
+      .ready-text {
+        color: #4caf50; /* Зеленый цвет */
+        font-size: 1.2rem;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      /* Стили для кнопки настроек */
+      .settings-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .settings-button:hover {
+        background: #45a049;
+        transform: scale(1.1);
+      }
+
+      /* Стили для всплывающего окна настроек */
+      .settings-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .settings-content {
+        background: #2a2a40;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .settings-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+      }
+
+      .settings-content label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+
+      .settings-content input,
+      .settings-content select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        background: #444;
+        color: white;
+      }
+
+      .settings-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .settings-buttons button {
+        padding: 10px 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .settings-buttons button:hover {
+        background: #45a049;
+        transform: scale(1.05);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+    <style>
+      /* Стили для всплывающего окна настроек */
+      .settings-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+        z-index: 1000;
+      }
+
+      .settings-content {
+        background: linear-gradient(145deg, #2a2a40, #1e1e2f);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transform: scale(0.9);
+        opacity: 0;
+        animation: scaleUp 0.3s ease forwards;
+      }
+
+      @keyframes scaleUp {
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .settings-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .settings-content label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: left;
+      }
+
+      .settings-content input,
+      .settings-content select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .settings-content input:focus,
+      .settings-content select:focus {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+        outline: none;
+      }
+
+      .settings-content input[type="color"] {
+        padding: 5px;
+        height: 50px;
+        cursor: pointer;
+      }
+
+      .settings-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .settings-buttons button {
+        padding: 12px 24px;
+        background: linear-gradient(145deg, #4caf50, #45a049);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        flex: 1;
+      }
+
+      .settings-buttons button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+      }
+
+      .settings-buttons button:active {
+        transform: scale(0.95);
+      }
+
+      /* Анимация для закрытия окна */
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .settings-overlay.closing {
+        animation: fadeOut 0.3s ease forwards;
+      }
+
+      .settings-content.closing {
+        animation: scaleDown 0.3s ease forwards;
+      }
+
+      @keyframes scaleDown {
+        from {
+          transform: scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-bar-container" id="progress-bar-container">
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+      <div class="timer" id="timer"></div>
+    </div>
+
+    <div class="text-container" id="text-container">
+      Добро пожаловать на сайт теста скорости печати! Здесь вы можете улучшить
+      свои навыки печати. Начните с выбора режима ниже.
+      <div class="ready-text">Приготовьтесь! Поехали!</div>
+    </div>
+    <div class="stats" id="stats">
+      <div>Скорость (WPM): <span id="wpm">0</span></div>
+      <div>Скорость (CPM): <span id="cpm">0</span></div>
+      <div>Точность: <span id="accuracy">100%</span></div>
+    </div>
+
+    <div class="buttons" id="buttons">
+      <button onclick="startNormalMode()">
+        <i class="fas fa-keyboard"></i>
+      </button>
+      <button onclick="toggleTimerButtons()">
+        <i class="fas fa-stopwatch"></i>
+      </button>
+    </div>
+
+    <div class="timer-buttons" id="timer-buttons">
+      <button onclick="startTimedMode(15)">15</button>
+      <button onclick="startTimedMode(30)">30</button>
+      <button onclick="startTimedMode(45)">45</button>
+      <button onclick="startTimedMode(60)">60</button>
+      <button onclick="startTimedMode(120)">120</button>
+    </div>
+
+    <!-- Финальная панель -->
+    <div class="result-overlay" id="result-overlay">
+      <div class="result-content">
+        <h2>Результаты</h2>
+        <div class="results-container">
+          <!-- Круговой график точности -->
+          <div class="accuracy-chart">
+            <svg viewBox="0 0 100 100" class="chart">
+              <circle cx="50" cy="50" r="45" class="chart-background"></circle>
+              <circle cx="50" cy="50" r="45" class="chart-progress"></circle>
+              <text
+                x="50"
+                y="50"
+                text-anchor="middle"
+                dy=".3em"
+                class="chart-text"
+              >
+                100%
+              </text>
+            </svg>
+          </div>
+          <!-- Показатели скорости и точности -->
+          <div class="stats-results">
+            <div>Скорость (WPM): <span id="result-wpm">0</span></div>
+            <div>Скорость (CPM): <span id="result-cpm">0</span></div>
+            <div>Точность: <span id="result-accuracy">100%</span></div>
+          </div>
+        </div>
+        <!-- Визуализация клавиатуры -->
+        <div class="keyboard-visualization">
+          <div class="keyboard-row">
+            <div class="key" data-key="й">й</div>
+            <div class="key" data-key="ц">ц</div>
+            <div class="key" data-key="у">у</div>
+            <div class="key" data-key="к">к</div>
+            <div class="key" data-key="е">е</div>
+            <div class="key" data-key="н">н</div>
+            <div class="key" data-key="г">г</div>
+            <div class="key" data-key="ш">ш</div>
+            <div class="key" data-key="щ">щ</div>
+            <div class="key" data-key="з">з</div>
+            <div class="key" data-key="х">х</div>
+            <div class="key" data-key="ъ">ъ</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key" data-key="ф">ф</div>
+            <div class="key" data-key="ы">ы</div>
+            <div class="key" data-key="в">в</div>
+            <div class="key" data-key="а">а</div>
+            <div class="key" data-key="п">п</div>
+            <div class="key" data-key="р">р</div>
+            <div class="key" data-key="о">о</div>
+            <div class="key" data-key="л">л</div>
+            <div class="key" data-key="д">д</div>
+            <div class="key" data-key="ж">ж</div>
+            <div class="key" data-key="э">э</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key" data-key="я">я</div>
+            <div class="key" data-key="ч">ч</div>
+            <div class="key" data-key="с">с</div>
+            <div class="key" data-key="м">м</div>
+            <div class="key" data-key="и">и</div>
+            <div class="key" data-key="т">т</div>
+            <div class="key" data-key="ь">ь</div>
+            <div class="key" data-key="б">б</div>
+            <div class="key" data-key="ю">ю</div>
+          </div>
+        </div>
+        <!-- Кнопка "Продолжить" -->
+        <button onclick="continueGame()">Продолжить</button>
+      </div>
+    </div>
+
+    <!-- Кнопка настроек -->
+    <button class="settings-button" onclick="openSettings()">
+      <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- Всплывающее окно настроек -->
+    <div class="settings-overlay" id="settings-overlay">
+      <div class="settings-content" id="settings-content">
+        <h2>Настройки</h2>
+        <label for="font-size">Размер шрифта:</label>
+        <input type="number" id="font-size" min="10" max="30" value="24" />
+        <label for="font-color">Цвет шрифта:</label>
+        <input type="color" id="font-color" value="#ffffff" />
+        <label for="font-family">Шрифт:</label>
+        <select id="font-family">
+          <option value="Montserrat">Montserrat</option>
+          <option value="Roboto">Roboto</option>
+          <option value="Open Sans">Open Sans</option>
+        </select>
+        <label for="underline">Подчеркивание текста:</label>
+        <select id="underline">
+          <option value="none">Отключить</option>
+          <option value="underline">Включить</option>
+        </select>
+        <div class="settings-buttons">
+          <button onclick="closeSettings()">Отмена</button>
+          <button onclick="saveSettings()">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Подключение файла с фактами -->
+    <script src="facts.js"></script>
+
+    <script>
+      let timerInterval;
+      let startTime;
+      let totalCorrect = 0;
+      let totalTyped = 0;
+      const missedKeys = new Set();
+      let isFirstKeyPressed = false; // Отслеживает, был ли введен первый символ
+
+      // Настройки по умолчанию
+      let settings = {
+        fontSize: 24, // Изначальный размер текста
+        fontColor: "#ffffff",
+        fontFamily: "Montserrat",
+        underline: "none", // По умолчанию отключено
+      };
+
+      // Функция для сброса всех значений
+      function resetAllValues() {
+        clearInterval(timerInterval);
+        document.getElementById("progress-bar-container").style.display =
+          "none";
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("text-container").innerHTML = "";
+        document.getElementById("wpm").textContent = 0;
+        document.getElementById("cpm").textContent = 0;
+        document.getElementById("accuracy").textContent = "100%";
+        totalCorrect = 0; // Сбрасываем счетчик правильных символов
+        totalTyped = 0; // Сбрасываем счетчик всех введенных символов
+        missedKeys.clear(); // Очищаем промахи
+        isFirstKeyPressed = false;
+        resetWelcomeMessage(); // Сбрасываем приветственное сообщение
+      }
+
+      // Функция для сброса приветственного сообщения
+      function resetWelcomeMessage() {
+        const initialText =
+          "Добро пожаловать на сайт теста скорости печати! Здесь вы можете улучшить свои навыки печати. Начните с выбора режима ниже.";
+        const readyText = "Приготовьтесь! Поехали!";
+        const textContainer = document.getElementById("text-container");
+        textContainer.innerHTML = `
+    ${initialText}
+    <div class="ready-text">${readyText}</div>
+  `;
+        applySettings(); // Применяем настройки при сбросе
+      }
+
+      // Функция для скрытия кнопок выбора режима
+      function hideButtons() {
+        const buttons = document.getElementById("buttons");
+        buttons.style.display = "none";
+      }
+
+      // Функция для показа кнопок выбора режима
+      function showButtons() {
+        const buttons = document.getElementById("buttons");
+        buttons.style.display = "flex";
+      }
+
+      // Функция для выбора случайных предложений
+      function getRandomSentences(sentences, count) {
+        const shuffled = sentences.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count).join(" ");
+      }
+
+      // Функция для отображения текста на странице
+      function displayText(text) {
+        const textContainer = document.getElementById("text-container");
+        textContainer.innerHTML = "";
+        const words = text.split(" ");
+        words.forEach((word, index) => {
+          const wordSpan = document.createElement("span");
+          wordSpan.classList.add("word");
+          word.split("").forEach((char) => {
+            const letterDiv = document.createElement("span");
+            letterDiv.classList.add("letter");
+            letterDiv.textContent = char === " " ? " " : char;
+            letterDiv.setAttribute("data-letter", char.toLowerCase());
+            wordSpan.appendChild(letterDiv);
+          });
+          textContainer.appendChild(wordSpan);
+          // Добавляем пробел между словами, кроме последнего
+          if (index < words.length - 1) {
+            const spaceDiv = document.createElement("span");
+            spaceDiv.classList.add("letter");
+            spaceDiv.textContent = " ";
+            spaceDiv.setAttribute("data-letter", " ");
+            textContainer.appendChild(spaceDiv);
+          }
+        });
+        applySettings(); // Применяем настройки после генерации текста
+      }
+
+      // Функция для отображения результатов
+      function showResults(wpm, cpm, accuracy) {
+        const resultOverlay = document.getElementById("result-overlay");
+        const resultWpm = document.getElementById("result-wpm");
+        const resultCpm = document.getElementById("result-cpm");
+        const resultAccuracy = document.getElementById("result-accuracy");
+        const chartProgress = document.querySelector(".chart-progress");
+        const chartText = document.querySelector(".chart-text");
+
+        // Обновляем статистику
+        resultWpm.textContent = wpm;
+        resultCpm.textContent = cpm;
+        resultAccuracy.textContent = `${accuracy}%`;
+
+        // Обновляем круговой график
+        const offset = 283 - (accuracy / 100) * 283;
+        chartProgress.style.strokeDashoffset = offset;
+        chartText.textContent = `${accuracy}%`;
+
+        // Подсвечиваем промахнутые клавиши
+        const keys = document.querySelectorAll(".key");
+        keys.forEach((key) => {
+          if (missedKeys.has(key.getAttribute("data-key"))) {
+            key.classList.add("missed");
+          }
+        });
+
+        resultOverlay.style.display = "flex";
+      }
+
+      // Функция для завершения игры
+      function endGame() {
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+        const wpm = Math.round(totalCorrect / 5 / timeElapsed);
+        const cpm = Math.round(totalCorrect / timeElapsed);
+        const accuracy =
+          totalTyped === 0
+            ? 100
+            : Math.round((totalCorrect / totalTyped) * 100);
+
+        showResults(wpm, cpm, accuracy);
+      }
+
+      // Функция для обновления статистики
+      function updateStats() {
+        if (!isFirstKeyPressed) return; // Не обновляем статистику, если игра еще не началась
+
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60; // Время в минутах
+        const wpm = Math.round(totalCorrect / 5 / timeElapsed); // WPM: слова в минуту (1 слово = 5 символов)
+        const cpm = Math.round(totalCorrect / timeElapsed); // CPM: символы в минуту
+        const accuracy =
+          totalTyped === 0
+            ? 100
+            : Math.round((totalCorrect / totalTyped) * 100); // Точность в процентах
+
+        document.getElementById("wpm").textContent = wpm;
+        document.getElementById("cpm").textContent = cpm;
+        document.getElementById("accuracy").textContent = `${accuracy}%`;
+      }
+
+      // Функция для запуска обычного режима
+      function startNormalMode() {
+        hideButtons(); // Скрываем кнопки выбора режима
+        resetAllValues(); // Сбрасываем все значения перед началом игры
+
+        const randomText = getRandomSentences(scientificFacts, 1); // Одно предложение
+        displayText(randomText);
+
+        // Скрываем элементы, связанные с таймером
+        document.getElementById("progress-bar-container").style.display =
+          "none";
+        document.getElementById("timer").style.display = "none";
+
+        // Сбрасываем состояние игры
+        totalCorrect = 0; // Сбрасываем счетчик правильных символов
+        totalTyped = 0; // Сбрасываем счетчик всех введенных символов
+        missedKeys.clear(); // Очищаем промахи
+        isFirstKeyPressed = false; // Сбрасываем флаг первого нажатия
+
+        const letters = document.querySelectorAll(".letter");
+        let currentIndex = 0;
+
+        // Обработка ввода пользователя
+        document.addEventListener("keydown", (event) => {
+          if (currentIndex >= letters.length) return;
+
+          // Игнорируем нажатие Shift
+          if (event.key === "Shift") return;
+
+          // Если это первый ввод, запускаем таймер
+          if (!isFirstKeyPressed) {
+            isFirstKeyPressed = true;
+            startTime = Date.now(); // Запускаем отсчет времени только после первого нажатия
+          }
+
+          const currentLetter = letters[currentIndex];
+          const expectedLetter = currentLetter
+            .getAttribute("data-letter")
+            .toLowerCase();
+          const pressedLetter = event.key.toLowerCase();
+
+          totalTyped++;
+
+          if (pressedLetter === expectedLetter) {
+            currentLetter.classList.remove("incorrect");
+            currentLetter.classList.add("correct");
+            currentIndex++;
+            totalCorrect++;
+          } else {
+            currentLetter.classList.add("incorrect");
+            missedKeys.add(expectedLetter);
+          }
+
+          updateStats();
+
+          // Если текст полностью введен, завершаем игру
+          if (currentIndex >= letters.length) {
+            endGame();
+          }
+        });
+      }
+
+      // Функция для запуска режима на время
+      function startTimedMode(seconds) {
+        hideButtons(); // Скрываем кнопки выбора режима
+        resetAllValues(); // Сбрасываем все значения перед началом игры
+
+        const timerButtons = document.getElementById("timer-buttons");
+
+        // Скрываем кнопки с выбором времени
+        timerButtons.style.display = "none";
+
+        // Очищаем предыдущий таймер, если он был
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
+
+        const randomText = getRandomSentences(scientificFacts, 5); // Большой текст
+        displayText(randomText);
+
+        // Показываем элементы, связанные с таймером
+        document.getElementById("progress-bar-container").style.display =
+          "block";
+        document.getElementById("timer").style.display = "block";
+
+        // Устанавливаем начальное значение таймера
+        document.getElementById("timer").textContent = `${seconds} сек`;
+
+        // Сбрасываем состояние игры
+        totalCorrect = 0; // Сбрасываем счетчик правильных символов
+        totalTyped = 0; // Сбрасываем счетчик всех введенных символов
+        missedKeys.clear(); // Очищаем промахи
+        isFirstKeyPressed = false;
+
+        const letters = document.querySelectorAll(".letter");
+        let currentIndex = 0;
+
+        // Обработка ввода пользователя
+        document.addEventListener("keydown", (event) => {
+          if (currentIndex >= letters.length) return;
+
+          // Игнорируем нажатие Shift
+          if (event.key === "Shift") return;
+
+          // Если это первый ввод, запускаем таймер
+          if (!isFirstKeyPressed) {
+            isFirstKeyPressed = true;
+            startTime = Date.now(); // Запускаем отсчет времени
+            startTimer(seconds); // Запускаем таймер
+          }
+
+          const currentLetter = letters[currentIndex];
+          const expectedLetter = currentLetter
+            .getAttribute("data-letter")
+            .toLowerCase();
+          const pressedLetter = event.key.toLowerCase();
+
+          totalTyped++;
+
+          if (pressedLetter === expectedLetter) {
+            currentLetter.classList.remove("incorrect");
+            currentLetter.classList.add("correct");
+            currentIndex++;
+            totalCorrect++;
+          } else {
+            currentLetter.classList.add("incorrect");
+            missedKeys.add(expectedLetter);
+          }
+
+          updateStats();
+        });
+      }
+
+      // Функция для запуска таймера
+      function startTimer(seconds) {
+        let timeLeft = seconds;
+        const progressBarFill = document.getElementById("progress-bar-fill");
+        progressBarFill.style.width = "100%";
+
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById("timer").textContent = `${timeLeft} сек`;
+          progressBarFill.style.width = `${(timeLeft / seconds) * 100}%`;
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endGame();
+          }
+        }, 1000);
+      }
+      // Функция для продолжения игры
+      function continueGame() {
+        const resultOverlay = document.getElementById("result-overlay");
+        resultOverlay.style.display = "none";
+
+        // Сбрасываем подсветку клавиш
+        const keys = document.querySelectorAll(".key");
+        keys.forEach((key) => key.classList.remove("missed"));
+
+        resetAllValues(); // Сбрасываем игру для начала новой
+        resetWelcomeMessage(); // Сбрасываем приветственное сообщение
+
+        // Показываем кнопки выбора режима
+        showButtons();
+      }
+
+      // Функция для переключения отображения кнопок таймера
+      function toggleTimerButtons() {
+        const timerButtons = document.getElementById("timer-buttons");
+        timerButtons.style.display =
+          timerButtons.style.display === "flex" ? "none" : "flex";
+      }
+
+      // Отключаем активацию кнопок пробелом
+      document.addEventListener("keydown", (event) => {
+        if (event.key === " " && event.target.tagName === "BUTTON") {
+          event.preventDefault(); // Отменяем действие пробела
+        }
+      });
+
+      // Функция для открытия настроек
+      function openSettings() {
+        const settingsOverlay = document.getElementById("settings-overlay");
+        settingsOverlay.style.display = "flex";
+
+        // Устанавливаем текущие значения в настройках
+        document.getElementById("font-size").value = settings.fontSize;
+        document.getElementById("font-color").value = settings.fontColor;
+        document.getElementById("font-family").value = settings.fontFamily;
+        document.getElementById("underline").value = settings.underline;
+      }
+
+      // Функция для закрытия настроек
+      function closeSettings() {
+        const settingsOverlay = document.getElementById("settings-overlay");
+        settingsOverlay.style.display = "none";
+      }
+
+      // Функция для сохранения настроек
+      function saveSettings() {
+        settings.fontSize = document.getElementById("font-size").value;
+        settings.fontColor = document.getElementById("font-color").value;
+        settings.fontFamily = document.getElementById("font-family").value;
+        settings.underline = document.getElementById("underline").value;
+
+        applySettings(); // Применяем настройки
+        closeSettings(); // Закрываем окно настроек
+      }
+
+      // Функция для применения настроек
+      function applySettings() {
+        const textContainer = document.getElementById("text-container");
+        textContainer.style.fontSize = `${settings.fontSize}px`;
+        textContainer.style.color = settings.fontColor;
+        textContainer.style.fontFamily = settings.fontFamily;
+
+        const letters = document.querySelectorAll(".letter");
+        letters.forEach((letter) => {
+          letter.style.borderBottom =
+            settings.underline === "underline" ? "2px solid #ffffff" : "none";
+        });
+      }
+
+      // Инициализация начального текста
+      resetWelcomeMessage();
+    </script>
+  </body>
+</html>
