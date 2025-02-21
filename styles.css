@@ -1110,3 +1110,16 @@ body {
   background: #45a049;
   transform: scale(1.05);
 }
+.sidebar:hover .menu-item span {
+  opacity: 1;
+  font-size: 1rem;
+  font-family: var(--font-primary);
+}
+.menu-item span {
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.2sease;
+  font-size: 1rem;
+  font-family: var(--font-primary);
+}
+
