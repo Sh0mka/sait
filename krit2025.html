@@ -1,0 +1,2814 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FingerFlow</title>
+    <link rel="icon" href="favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Основные стили */
+      body {
+        font-family: "Montserrat", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+        color: #ffffff;
+        margin: 0;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 60px;
+        display: none; /* Скрываем по умолчанию */
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 10px;
+        background: #444;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: -240px;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: #4caf50;
+        width: 100%;
+        transition: width 1s linear;
+      }
+
+      .timer {
+        font-size: 1rem;
+        margin-top: 10px;
+        color: #4caf50;
+        display: none; /* Скрываем таймер по умолчанию */
+      }
+
+      .text-container {
+        font-size: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 800px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.1);
+
+        border-radius: 15px;
+
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+        margin-top: -120px;
+        max-height: calc(1.25 * 24px * 5);
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        position: relative;
+        /* Скрываем полосу прокрутки */
+        scrollbar-width: none; /* Для Firefox */
+        -ms-overflow-style: none; /* Для IE и Edge */
+        pointer-events: none;
+
+        /* line-height: 1.5; */
+        padding: 0px;
+        /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+        border: 20px solid #39384800;
+        border-top: 20px solid #39384800;
+      }
+
+      .text-container.timer-mode {
+        margin-top: -240px;
+        /* border: 1px solid #ccc; */
+        font-size: 16px;
+        /* line-height: 1.5; */
+        height: calc(1.25 * 24px * 5);
+        /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+        border: 10px solid #39384800;
+        border-top: 10px solid #39384800;
+        margin-top: -240px;
+      }
+
+      /* Скрываем полосу прокрутки для Chrome, Safari и Opera */
+      .text-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Добавляем стили для активного текста */
+      .text-container.active-scroll {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
+
+      /* Стили для контейнера с текстом */
+      .text-wrapper {
+        position: relative;
+        width: 100%;
+        min-height: 100%;
+      }
+
+      /* Стили для активного слова */
+      .active-word {
+        background-color: rgba(76, 175, 80, 0.2);
+        border-radius: 3px;
+      }
+
+      /* Стили для текущей буквы */
+      .current-letter {
+        background-color: rgba(76, 175, 80, 0.4);
+        border-radius: 3px;
+      }
+
+      .word {
+        display: inline-block; /* Каждое слово оборачиваем в span */
+        white-space: nowrap; /* Запрещаем перенос внутри слова */
+        margin-right: 5px; /* Добавляем небольшой отступ между словами */
+      }
+
+      .letter {
+        padding: 0 2px;
+        transition: color 0.3s ease, border-color 0.3s ease;
+        font-weight: 700;
+        border-bottom: none; /* Изначально отключаем подчеркивание */
+      }
+
+      .correct {
+        color: #4caf50;
+      }
+
+      .incorrect {
+        color: #ff5252;
+      }
+
+      .stats {
+        display: none; /* Скрываем блок по умолчанию */
+        margin-top: 10px;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .stats-active {
+        display: flex; /* Отображаем элементы в одну строку */
+        justify-content: space-between; /* Равномерно распределяем элементы */
+        align-items: center; /* Выравниваем элементы по центру по вертикали */
+        gap: 20px; /* Добавляем отступы между показателями */
+      }
+
+      .buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .buttons button {
+        width: 50px;
+        height: 50px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .buttons button:hover {
+        background: #45a049;
+        transform: scale(1.1);
+      }
+
+      .timer-buttons {
+        display: none;
+        margin-top: 10px;
+        gap: 5px;
+      }
+
+      .timer-buttons button {
+        width: 50px;
+        height: 50px;
+        background: #444;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .timer-buttons button:hover {
+        background: #555;
+        transform: scale(1.1);
+      }
+
+      /* Стили для финальной панели */
+      .result-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+        z-index: 2;
+      }
+
+      .result-content {
+        background: #2a2a40;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .result-content h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+      }
+
+      /* Контейнер для результатов */
+      .results-container {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Центрируем по горизонтали */
+        gap: 40px; /* Расстояние между диаграммой и показателями */
+        margin-bottom: 20px;
+      }
+
+      /* Стили для кругового графика */
+      .accuracy-chart {
+        width: 150px;
+        height: 150px;
+      }
+
+      .chart {
+        width: 100%;
+        height: 100%;
+      }
+
+      .chart-background {
+        fill: none;
+        stroke: #444;
+        stroke-width: 10;
+      }
+
+      .chart-progress {
+        fill: none;
+        stroke: #4caf50;
+        stroke-width: 10;
+        stroke-dasharray: 283; /* 2 * π * r (45) */
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.5s ease;
+      }
+
+      .chart-text {
+        font-size: 20px;
+        fill: #ffffff;
+        font-weight: bold;
+      }
+
+      /* Стили для показателей скорости и точности */
+      .stats-results {
+        font-size: 1.2rem;
+        text-align: left;
+      }
+
+      .stats-results div {
+        margin-bottom: 10px;
+      }
+
+      /* Стили для визуализации клавиатуры */
+      .keyboard-visualization {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Центрируем клавиатуру */
+        gap: 5px;
+        margin-top: 20px;
+      }
+
+      .keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .key {
+        width: 40px;
+        height: 40px;
+        background: #444;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: white;
+        transition: background 0.3s ease;
+      }
+
+      .key.missed {
+        background: #ff5252;
+      }
+
+      /* Стили для кнопки "Продолжить" */
+      .result-content button {
+        padding: 10px 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        margin-top: 20px; /* Добавляем отступ сверху */
+      }
+
+      .result-content button:hover {
+        background: #45a049;
+        transform: scale(1.05);
+      }
+
+      /* Стили для текста "Приготовьтесь! Поехали!" */
+      .ready-text {
+        color: #4caf50; /* Зеленый цвет */
+        font-size: 1.2rem;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      /* Стили для кнопки настроек */
+      .settings-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .settings-button:hover {
+        background: #45a049;
+        transform: scale(1.1);
+      }
+
+      /* Стили для всплывающего окна настроек */
+      .settings-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .settings-content {
+        background: #2a2a40;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .settings-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+      }
+
+      .settings-content label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+
+      .settings-content input,
+      .settings-content select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        background: #444;
+        color: white;
+      }
+
+      .settings-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .settings-buttons button {
+        padding: 10px 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .settings-buttons button:hover {
+        background: #45a049;
+        transform: scale(1.05);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+    <style>
+      /* Стили для всплывающего окна настроек */
+      .settings-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: fadeIn 0.5s ease;
+        z-index: 1000;
+      }
+
+      .settings-content {
+        background: linear-gradient(145deg, #2a2a40, #1e1e2f);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transform: scale(0.9);
+        opacity: 0;
+        animation: scaleUp 0.3s ease forwards;
+      }
+
+      @keyframes scaleUp {
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .settings-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #4caf50;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .settings-content label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: left;
+      }
+
+      .settings-content input,
+      .settings-content select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .settings-content input:focus,
+      .settings-content select:focus {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+        outline: none;
+      }
+
+      .settings-content input[type="color"] {
+        padding: 5px;
+        height: 50px;
+        cursor: pointer;
+      }
+
+      .settings-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .settings-buttons button {
+        padding: 12px 24px;
+        background: linear-gradient(145deg, #4caf50, #45a049);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        flex: 1;
+      }
+
+      .settings-buttons button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+      }
+
+      .settings-buttons button:active {
+        transform: scale(0.95);
+      }
+
+      /* Анимация для закрытия окна */
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .settings-overlay.closing {
+        animation: fadeOut 0.3s ease forwards;
+      }
+
+      .settings-content.closing {
+        animation: scaleDown 0.3s ease forwards;
+      }
+
+      @keyframes scaleDown {
+        from {
+          transform: scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+      }
+    </style>
+    <style>
+      :root {
+        --bg-color: #2d333b;
+        --border-color: #444c56;
+        --text-color: #adbac7;
+        --hover-bg: #373e47;
+        --active-bg: #444c56;
+        --dropdown-bg: #343b44;
+        --font-primary: "Inter", system-ui, sans-serif;
+        --font-secondary: "Roboto Mono", monospace;
+      }
+
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap");
+
+      .sidebar {
+        width: 72px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: var(--bg-color);
+        border-right: 1px solid var(--border-color);
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        transition: width 0.2s ease;
+        font-family: var(--font-primary);
+        z-index: 1;
+      }
+
+      .sidebar:hover {
+        width: 240px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        color: var(--text-color);
+      }
+
+      .logo-icon {
+        flex-shrink: 0;
+      }
+
+      .logo-text {
+        font-weight: 600;
+        font-size: 1.1rem;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        font-family: var(--font-secondary);
+      }
+
+      .sidebar:hover .logo-text {
+        opacity: 1;
+      }
+
+      .menu-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.01rem;
+        padding: 0 0.5rem;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .menu-item:hover {
+        background: var(--hover-bg);
+      }
+
+      .menu-item.active {
+        background: #ffffff00;
+      }
+
+      .menu-item svg {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+      }
+
+      .menu-item span {
+        opacity: 0;
+        white-space: nowrap;
+        transition: opacity 0.2s ease;
+      }
+
+      .sidebar:hover .menu-item span {
+        opacity: 1;
+      }
+
+      /* Стили для выпадающего меню */
+      .toggle-checkbox {
+        display: none;
+      }
+
+      .dropdown-toggle {
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .dropdown-arrow {
+        margin-left: auto;
+        transform: rotate(0deg);
+        transition: transform 0.2s ease;
+      }
+
+      .subjects-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.7s ease;
+        padding-left: 2.5rem;
+      }
+
+      /* Гарантированное скрытие при свернутой панели */
+      .sidebar:not(:hover) #lessons-toggle:checked ~ .subjects-panel {
+        max-height: 0 !important;
+        margin: 0 !important;
+        opacity: 0 !important;
+      }
+
+      /* Отключаем переходы при скрытой панели */
+      .sidebar:not(:hover) .subjects-panel {
+        transition: none;
+      }
+      #lessons-toggle:checked ~ .subjects-panel {
+        max-height: 500px;
+      }
+
+      #lessons-toggle:checked + .dropdown-toggle .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      .subject-item {
+        padding: 0.5rem 1rem;
+        color: var(--text-color);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: background 0.2s ease;
+      }
+
+      .subject-item:hover {
+        background: var(--hover-bg);
+      }
+
+      /* Группа настроек внизу */
+      .settings-group {
+        margin-top: auto;
+        padding-bottom: 1rem;
+      }
+    </style>
+    <style>
+      /* Обновленные стили для выпадающих меню */
+      .dropdown-menu {
+        border-radius: 6px;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-10px);
+        transition: all 0.2s ease;
+
+        z-index: 100;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding-left: 2.5rem;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        /* transform: translateX(0); */
+        max-height: 220px;
+      }
+      #lessons-toggle:checked ~ .dropdown-menu {
+        max-height: 500px;
+      }
+
+      .theme-option {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        padding: 0.5rem 1rem;
+        color: var(--text-color);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: background 0.2sease;
+      }
+
+      .theme-option:hover {
+        background: var(--hover-bg);
+      }
+
+      /* Фикс для стрелки */
+      .dropdown-arrow {
+        right: 12px;
+        transition: transform 0.2s ease;
+      }
+
+      /* Темы оформления */
+      .theme-dark {
+        --bg-color: #1a1a2e;
+        --border-color: #444c5600;
+        --text-color: #adbac7;
+        --text-color: #ffffff;
+        --hover-bg: #373e47;
+        --active-bg: #444c56;
+        --dropdown-bg: #343b44;
+      }
+
+      .theme-light {
+        --bg-color: #ffffff;
+        --border-color: #e4e4e4;
+        --text-color: #2d333b;
+        --hover-bg: #f5f5f5;
+        --active-bg: #e8e8e8;
+        --dropdown-bg: #ffffff;
+      }
+      .theme-ocean {
+        --bg-color: #25336d;
+        --border-color: #444c5600;
+        --text-color: #adbac7;
+        --text-color: #ffffff;
+        --hover-bg: #373e47;
+        --active-bg: #444c56;
+        --dropdown-bg: #343b44;
+      }
+      /* Добавляем новую тему СССР */
+      .theme-ussr {
+        --bg-color: #fcf9f2; /* Основной фон */
+        --border-color: #801310; /* Дополнительный цвет для границ */
+        --text-color: #302e2f; /* Цвет текста */
+        --hover-bg: #fa3f27; /* Цвет при наведении */
+        --active-bg: #801310; /* Активный цвет */
+        --dropdown-bg: #fcf9f2; /* Фон выпадающих меню */
+      }
+
+      /* Применяем градиент для фона */
+      .theme-ussr {
+        background: linear-gradient(135deg, #fcf9f2, #fcf9f2);
+        color: var(--text-color);
+      }
+      /* Обновляем стили для кнопок в теме СССР */
+      .theme-ussr .buttons button {
+        background: #c4000f; /* Основной цвет кнопок */
+        color: #fcf9f2; /* Цвет текста на кнопках */
+      }
+      .theme-ussr .settings-button {
+        background: #a1b227;
+      }
+      .theme-ussr .ready-text {
+        color: #801310;
+      }
+      .theme-ussr .buttons button:hover {
+        background: #801310; /* Цвет кнопок при наведении */
+      }
+
+      /* Обновляем стили для прогресс-бара */
+      .theme-ussr .progress-bar {
+        background: #801310; /* Цвет фона прогресс-бара */
+      }
+
+      .theme-ussr .progress-bar-fill {
+        background: #fa3f27; /* Цвет заполнения прогресс-бара */
+      }
+
+      /* Обновляем стили для клавиатуры */
+      .theme-ussr .key {
+        background: #a1b227; /* Цвет клавиш */
+        color: #fcf9f2; /* Цвет текста на клавишах */
+      }
+
+      .theme-ussr .key.missed {
+        background: #c4000f; /* Цвет клавиш с ошибками */
+      }
+      .theme-ussr .chart-progress {
+        fill: none;
+        stroke: #a0b42e;
+        stroke-width: 10;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.5sease;
+      }
+      .theme-ussr .chart-text {
+        font-size: 20px;
+        fill: #000000;
+        font-weight: bold;
+      }
+
+      .theme-ussr .result-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000de;
+        justify-content: center;
+        align-items: center;
+        color: #000000;
+        animation: fadeIn 0.5sease;
+      }
+      .theme-ussr .result-content h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #a0b42e;
+        font-weight: 700;
+      }
+
+      .theme-ussr .chart-background {
+        fill: none;
+        stroke: #888686;
+        stroke-width: 10;
+      }
+      .theme-ussr .result-content button {
+        padding: 10px 20px;
+        background: #a0b42e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3sease, transform 0.2sease;
+        margin-top: 20px;
+      }
+      .theme-ussr .result-content {
+        background: #fcf9f2;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Обновляем стили для текста */
+      .theme-ussr .text-container {
+        color: #302e2f; /* Цвет текста */
+        background: rgba(252, 249, 242, 0.9); /* Фон текстового контейнера */
+      }
+
+      /* Обновляем стили для статистики */
+      .theme-ussr .stats {
+        background: rgba(252, 249, 242, 0.9); /* Фон статистики */
+        color: #302e2f; /* Цвет текста статистики */
+      }
+      /* Скрываем герб СССР по умолчанию */
+      .ussr-logo {
+        display: none;
+      }
+
+      /* Показываем герб СССР при выборе темы "СССР" */
+      .theme-ussr .default-logo {
+        display: none;
+      }
+
+      .theme-ussr .ussr-logo {
+        display: block;
+      }
+      /* Темы оформления */
+      .theme-dark {
+        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+      }
+
+      .theme-light {
+        background: linear-gradient(135deg, #f0f0f5, #ffffff);
+        color: #333;
+      }
+
+      .theme-ocean {
+        background: linear-gradient(135deg, #1a2a6c, #3a6073);
+      }
+    </style>
+    <style>
+      /* Добавляем анимацию для стрелок */
+      .dropdown-arrow {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+
+      /* Скрываем элементы при свернутой панели */
+      .sidebar:not(:hover) .dropdown-arrow,
+      .sidebar:not(:hover) .subjects-panel,
+      .sidebar:not(:hover) .dropdown-menu {
+        opacity: 0;
+        pointer-events: none;
+        max-height: 0 !important;
+        margin: 0 !important;
+        opacity: 0 !important;
+      }
+
+      /* Показываем элементы при наведении */
+      .sidebar:hover .dropdown-arrow,
+      .sidebar:hover .subjects-panel,
+      .sidebar:hover .dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      /* Обновляем стили для кнопки темы */
+      .menu-group .dropdown-toggle {
+        background: transparent;
+        border: none;
+        width: auto;
+        text-align: left;
+        padding: 0.75rem 1rem;
+      }
+      /* В раздел стилей сайдбара */
+      .subject-item.active-subject {
+        background: rgba(76, 175, 80, 0.15);
+        border-left: 4px solid #4caf50;
+        font-weight: 500;
+      }
+
+      /* Для темы СССР */
+      .theme-ussr .subject-item.active-subject {
+        border-left-color: #a0b42e;
+        background: rgba(160, 180, 46, 0.15);
+      }
+      .subject-item {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .subject-item:hover {
+        transform: translateX(5px);
+      }
+      /* Стили для активной темы */
+      .theme-option.active-theme {
+        background: rgba(76, 175, 80, 0.15);
+        border-left: 4px solid #4caf50;
+        font-weight: 500;
+      }
+
+      /* Адаптация для разных тем */
+      .theme-light .theme-option.active-theme {
+        border-left-color: #2e7d32;
+        background: rgba(46, 125, 50, 0.1);
+      }
+
+      .theme-ussr .theme-option.active-theme {
+        border-left-color: #a0b42e;
+        background: rgba(160, 180, 46, 0.15);
+      }
+
+      .theme-ocean .theme-option.active-theme {
+        border-left-color: #2196f3;
+        background: rgba(33, 150, 243, 0.1);
+      }
+      /* Общие стили для всех элементов меню */
+      .subject-item,
+      .theme-option {
+        transition: all 0.2s ease;
+        cursor: pointer;
+        padding: 8px 12px;
+        margin: 2px 0;
+      }
+
+      .subject-item:hover,
+      .theme-option:hover {
+        transform: translateX(5px);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Для светлой темы */
+      .theme-light .subject-item:hover,
+      .theme-light .theme-option:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+      /* Для ссср темы */
+      .theme-ussr .subject-item:hover,
+      .theme-ussr .theme-option:hover {
+        background: #2f1e1f15;
+      }
+      .theme-ussr .theme-option:hover {
+        background: #2f1e1f15;
+      }
+      .menu-item:hover {
+        background: #2f1e1f15;
+      }
+    </style>
+    <style>
+      .custom-text-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        z-index: 1000;
+      }
+
+      .custom-text-content {
+        background: #2a2a40;
+        padding: 30px;
+        border-radius: 15px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+
+      #custom-text-input {
+        width: 95%;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 10px;
+        border: 1px solid #444;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-family: inherit;
+        font-size: 16px;
+        resize: vertical;
+        min-height: 150px;
+      }
+      .custom-text-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        color: white;
+        z-index: 1000;
+      }
+      .menu-item span {
+        /* opacity: 0; */
+        /* white-space: nowrap; */
+        transition: opacity 0.2sease;
+        font-size: 1rem;
+        font-family: var(--font-primary);
+      }
+    </style>
+    <style>
+      /* Стили для виртуальной клавиатуры */
+      .virtual-keyboard-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        /* width: 90%; */
+        max-width: 1000px;
+        background: rgb(27 25 46);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        z-index: 0;
+        /* backdrop-filter: blur(5px); */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .virtual-keyboard {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .virtual-keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .virtual-key {
+        min-width: 40px;
+        height: 40px;
+        background: rgb(57 57 74);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: white;
+        transition: all 0.2s ease;
+        user-select: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .virtual-key.active {
+        background: #4caf50;
+        transform: translateY(2px);
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+      }
+
+      .virtual-key.space {
+        width: 300px;
+      }
+
+      .virtual-key.wide {
+        min-width: 60px;
+      }
+
+      .virtual-key.extra-wide {
+        min-width: 80px;
+      }
+
+      /* Адаптация для разных тем */
+      .theme-light .virtual-keyboard-container {
+        background: rgb(240, 240, 245);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .theme-light .virtual-key {
+        background: #000000;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .theme-light .virtual-key.active {
+        background: #2e7d32;
+        color: white;
+      }
+
+      .theme-ocean .virtual-keyboard-container {
+        background: rgba(26, 42, 108, 0.8);
+      }
+
+      .theme-ocean .virtual-key.active {
+        background: #2196f3;
+      }
+
+      .theme-ussr .virtual-keyboard-container {
+        background: rgba(252, 249, 242, 0.8);
+      }
+
+      .theme-ussr .virtual-key {
+        background: rgb(182 0 23);
+        color: #fbf9f2;
+      }
+
+      .theme-ussr .virtual-key.active {
+        background: #6f0710;
+        color: #fcf9f2;
+      }
+
+      /* Переключатель видимости клавиатуры */
+      .keyboard-toggle {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: #4caf50;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: none; /* Скрываем кнопку */
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease, transform 0.2s ease;
+        z-index: 101;
+      }
+
+      .keyboard-toggle:hover {
+        background: #45a049;
+        transform: scale(1.1);
+      }
+
+      .theme-ussr .keyboard-toggle {
+        background: #c4000f;
+      }
+
+      .theme-ussr .keyboard-toggle:hover {
+        background: #801310;
+      }
+
+      .theme-light .keyboard-toggle {
+        background: #2e7d32;
+      }
+
+      .theme-ocean .keyboard-toggle {
+        background: #2196f3;
+      }
+    </style>
+    <style>
+      /* Стили для мобильного предупреждения */
+      .mobile-warning {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #1e1e2f;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .mobile-warning-content {
+        color: #ffffff;
+        font-size: 24px;
+        line-height: 1.5;
+        max-width: 80%;
+      }
+
+      .mobile-warning-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #4caf50;
+      }
+
+      @media (max-width: 768px) {
+        .mobile-warning {
+          display: flex;
+        }
+      }
+      @media (max-width: 1024px) {
+        .mobile-warning {
+          display: flex;
+        }
+      }
+      @media (max-width: 1200px) {
+        .progress-bar {
+          width: 100%;
+          height: 10px;
+          background: #444;
+          border-radius: 5px;
+          overflow: hidden;
+          margin-top: -240px;
+        }
+
+        .text-container {
+          font-size: 24px;
+          display: flex;
+          flex-wrap: wrap;
+          max-width: 800px;
+          margin-bottom: 20px;
+          background: rgba(255, 255, 255, 0.1);
+
+          border-radius: 15px;
+
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          text-align: center;
+          justify-content: center;
+          margin-top: -240px;
+          max-height: calc(1.25 * 24px * 5);
+          overflow-y: auto;
+          scroll-behavior: smooth;
+          position: relative;
+          /* Скрываем полосу прокрутки */
+          scrollbar-width: none; /* Для Firefox */
+          -ms-overflow-style: none; /* Для IE и Edge */
+          pointer-events: none;
+
+          /* line-height: 1.5; */
+          padding: 0px;
+          /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+          border: 20px solid #39384800;
+          border-top: 20px solid #39384800;
+        }
+
+        .text-container.timer-mode {
+          margin-top: -240px;
+          /* border: 1px solid #ccc; */
+          font-size: 16px;
+          /* line-height: 1.5; */
+          height: calc(1.25 * 24px * 5);
+          /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+          border: 10px solid #39384800;
+          border-top: 10px solid #39384800;
+          margin-top: -240px;
+        }
+        .stats-active {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .stats {
+          display: none;
+          margin-top: 10px;
+          font-size: 1rem;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 10px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          text-align: center;
+        }
+
+        .stats-active > div {
+          display: inline-block; /* Отображает элементы в одну строку */
+          flex: 1; /* Позволяет элементам занимать доступное пространство */
+          text-align: center; /* Центрирует текст внутри каждого элемента */
+          white-space: nowrap; /* Предотвращает перенос текста */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Добавляем элемент предупреждения для мобильных устройств -->
+    <div class="mobile-warning">
+      <div class="mobile-warning-content">
+        <div class="mobile-warning-icon">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <div>Сайт функционирует только на десктопных устройствах</div>
+      </div>
+    </div>
+    <!-- Добавляем элемент предупреждения для мобильных устройств -->
+    <div class="mobile-warning">
+      <div class="mobile-warning-content">
+        <div class="mobile-warning-icon">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <div>Сайт функционирует только на десктопных устройствах</div>
+      </div>
+    </div>
+    <!-- Боковая панель -->
+    <nav class="sidebar">
+      <!-- Логотип -->
+      <!-- Логотип по умолчанию -->
+      <a href="/" class="logo">
+        <svg
+          viewBox="0 0 495 495"
+          width="40"
+          height="28"
+          class="logo-icon default-logo"
+        >
+          <path
+            fill="currentColor"
+            d="m389.99,0H105.01C47.01,0,0,47.01,0,105.01v284.98c0,58,47.01,105.01,105.01,105.01h284.98c58,0,105.01-47.01,105.01-105.01V105.01c0-58-47.01-105.01-105.01-105.01Zm14.32,98.87l-196.26,268.1c-2.14,2.94-5.19,5.08-8.68,6.11l-88.11,26.03c-12.85,3.8-24.67-8.43-20.43-21.14l29.03-87.18c1.15-3.45,3.4-6.43,6.4-8.47L400.93,95.37c2.29-1.56,5.02,1.26,3.38,3.5Z"
+          />
+        </svg>
+
+        <!-- Герб СССР -->
+        <svg
+          viewBox="0 0 24 24"
+          width="40"
+          height="28"
+          class="logo-icon ussr-logo"
+          style="display: none"
+        >
+          <path fill="#801514" />
+          <!-- Добавьте сюда более детализированный SVG-код для герба СССР -->
+          <svg
+            id="_РЎР»РѕР№_1"
+            data-name="РЎР»РѕР№ 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 836.09 834.63"
+            width="23"
+            height="23"
+          >
+            <defs>
+              <style>
+                .cls-1 {
+                  fill: #f1382f;
+                  stroke-width: 0px;
+                }
+              </style>
+            </defs>
+            <path
+              fill="#f1382f"
+              d="m272.1,557.15c79.27,79.88,169.05,97.71,271.17,62.09-95.89-95.85-190.8-190.73-287.29-287.19-29.24,30.25-59.01,61.03-88.92,91.97-34.92-35.78-68.13-69.8-102.27-104.79.61-.67,2.87-3.35,5.34-5.82,60.33-60.35,120.64-120.73,181.19-180.86,3.11-3.08,8.58-5.97,12.63-5.59,58.06,5.48,116.06,11.53,174.08,17.49.88.09,1.72.62,4.87,1.81-36.85,37.06-72.86,73.28-108.26,108.88,100.19,100.14,200.01,199.91,300.44,300.3,19.62-22.07,34.81-47.92,44.68-76.91,18.22-53.49,10.96-105.99-7.28-157.66-23.31-66.02-62.16-122.83-106.84-175.94-41.96-49.87-88.6-95.05-138.85-136.53-2.62-2.17-5.14-4.46-6.61-8.39,1.76.56,3.61.93,5.28,1.7,95.99,44.42,184.75,99.65,259.35,175.57,44.92,45.71,82.78,96.77,99.74,159.39,28.76,106.22,7.65,203.13-60.76,289.53-2.48,3.13-5.18,6.08-7.72,9.16-.39.48-.46,1.22-1.54,4.29,15.68,15.15,32.34,30.9,48.61,47.05,19.63,19.49,39.13,39.12,58.31,59.06,20.45,21.26,19.26,53.41-2.25,74.29-20.43,19.83-53.46,19.35-73.81-.98-36.31-36.28-72.8-72.4-108.88-108.91-5.39-5.45-9.46-6.2-16.25-2.75-54.46,27.67-112.38,39.41-173.23,35.11-56.98-4.03-108.07-24.96-154.55-57.48-14.11-9.87-27.38-20.95-41.72-32-7.15,15.54-17.99,27.98-34.93,31.53-10.89,2.29-15.99,8.35-21.01,17.12-24.2,42.22-52.74,81.07-91.81,110.94-14.26,10.9-29.06,21.51-48.33,21.86-39.35.7-65.87-38.24-50.01-74.26,10.66-24.2,28.11-43.56,47.12-61.51,26.34-24.87,56.34-44.65,87.44-62.96,3.9-2.29,7.57-7.24,8.68-11.64,7.16-28.38,29.86-45,59.1-43.05,3.97.26,8.87-1.47,12.08-3.93,9.39-7.2,19.56-9.62,29.83-4.09,6.63,3.57,10.31,2.2,14.08-2.99,2.94-4.05,5.77-8.18,9.1-12.91Z"
+            />
+          </svg>
+        </svg>
+        <span class="logo-text">FingerFlow</span>
+      </a>
+      <div class="menu-group">
+        <a href="/test" class="menu-item active">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="currentColor"
+              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"
+            />
+          </svg>
+          <span>Тест скорости</span>
+        </a>
+      </div>
+      <!-- Основные разделы -->
+      <div class="menu-group">
+        <input type="checkbox" id="lessons-toggle" class="toggle-checkbox" />
+
+        <label for="lessons-toggle" class="menu-item dropdown-toggle">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
+            />
+          </svg>
+          <span>Уроки</span>
+          <svg
+            class="dropdown-arrow"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+          >
+            <path fill="currentColor" d="M7 10l5 5 5-5z" />
+          </svg>
+        </label>
+
+        <!-- Выпадающее меню предметов -->
+        <div class="subjects-panel">
+          <div class="subject-item" data-subject="math">Математика</div>
+          <div class="subject-item" data-subject="russian">Русский язык</div>
+          <div class="subject-item" data-subject="history">История</div>
+          <div class="subject-item" data-subject="biology">Биология</div>
+          <div class="subject-item" data-subject="geography">География</div>
+          <div class="subject-item" data-subject="physics">Физика</div>
+          <div class="subject-item" data-subject="scientificFacts">
+            Научные факты
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button
+          class="menu-item dropdown-toggle"
+          onclick="toggleDropdown('theme-menu')"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="currentColor"
+              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-1.5v-17a8.5 8.5 0 0 1 0 17z"
+            />
+          </svg>
+          <span>Тема</span>
+          <svg
+            class="dropdown-arrow"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+          >
+            <path fill="currentColor" d="M7 10l5 5 5-5z" />
+          </svg>
+        </button>
+
+        <!-- Выпадающее меню тем -->
+        <div id="theme-menu" class="dropdown-menu">
+          <div
+            class="theme-option"
+            data-theme="dark"
+            onclick="selectDesignTheme('dark')"
+          >
+            Тёмная
+          </div>
+          <div
+            class="theme-option"
+            data-theme="light"
+            onclick="selectDesignTheme('light')"
+          >
+            Светлая
+          </div>
+          <div
+            class="theme-option"
+            data-theme="ocean"
+            onclick="selectDesignTheme('ocean')"
+          >
+            Океан
+          </div>
+          <div
+            class="theme-option"
+            data-theme="ussr"
+            onclick="selectDesignTheme('ussr')"
+          >
+            СССР
+          </div>
+        </div>
+      </div>
+      <div class="menu-group">
+        <a class="menu-item" onclick="openCustomTextModal()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+          >
+            <defs>
+              <style>
+                .cls-1,
+                .cls-2 {
+                  stroke-width: 0px;
+                  fill: currentColor;
+                }
+
+                .cls-2 {
+                  fill: #ffffff00;
+                }
+              </style>
+            </defs>
+            <path
+              class="cls-1"
+              d="m12.02,2c1.67,0,3.34,0,5.01,0,2.6,0,4.67,1.88,4.93,4.47.03.31.04.62.04.94,0,2.67-.01,5.33,0,8,0,1.42-.43,2.65-1.44,3.65-.55.55-1.1,1.1-1.66,1.64-.92.9-2.05,1.29-3.32,1.29-2.89,0-5.78.03-8.67,0-2.79-.03-4.89-2.19-4.9-5.01-.01-3.33-.01-6.67,0-10,.01-2.81,2.2-4.97,5-4.97,1.67,0,3.34,0,5.01,0Zm7.53,12.44c0-.09.02-.16.02-.22,0-2.29,0-4.58,0-6.87,0-.39-.04-.79-.14-1.16-.3-1.11-1.23-1.74-2.5-1.74-3.27,0-6.54,0-9.81,0-1.6,0-2.64,1.01-2.65,2.61-.01,3.28-.01,6.57,0,9.85,0,1.63,1.05,2.63,2.67,2.63,2.34,0,4.69,0,7.03,0,.08,0,.17,0,.28,0,0-.52,0-1.01,0-1.5.02-1.01.3-1.93,1.05-2.65.73-.7,1.63-.93,2.6-.95.48-.01.96,0,1.45,0Zm-2.64,4.59s.05.02.08.02c.81-.58,1.51-1.27,2.06-2.13-.47-.01-.93-.02-1.38.05-.38.06-.65.33-.7.73-.05.44-.05.89-.07,1.33Z"
+            />
+            <path
+              class="cls-1"
+              d="m12,8.84c-1.37,0-2.74,0-4.12,0-.14,0-.29-.01-.43-.04-.64-.11-1.05-.57-1.04-1.16.01-.67.4-1.11,1.07-1.21.13-.02.27-.03.41-.03,2.71,0,5.43,0,8.14,0,.23,0,.47.03.69.08.58.15.9.59.87,1.16-.03.6-.39,1.04-.97,1.15-.15.03-.3.04-.45.04-1.39,0-2.78,0-4.17,0Z"
+            />
+            <path
+              class="cls-1"
+              d="m12.03,10.79c1.38,0,2.76,0,4.14,0,.16,0,.32.02.48.05.63.15.97.58.95,1.21-.02.59-.41,1.02-1.03,1.12-.17.03-.33.04-.5.04-2.7,0-5.41,0-8.11,0-.18,0-.37-.01-.55-.05-.63-.12-1.01-.6-.98-1.21.03-.62.42-1.06,1.06-1.13.39-.04.78-.04,1.18-.04,1.12,0,2.25,0,3.37,0,0,0,0,.01,0,.02Z"
+            />
+            <path
+              class="cls-1"
+              d="m9.79,17.6c-.72,0-1.45.02-2.17,0-.89-.03-1.4-.76-1.14-1.61.14-.47.48-.7.94-.79.13-.02.26-.03.38-.03,1.33,0,2.67,0,4,0,.16,0,.32,0,.48.04.6.13.92.57.91,1.24-.01.57-.37,1-.95,1.11-.16.03-.33.04-.5.05-.65,0-1.3,0-1.95,0h0Z"
+            />
+          </svg>
+          <span>Свой текст</span>
+        </a>
+      </div>
+      <!-- Настройки внизу -->
+      <div class="menu-group settings-group">
+        <a href="/profile" class="menu-item">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+            />
+          </svg>
+          <span>Профиль</span>
+        </a>
+        <a class="menu-item" onclick="openSettings()">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="currentColor"
+              d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
+            />
+          </svg>
+          <span>Настройки</span>
+        </a>
+      </div>
+    </nav>
+    <!-- Модальное окно для ввода текста -->
+    <div class="custom-text-overlay" id="custom-text-overlay">
+      <div class="custom-text-content">
+        <h2>Введите свой текст</h2>
+        <textarea
+          id="custom-text-input"
+          rows="10"
+          placeholder="Введите текст для тренировки..."
+        ></textarea>
+        <div class="settings-buttons">
+          <button onclick="closeCustomTextModal()">Отмена</button>
+          <button onclick="startWithCustomText()">Начать</button>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-container" id="progress-bar-container">
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+      <div class="timer" id="timer"></div>
+    </div>
+
+    <div class="text-container" id="text-container">
+      Добро пожаловать на сайт теста скорости печати! Здесь вы можете улучшить
+      свои навыки печати. Начните с выбора режима ниже.
+      <div class="ready-text">Приготовьтесь! Поехали!</div>
+    </div>
+    <div class="stats" id="stats">
+      <div>Скорость (WPM): <span id="wpm">0</span></div>
+      <div>Скорость (CPM): <span id="cpm">0</span></div>
+      <div>Точность: <span id="accuracy">100%</span></div>
+    </div>
+
+    <div class="buttons" id="buttons">
+      <button onclick="startNormalMode()">
+        <i class="fas fa-keyboard"></i>
+      </button>
+      <button onclick="toggleTimerButtons()">
+        <i class="fas fa-stopwatch"></i>
+      </button>
+    </div>
+
+    <div class="timer-buttons" id="timer-buttons">
+      <button onclick="startTimedMode(15)">15</button>
+      <button onclick="startTimedMode(30)">30</button>
+      <button onclick="startTimedMode(45)">45</button>
+      <button onclick="startTimedMode(60)">60</button>
+      <button onclick="startTimedMode(120)">120</button>
+    </div>
+
+    <!-- Финальная панель -->
+    <div class="result-overlay" id="result-overlay">
+      <div class="result-content">
+        <h2>Результаты</h2>
+        <div class="results-container">
+          <!-- Круговой график точности -->
+          <div class="accuracy-chart">
+            <svg viewBox="0 0 100 100" class="chart">
+              <circle cx="50" cy="50" r="45" class="chart-background"></circle>
+              <circle cx="50" cy="50" r="45" class="chart-progress"></circle>
+              <text
+                x="50"
+                y="50"
+                text-anchor="middle"
+                dy=".3em"
+                class="chart-text"
+              >
+                100%
+              </text>
+            </svg>
+          </div>
+          <!-- Показатели скорости и точности -->
+          <div class="stats-results">
+            <div>Скорость (WPM): <span id="result-wpm">0</span></div>
+            <div>Скорость (CPM): <span id="result-cpm">0</span></div>
+            <div>Точность: <span id="result-accuracy">100%</span></div>
+          </div>
+        </div>
+        <!-- Визуализация клавиатуры -->
+        <div class="keyboard-visualization">
+          <div class="keyboard-row">
+            <div class="key" data-key="й">й</div>
+            <div class="key" data-key="ц">ц</div>
+            <div class="key" data-key="у">у</div>
+            <div class="key" data-key="к">к</div>
+            <div class="key" data-key="е">е</div>
+            <div class="key" data-key="н">н</div>
+            <div class="key" data-key="г">г</div>
+            <div class="key" data-key="ш">ш</div>
+            <div class="key" data-key="щ">щ</div>
+            <div class="key" data-key="з">з</div>
+            <div class="key" data-key="х">х</div>
+            <div class="key" data-key="ъ">ъ</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key" data-key="ф">ф</div>
+            <div class="key" data-key="ы">ы</div>
+            <div class="key" data-key="в">в</div>
+            <div class="key" data-key="а">а</div>
+            <div class="key" data-key="п">п</div>
+            <div class="key" data-key="р">р</div>
+            <div class="key" data-key="о">о</div>
+            <div class="key" data-key="л">л</div>
+            <div class="key" data-key="д">д</div>
+            <div class="key" data-key="ж">ж</div>
+            <div class="key" data-key="э">э</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key" data-key="я">я</div>
+            <div class="key" data-key="ч">ч</div>
+            <div class="key" data-key="с">с</div>
+            <div class="key" data-key="м">м</div>
+            <div class="key" data-key="и">и</div>
+            <div class="key" data-key="т">т</div>
+            <div class="key" data-key="ь">ь</div>
+            <div class="key" data-key="б">б</div>
+            <div class="key" data-key="ю">ю</div>
+          </div>
+        </div>
+        <!-- Кнопка "Продолжить" -->
+        <button onclick="continueGame()">Продолжить</button>
+        <!-- Кнопка "Повторить" -->
+        <button onclick="repeatGame()">Повторить</button>
+      </div>
+    </div>
+
+    <!-- Кнопка настроек -->
+    <button class="settings-button" id="settings-button">
+      <i class="fas fa-keyboard"></i>
+    </button>
+
+    <!-- Всплывающее окно настроек -->
+    <div class="settings-overlay" id="settings-overlay">
+      <div class="settings-content" id="settings-content">
+        <h2>Настройки</h2>
+        <label for="font-size">Размер шрифта:</label>
+        <input type="number" id="font-size" min="10" max="30" value="24" />
+        <label for="font-color">Цвет шрифта:</label>
+        <input type="color" id="font-color" value="#ffffff" />
+        <label for="font-family">Шрифт:</label>
+        <select id="font-family">
+          <option value="Montserrat">Montserrat</option>
+          <option value="Roboto">Roboto</option>
+          <option value="Open Sans">Open Sans</option>
+        </select>
+        <label for="underline">Подчеркивание текста:</label>
+        <select id="underline">
+          <option value="none">Отключить</option>
+          <option value="underline">Включить</option>
+        </select>
+        <div class="settings-buttons">
+          <button onclick="closeSettings()">Отмена</button>
+          <button onclick="saveSettings()">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Подключение файла с фактами -->
+    <script src="facts.js"></script>
+
+    <script>
+      let currentTopic = "science";
+      let timerInterval;
+      let startTime;
+      let totalCorrect = 0;
+      let totalTyped = 0;
+      const missedKeys = new Set();
+      let isFirstKeyPressed = false;
+      let currentIndex = 0;
+      let letters = [];
+      let keydownHandler;
+      let isGameActive = false;
+      let currentText = "";
+      let currentMode = "normal"; // "normal" или "timed"
+      let currentTimerDuration = 0;
+      let customText = "";
+      let isCustomText = false;
+
+      // Настройки по умолчанию
+      let settings = {
+        fontSize: 24,
+        fontFamily: "Montserrat",
+        underline: "none",
+      };
+
+      function repeatGame() {
+        const resultOverlay = document.getElementById("result-overlay");
+        resultOverlay.style.display = "none";
+
+        const keys = document.querySelectorAll(".key");
+        keys.forEach((key) => key.classList.remove("missed"));
+
+        // Сбрасываем позицию прокрутки текстового блока
+        const textContainer = document.getElementById("text-container");
+        textContainer.scrollTop = 0;
+
+        if (isCustomText) {
+          startGameWithText(customText);
+        } else if (currentMode === "normal") {
+          startNormalMode();
+        } else if (currentMode === "timed") {
+          startTimedMode(currentTimerDuration);
+        }
+      }
+
+      // Функция для сброса всех значений
+      function resetAllValues() {
+        clearInterval(timerInterval);
+        document.getElementById("progress-bar-container").style.display =
+          "none";
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("text-container").innerHTML = "";
+        document.getElementById("wpm").textContent = 0;
+        document.getElementById("cpm").textContent = 0;
+        document.getElementById("accuracy").textContent = "100%";
+        totalCorrect = 0;
+        totalTyped = 0;
+        missedKeys.clear();
+        isFirstKeyPressed = false;
+        currentIndex = 0;
+        letters = [];
+        isGameActive = false;
+        resetWelcomeMessage();
+
+        if (keydownHandler) {
+          document.removeEventListener("keydown", keydownHandler);
+        }
+      }
+
+      // Функция для сброса приветственного сообщения
+      function resetWelcomeMessage() {
+        const initialText =
+          "Добро пожаловать на сайт теста скорости печати! Здесь вы можете улучшить свои навыки печати. Начните с выбора режима ниже.";
+        const readyText = "Приготовьтесь! Поехали!";
+        const textContainer = document.getElementById("text-container");
+        textContainer.innerHTML = `
+    ${initialText}
+    <div class="ready-text">${readyText}</div>
+  `;
+        applySettings();
+      }
+      // Функция для скрытия кнопок выбора режима
+      function hideButtons() {
+        const buttons = document.getElementById("buttons");
+        buttons.style.display = "none";
+      }
+
+      // Функция для показа кнопок выбора режима
+      function showButtons() {
+        const buttons = document.getElementById("buttons");
+        buttons.style.display = "flex";
+      }
+
+      // Функция для выбора случайных предложений
+      function getRandomSentences(topic, count) {
+        const sentences = topics[topic] || topics.science;
+        const shuffled = sentences.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count).join(" ");
+      }
+
+      // Функция для отображения текста на странице
+      function displayText(text) {
+        const textContainer = document.getElementById("text-container");
+        textContainer.innerHTML = "";
+
+        // Добавляем обертку для текста
+        const textWrapper = document.createElement("div");
+        textWrapper.classList.add("text-wrapper");
+
+        const words = text.split(" ");
+        words.forEach((word, index) => {
+          const wordSpan = document.createElement("span");
+          wordSpan.classList.add("word");
+          word.split("").forEach((char) => {
+            const letterDiv = document.createElement("span");
+            letterDiv.classList.add("letter");
+            letterDiv.textContent = char === " " ? " " : char;
+            letterDiv.setAttribute("data-letter", char.toLowerCase());
+            wordSpan.appendChild(letterDiv);
+          });
+          textWrapper.appendChild(wordSpan);
+          if (index < words.length - 1) {
+            const spaceDiv = document.createElement("span");
+            spaceDiv.classList.add("letter");
+            spaceDiv.textContent = " ";
+            spaceDiv.setAttribute("data-letter", " ");
+            textWrapper.appendChild(spaceDiv);
+          }
+        });
+
+        textContainer.appendChild(textWrapper);
+        applySettings();
+      }
+
+      function selectTopic(topic) {
+        if (isCustomText) return; // Не меняем тему, если используется пользовательский текст
+        currentTopic = topic;
+        if (isGameActive) {
+          continueGame();
+        }
+      }
+
+      // Функция для отображения результатов
+      function showResults(wpm, cpm, accuracy) {
+        const resultOverlay = document.getElementById("result-overlay");
+        const resultWpm = document.getElementById("result-wpm");
+        const resultCpm = document.getElementById("result-cpm");
+        const resultAccuracy = document.getElementById("result-accuracy");
+        const chartProgress = document.querySelector(".chart-progress");
+        const chartText = document.querySelector(".chart-text");
+
+        resultWpm.textContent = wpm;
+        resultCpm.textContent = cpm;
+        resultAccuracy.textContent = `${accuracy}%`;
+
+        const offset = 283 - (accuracy / 100) * 283;
+        chartProgress.style.strokeDashoffset = offset;
+        chartText.textContent = `${accuracy}%`;
+
+        const keys = document.querySelectorAll(".key");
+        keys.forEach((key) => {
+          if (missedKeys.has(key.getAttribute("data-key"))) {
+            key.classList.add("missed");
+          }
+        });
+
+        resultOverlay.style.display = "flex";
+      }
+
+      // Функция для завершения игры
+      function endGame() {
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+        const wpm = Math.round(totalCorrect / 5 / timeElapsed);
+        const cpm = Math.round(totalCorrect / timeElapsed);
+        const accuracy =
+          totalTyped === 0
+            ? 100
+            : Math.round((totalCorrect / totalTyped) * 100);
+
+        showResults(wpm, cpm, accuracy);
+      }
+
+      // Функция для обновления статистики
+      function updateStats() {
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+        const wpm = Math.round(totalCorrect / 5 / timeElapsed);
+        const cpm = Math.round(totalCorrect / timeElapsed);
+        const accuracy =
+          totalTyped === 0
+            ? 100
+            : Math.round((totalCorrect / totalTyped) * 100);
+
+        document.getElementById("wpm").textContent = wpm;
+        document.getElementById("cpm").textContent = cpm;
+        document.getElementById("accuracy").textContent = `${accuracy}%`;
+      }
+
+      // Функция для запуска обычного режима
+      function startNormalMode() {
+        isGameActive = true;
+        hideButtons();
+        resetAllValues();
+
+        // Показываем блок статистики
+        const stats = document.getElementById("stats");
+        stats.style.display = "block";
+        stats.classList.add("stats-active");
+
+        // Генерируем новый текст
+        if (!isCustomText) {
+          currentText = getRandomSentences(currentTopic, 1);
+        }
+        displayText(currentText);
+
+        document.getElementById("progress-bar-container").style.display =
+          "none";
+        document.getElementById("timer").style.display = "none";
+
+        // Не устанавливаем startTime здесь
+        totalCorrect = 0;
+        totalTyped = 0;
+        missedKeys.clear();
+        isFirstKeyPressed = false;
+        currentIndex = 0;
+        letters = document.querySelectorAll(".letter");
+        currentMode = "normal";
+        currentTimerDuration = 0;
+
+        if (keydownHandler) {
+          document.removeEventListener("keydown", keydownHandler);
+        }
+
+        keydownHandler = (event) => {
+          if (currentIndex >= letters.length) return;
+          if (event.key === "Shift") return;
+
+          if (!isFirstKeyPressed) {
+            isFirstKeyPressed = true;
+            startTime = Date.now(); // Устанавливаем startTime при первом нажатии
+          }
+
+          const currentLetter = letters[currentIndex];
+          const expectedLetter = currentLetter
+            .getAttribute("data-letter")
+            .toLowerCase();
+          const pressedLetter = event.key.toLowerCase();
+
+          totalTyped++;
+
+          if (pressedLetter === expectedLetter) {
+            currentLetter.classList.remove("incorrect");
+            currentLetter.classList.add("correct");
+            currentIndex++;
+            totalCorrect++;
+
+            // Добавляем автоматическую прокрутку
+            autoScroll();
+          } else {
+            currentLetter.classList.add("incorrect");
+            missedKeys.add(expectedLetter);
+          }
+
+          updateStats();
+
+          if (currentIndex >= letters.length) {
+            endGame();
+          }
+        };
+
+        document.addEventListener("keydown", keydownHandler);
+      }
+      // Функция для запуска режима на время
+      function startTimedMode(seconds) {
+        isGameActive = true;
+        hideButtons();
+        resetAllValues();
+
+        // Показываем блок статистики
+        const stats = document.getElementById("stats");
+        stats.style.display = "block";
+        stats.classList.add("stats-active");
+
+        const timerButtons = document.getElementById("timer-buttons");
+        timerButtons.style.display = "none";
+
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
+
+        // Генерируем новый текст
+        if (!isCustomText) {
+          currentText = getRandomSentences(currentTopic, 5);
+        }
+        displayText(currentText);
+
+        document.getElementById("progress-bar-container").style.display =
+          "block";
+        document.getElementById("timer").style.display = "block";
+        document.getElementById("timer").textContent = `${seconds}сек`;
+
+        // Добавляем класс timer-mode сразу при запуске режима
+        document.querySelector(".text-container").classList.add("timer-mode");
+
+        // Не устанавливаем startTime здесь
+        totalCorrect = 0;
+        totalTyped = 0;
+        missedKeys.clear();
+        isFirstKeyPressed = false;
+        currentIndex = 0;
+        letters = document.querySelectorAll(".letter");
+        currentMode = "timed";
+        currentTimerDuration = seconds;
+
+        if (keydownHandler) {
+          document.removeEventListener("keydown", keydownHandler);
+        }
+
+        keydownHandler = (event) => {
+          if (currentIndex >= letters.length) return;
+          if (event.key === "Shift") return;
+
+          if (!isFirstKeyPressed) {
+            isFirstKeyPressed = true;
+            startTime = Date.now(); // Устанавливаем startTime при первом нажатии
+            startTimer(seconds); // Запускаем таймер при первом нажатии
+          }
+
+          const currentLetter = letters[currentIndex];
+          const expectedLetter = currentLetter
+            .getAttribute("data-letter")
+            .toLowerCase();
+          const pressedLetter = event.key.toLowerCase();
+
+          totalTyped++;
+
+          if (pressedLetter === expectedLetter) {
+            currentLetter.classList.remove("incorrect");
+            currentLetter.classList.add("correct");
+            currentIndex++;
+            totalCorrect++;
+
+            // Добавляем автоматическую прокрутку
+            autoScroll();
+          } else {
+            currentLetter.classList.add("incorrect");
+            missedKeys.add(expectedLetter);
+          }
+
+          updateStats();
+        };
+
+        document.addEventListener("keydown", keydownHandler);
+      }
+
+      // Функция для запуска таймера
+      function startTimer(seconds) {
+        let timeLeft = seconds;
+        const progressBarFill = document.getElementById("progress-bar-fill");
+        progressBarFill.style.width = "100%";
+
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById("timer").textContent = `${timeLeft}сек`;
+          progressBarFill.style.width = `${(timeLeft / seconds) * 100}%`;
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endGame();
+          }
+        }, 1000);
+      }
+
+      // Функция для продолжения игры
+      function continueGame() {
+        const resultOverlay = document.getElementById("result-overlay");
+        resultOverlay.style.display = "none";
+
+        // Скрываем блок статистики
+        document.getElementById("stats").style.display = "none";
+
+        // Удаляем класс режима таймера
+        document
+          .querySelector(".text-container")
+          .classList.remove("timer-mode");
+
+        const keys = document.querySelectorAll(".key");
+        keys.forEach((key) => key.classList.remove("missed"));
+
+        isGameActive = false;
+        resetAllValues();
+
+        // Сбрасываем текст и показываем приветственное окно
+        currentText = "";
+        resetWelcomeMessage();
+        showButtons();
+
+        // Восстанавливаем выбранный предмет
+        const savedSubject = localStorage.getItem("selectedSubject") || "math";
+        document.querySelectorAll(".subject-item").forEach((i) => {
+          i.classList.remove("active-subject");
+        });
+        document
+          .querySelector(`[data-subject="${savedSubject}"]`)
+          .classList.add("active-subject");
+
+        // Если был режим "Свой текст", сбрасываем его
+        if (isCustomText) {
+          isCustomText = false;
+          customText = "";
+        }
+      }
+
+      // Инициализация при загрузке
+      document.addEventListener("DOMContentLoaded", () => {
+        // Добавляем обработчики для предметов
+        document.querySelectorAll(".subject-item").forEach((item) => {
+          item.addEventListener("click", function () {
+            // Удаляем класс у всех предметов
+            document.querySelectorAll(".subject-item").forEach((i) => {
+              i.classList.remove("active-subject");
+            });
+
+            // Добавляем класс выбранному
+            this.classList.add("active-subject");
+
+            // Логика выбора темы
+            const subject = this.dataset.subject;
+            currentTopic = subject;
+            localStorage.setItem("selectedSubject", subject);
+
+            if (isGameActive) {
+              continueGame();
+            }
+          });
+        });
+
+        // Инициализация при загрузке
+        const savedSubject = localStorage.getItem("selectedSubject") || "math";
+        document
+          .querySelector(`[data-subject="${savedSubject}"]`)
+          .classList.add("active-subject");
+        currentTopic = savedSubject;
+      });
+
+      // Функция для переключения отображения кнопок таймера
+      function toggleTimerButtons() {
+        const timerButtons = document.getElementById("timer-buttons");
+        timerButtons.style.display =
+          timerButtons.style.display === "flex" ? "none" : "flex";
+      }
+
+      // Отключаем активацию кнопок пробелом
+      document.addEventListener("keydown", (event) => {
+        if (event.key === " " && event.target.tagName === "BUTTON") {
+          event.preventDefault();
+        }
+      });
+
+      // Функция для открытия настроек
+      function openSettings() {
+        const settingsOverlay = document.getElementById("settings-overlay");
+        settingsOverlay.style.display = "flex";
+
+        document.getElementById("font-size").value = settings.fontSize;
+        document.getElementById("font-color").value = settings.fontColor;
+        document.getElementById("font-family").value = settings.fontFamily;
+        document.getElementById("underline").value = settings.underline;
+      }
+
+      // Функция для закрытия настроек
+      function closeSettings() {
+        const settingsOverlay = document.getElementById("settings-overlay");
+        settingsOverlay.style.display = "none";
+      }
+
+      // Функция для сохранения настроек
+      function saveSettings() {
+        settings.fontSize = document.getElementById("font-size").value;
+        settings.fontColor = document.getElementById("font-color").value;
+        settings.fontFamily = document.getElementById("font-family").value;
+        settings.underline = document.getElementById("underline").value;
+
+        applySettings();
+        closeSettings();
+      }
+
+      // Функция для применения настроек
+      function applySettings() {
+        const textContainer = document.getElementById("text-container");
+        textContainer.style.fontSize = `${settings.fontSize}px`;
+        textContainer.style.color = settings.fontColor;
+        textContainer.style.fontFamily = settings.fontFamily;
+
+        const letters = document.querySelectorAll(".letter");
+        letters.forEach((letter) => {
+          letter.style.borderBottom =
+            settings.underline === "underline" ? "2px solid #ffffff" : "none";
+        });
+      }
+
+      function openCustomTextModal() {
+        document.getElementById("custom-text-overlay").style.display = "flex";
+        document.getElementById("custom-text-input").value = "";
+      }
+
+      function closeCustomTextModal() {
+        document.getElementById("custom-text-overlay").style.display = "none";
+      }
+
+      function startWithCustomText() {
+        customText = document.getElementById("custom-text-input").value.trim();
+        if (!customText) return;
+
+        isCustomText = true;
+        closeCustomTextModal();
+        startGameWithText(customText);
+      }
+
+      // Обновленная функция для запуска игры с текстом
+      function startGameWithText(text) {
+        isGameActive = true;
+        hideButtons();
+        resetAllValues();
+
+        currentText = text;
+        displayText(text);
+        document.getElementById("progress-bar-container").style.display =
+          "none";
+        document.getElementById("timer").style.display = "none";
+
+        // Не устанавливаем startTime здесь
+        totalCorrect = 0;
+        totalTyped = 0;
+        missedKeys.clear();
+        isFirstKeyPressed = false;
+        currentIndex = 0;
+        letters = document.querySelectorAll(".letter");
+
+        if (keydownHandler) {
+          document.removeEventListener("keydown", keydownHandler);
+        }
+
+        keydownHandler = (event) => {
+          if (currentIndex >= letters.length) return;
+          if (event.key === "Shift") return;
+
+          if (!isFirstKeyPressed) {
+            isFirstKeyPressed = true;
+            startTime = Date.now(); // Устанавливаем startTime при первом нажатии
+          }
+
+          const currentLetter = letters[currentIndex];
+          const expectedLetter = currentLetter
+            .getAttribute("data-letter")
+            .toLowerCase();
+          const pressedLetter = event.key.toLowerCase();
+
+          totalTyped++;
+
+          if (pressedLetter === expectedLetter) {
+            currentLetter.classList.remove("incorrect");
+            currentLetter.classList.add("correct");
+            currentIndex++;
+            totalCorrect++;
+
+            // Добавляем автоматическую прокрутку
+            autoScroll();
+          } else {
+            currentLetter.classList.add("incorrect");
+            missedKeys.add(expectedLetter);
+          }
+
+          updateStats();
+
+          if (currentIndex >= letters.length) {
+            endGame();
+          }
+        };
+
+        document.addEventListener("keydown", keydownHandler);
+      }
+
+      // Инициализация начального текста
+      resetWelcomeMessage();
+
+      // Функция для переключения видимости клавиатуры
+      function toggleKeyboard() {
+        const virtualKeyboardContainer = document.getElementById(
+          "virtual-keyboard-container"
+        );
+        const isVisible = virtualKeyboardContainer.style.display !== "none";
+        virtualKeyboardContainer.style.display = isVisible ? "none" : "block";
+        localStorage.setItem("keyboardVisible", !isVisible);
+      }
+
+      // Функция для автоматической прокрутки
+      function autoScroll() {
+        const textContainer = document.getElementById("text-container");
+        const currentLetter = letters[currentIndex];
+
+        if (currentLetter) {
+          const containerRect = textContainer.getBoundingClientRect();
+          const letterRect = currentLetter.getBoundingClientRect();
+
+          // Проверяем, находится ли текущая буква ниже видимой области
+          if (letterRect.bottom > containerRect.bottom) {
+            // Вычисляем, насколько нужно прокрутить
+            const scrollAmount = letterRect.bottom - containerRect.bottom + 50;
+            textContainer.scrollTop += scrollAmount;
+          }
+        }
+      }
+    </script>
+    <script>
+      // Функции для работы с темами
+      function toggleDropdown(menuId) {
+        const menu = document.getElementById(menuId);
+        const allMenus = document.querySelectorAll(".dropdown-menu");
+
+        // Закрываем все другие меню
+        allMenus.forEach((m) => {
+          if (m.id !== menuId) {
+            m.classList.remove("active");
+          }
+        });
+
+        // Переключаем текущее меню
+        menu.classList.toggle("active");
+      }
+
+      function selectDesignTheme(theme) {
+        document.body.className = "";
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem("designTheme", theme);
+        // Удаляем классы у всех тем
+        document.querySelectorAll(".theme-option").forEach((btn) => {
+          btn.classList.remove("active-theme");
+        });
+
+        // Добавляем класс выбранной теме
+        const activeThemeBtn = document.querySelector(
+          `.theme-option[data-theme="${theme}"]`
+        );
+        if (activeThemeBtn) {
+          activeThemeBtn.classList.add("active-theme");
+        }
+
+        // Применяем тему
+        document.body.className = `theme-${theme}`;
+        localStorage.setItem("designTheme", theme);
+
+        // Логика для логотипов
+        const defaultLogo = document.querySelector(".default-logo");
+        const ussrLogo = document.querySelector(".ussr-logo");
+
+        if (theme === "ussr") {
+          defaultLogo.style.display = "none";
+          ussrLogo.style.display = "block";
+        } else {
+          defaultLogo.style.display = "block";
+          ussrLogo.style.display = "none";
+        }
+      }
+      // Инициализация темы
+      const savedTheme = localStorage.getItem("designTheme") || "dark";
+      document
+        .querySelector(`.theme-option[data-theme="${savedTheme}"]`)
+        ?.classList.add("active-theme");
+      selectDesignTheme(savedTheme);
+
+      // Инициализация предмета
+      const savedSubject = localStorage.getItem("selectedSubject") || "math";
+      document
+        .querySelector(`[data-subject="${savedSubject}"]`)
+        ?.classList.add("active-subject");
+      currentTopic = savedSubject;
+      let currentDesignTheme = localStorage.getItem("designTheme") || "dark";
+      document.body.classList.add(`theme-${currentDesignTheme}`);
+      // После let currentDesignTheme = ... добавьте:
+      const defaultLogo = document.querySelector(".default-logo");
+      const ussrLogo = document.querySelector(".ussr-logo");
+
+      if (currentDesignTheme === "ussr") {
+        defaultLogo.style.display = "none";
+        ussrLogo.style.display = "block";
+      } else {
+        defaultLogo.style.display = "block";
+        ussrLogo.style.display = "none";
+      }
+      // Добавляем общую функцию закрытия
+      function closeAllDropdowns() {
+        document.querySelectorAll(".dropdown-menu.active").forEach((menu) => {
+          menu.classList.remove("active");
+        });
+      }
+
+      // Получаем элементы
+      const sidebar = document.getElementById("sidebar"); // предполагаем что есть id="sidebar"
+
+      // Обработчик для сайдбара
+      sidebar.addEventListener("mouseleave", (e) => {
+        // Проверяем что курсор не перешёл в меню
+        if (!e.relatedTarget || !sidebar.contains(e.relatedTarget)) {
+          closeAllDropdowns();
+        }
+      });
+
+      // Обработчик для самих меню
+      document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+        menu.addEventListener("mouseleave", (e) => {
+          // Проверяем что курсор не вернулся в сайдбар
+          if (!e.relatedTarget || !sidebar.contains(e.relatedTarget)) {
+            closeAllDropdowns();
+          }
+        });
+      });
+
+      // Оставляем обработчик кликов для других случаев
+      document.addEventListener("click", (e) => {
+        if (
+          !e.target.closest(".nav-button") &&
+          !e.target.closest(".dropdown-menu")
+        ) {
+          closeAllDropdowns();
+        }
+      });
+    </script>
+    <script>
+      // Обновленный обработчик для сайдбара
+      sidebar.addEventListener("mouseleave", (e) => {
+        // Закрываем все выпадающие меню
+        closeAllDropdowns();
+        // Сбрасываем состояние уроков
+        document.getElementById("lessons-toggle").checked = false;
+        // Скрываем стрелки
+        document.querySelectorAll(".dropdown-arrow").forEach((arrow) => {
+          arrow.style.transform = "rotate(0deg)";
+        });
+        // Скрываем панель предметов
+        document.querySelectorAll(".subjects-panel").forEach((panel) => {
+          panel.style.maxHeight = "0";
+        });
+      });
+    </script>
+
+    <!-- Кнопка переключения видимости клавиатуры -->
+    <button class="keyboard-toggle" id="keyboard-toggle">
+      <i class="fas fa-keyboard"></i>
+    </button>
+
+    <!-- Виртуальная клавиатура -->
+    <div class="virtual-keyboard-container" id="virtual-keyboard-container">
+      <div class="virtual-keyboard">
+        <!-- Верхний ряд ЙЦУКЕН -->
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="й">Й</div>
+          <div class="virtual-key" data-key="ц">Ц</div>
+          <div class="virtual-key" data-key="у">У</div>
+          <div class="virtual-key" data-key="к">К</div>
+          <div class="virtual-key" data-key="е">Е</div>
+          <div class="virtual-key" data-key="н">Н</div>
+          <div class="virtual-key" data-key="г">Г</div>
+          <div class="virtual-key" data-key="ш">Ш</div>
+          <div class="virtual-key" data-key="щ">Щ</div>
+          <div class="virtual-key" data-key="з">З</div>
+          <div class="virtual-key" data-key="х">Х</div>
+          <div class="virtual-key" data-key="ъ">Ъ</div>
+        </div>
+
+        <!-- Средний ряд ФЫВАПРОЛД -->
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="ф">Ф</div>
+          <div class="virtual-key" data-key="ы">Ы</div>
+          <div class="virtual-key" data-key="в">В</div>
+          <div class="virtual-key" data-key="а">А</div>
+          <div class="virtual-key" data-key="п">П</div>
+          <div class="virtual-key" data-key="р">Р</div>
+          <div class="virtual-key" data-key="о">О</div>
+          <div class="virtual-key" data-key="л">Л</div>
+          <div class="virtual-key" data-key="д">Д</div>
+          <div class="virtual-key" data-key="ж">Ж</div>
+          <div class="virtual-key" data-key="э">Э</div>
+        </div>
+
+        <!-- Нижний ряд ЯЧСМИТЬБЮ -->
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="я">Я</div>
+          <div class="virtual-key" data-key="ч">Ч</div>
+          <div class="virtual-key" data-key="с">С</div>
+          <div class="virtual-key" data-key="м">М</div>
+          <div class="virtual-key" data-key="и">И</div>
+          <div class="virtual-key" data-key="т">Т</div>
+          <div class="virtual-key" data-key="ь">Ь</div>
+          <div class="virtual-key" data-key="б">Б</div>
+          <div class="virtual-key" data-key="ю">Ю</div>
+          <div class="virtual-key" data-key=".">.</div>
+        </div>
+
+        <!-- Нижний ряд с пробелом -->
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key space" data-key=" ">Space</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Функционал для виртуальной клавиатуры
+      document.addEventListener("DOMContentLoaded", function () {
+        const virtualKeyboardContainer = document.getElementById(
+          "virtual-keyboard-container"
+        );
+        const keyboardToggle = document.getElementById("keyboard-toggle");
+        const settingsButton = document.getElementById("settings-button");
+        const virtualKeys = document.querySelectorAll(".virtual-key");
+
+        // Проверяем сохраненное состояние клавиатуры
+        const keyboardVisible =
+          localStorage.getItem("keyboardVisible") !== "false";
+        virtualKeyboardContainer.style.display = keyboardVisible
+          ? "block"
+          : "none";
+
+        // Обработчик для кнопки переключения в левом углу (скрыта)
+        if (keyboardToggle) {
+          keyboardToggle.style.display = "none"; // Скрываем кнопку
+        }
+
+        // Обработчик для кнопки переключения в правом углу (бывшая кнопка настроек)
+        settingsButton.addEventListener("click", function () {
+          const isVisible = virtualKeyboardContainer.style.display !== "none";
+          virtualKeyboardContainer.style.display = isVisible ? "none" : "block";
+          localStorage.setItem("keyboardVisible", !isVisible);
+        });
+
+        // Карта соответствия английских клавиш русским
+        const engToRusMap = {
+          q: "й",
+          w: "ц",
+          e: "у",
+          r: "к",
+          t: "е",
+          y: "н",
+          u: "г",
+          i: "ш",
+          o: "щ",
+          p: "з",
+          "[": "х",
+          "]": "ъ",
+          a: "ф",
+          s: "ы",
+          d: "в",
+          f: "а",
+          g: "п",
+          h: "р",
+          j: "о",
+          k: "л",
+          l: "д",
+          ";": "ж",
+          "'": "э",
+          z: "я",
+          x: "ч",
+          c: "с",
+          v: "м",
+          b: "и",
+          n: "т",
+          m: "ь",
+          ",": "б",
+          ".": "ю",
+          "/": ".",
+        };
+
+        // Обработчик нажатия клавиш
+        document.addEventListener("keydown", function (event) {
+          const key = event.key.toLowerCase();
+
+          // Проверяем, есть ли соответствие в карте или используем ключ как есть
+          const mappedKey = engToRusMap[key] || key;
+
+          // Находим соответствующую клавишу на виртуальной клавиатуре
+          virtualKeys.forEach((virtualKey) => {
+            const keyValue = virtualKey.getAttribute("data-key").toLowerCase();
+            if (keyValue === mappedKey || keyValue === key) {
+              virtualKey.classList.add("active");
+            }
+          });
+
+          // Обработка специальных клавиш
+          if (key === " ") {
+            const spaceKey = document.querySelector(
+              '.virtual-key[data-key=" "]'
+            );
+            if (spaceKey) spaceKey.classList.add("active");
+          }
+
+          // Обработка модификаторов
+          if (event.ctrlKey) {
+            document
+              .querySelectorAll('.virtual-key[data-key="Control"]')
+              .forEach((key) => {
+                key.classList.add("active");
+              });
+          }
+          if (event.altKey) {
+            document
+              .querySelectorAll('.virtual-key[data-key="Alt"]')
+              .forEach((key) => {
+                key.classList.add("active");
+              });
+          }
+        });
+
+        // Обработчик отпускания клавиш
+        document.addEventListener("keyup", function (event) {
+          const key = event.key.toLowerCase();
+
+          // Проверяем, есть ли соответствие в карте или используем ключ как есть
+          const mappedKey = engToRusMap[key] || key;
+
+          // Находим соответствующую клавишу на виртуальной клавиатуре
+          virtualKeys.forEach((virtualKey) => {
+            const keyValue = virtualKey.getAttribute("data-key").toLowerCase();
+            if (keyValue === mappedKey || keyValue === key) {
+              virtualKey.classList.remove("active");
+            }
+          });
+
+          // Обработка специальных клавиш
+          if (key === " ") {
+            const spaceKey = document.querySelector(
+              '.virtual-key[data-key=" "]'
+            );
+            if (spaceKey) spaceKey.classList.remove("active");
+          }
+
+          // Обработка модификаторов
+          if (!event.ctrlKey) {
+            document
+              .querySelectorAll('.virtual-key[data-key="Control"]')
+              .forEach((key) => {
+                key.classList.remove("active");
+              });
+          }
+          if (!event.altKey) {
+            document
+              .querySelectorAll('.virtual-key[data-key="Alt"]')
+              .forEach((key) => {
+                key.classList.remove("active");
+              });
+          }
+        });
+      });
+    </script>
+
+    <!-- Добавляем обработчик для отключения прокрутки пробелом -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const textContainer = document.getElementById("text-container");
+
+        textContainer.addEventListener("keydown", function (e) {
+          if (e.key === " ") {
+            e.preventDefault();
+          }
+        });
+      });
+    </script>
+    <!-- <script>
+      // Функционал для виртуальной клавиатуры
+      document.addEventListener("DOMContentLoaded", function () {
+        // Проверяем, является ли устройство мобильным
+        function isMobileDevice() {
+          return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+        }
+
+        // Если устройство мобильное, показываем предупреждение
+        if (isMobileDevice()) {
+          document.querySelector(".mobile-warning").style.display = "flex";
+          // Отключаем все остальные элементы
+          document.body.style.overflow = "hidden";
+        }
+      });
+    </script> !-->
+  </body>
+</html>
