@@ -24,10 +24,24 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <p style="opacity: 0.3">
-      Участник конкурса "КРИТ-2025" Нуртдинов Шамиль приветствует жюри конкурса!
-    </p>
-
+    <!-- Добавляем элемент предупреждения для мобильных устройств -->
+    <div class="mobile-warning">
+      <div class="mobile-warning-content">
+        <div class="mobile-warning-icon">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <div>Сайт функционирует только на десктопных устройствах</div>
+      </div>
+    </div>
+    <!-- Добавляем элемент предупреждения для мобильных устройств -->
+    <div class="mobile-warning">
+      <div class="mobile-warning-content">
+        <div class="mobile-warning-icon">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <div>Сайт функционирует только на десктопных устройствах</div>
+      </div>
+    </div>
     <!-- Боковая панель -->
     <nav class="sidebar">
       <!-- Логотип -->
@@ -223,15 +237,14 @@
       </div>
       <!-- Настройки внизу -->
       <div class="menu-group settings-group">
-        <!-- Кнопка информации -->
-        <a class="menu-item" onclick="openInfoModal()">
+        <a href="/profile" class="menu-item">
           <svg viewBox="0 0 24 24" width="24" height="24">
             <path
               fill="currentColor"
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
             />
           </svg>
-          <span>Информация</span>
+          <span>Профиль</span>
         </a>
         <a class="menu-item" onclick="openSettings()">
           <svg viewBox="0 0 24 24" width="24" height="24">
@@ -371,8 +384,8 @@
     </div>
 
     <!-- Кнопка настроек -->
-    <button class="settings-button" onclick="openSettings()">
-      <i class="fas fa-cog"></i>
+    <button class="settings-button" id="settings-button">
+      <i class="fas fa-keyboard"></i>
     </button>
 
     <!-- Всплывающее окно настроек -->
@@ -400,7 +413,63 @@
         </div>
       </div>
     </div>
+    <button class="keyboard-toggle" id="keyboard-toggle">
+      <i class="fas fa-keyboard"></i>
+    </button>
 
+    <div class="virtual-keyboard-container" id="virtual-keyboard-container">
+      <div class="virtual-keyboard">
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="й">Й</div>
+          <div class="virtual-key" data-key="ц">Ц</div>
+          <div class="virtual-key" data-key="у">У</div>
+          <div class="virtual-key" data-key="к">К</div>
+          <div class="virtual-key" data-key="е">Е</div>
+          <div class="virtual-key" data-key="н">Н</div>
+          <div class="virtual-key" data-key="г">Г</div>
+          <div class="virtual-key" data-key="ш">Ш</div>
+          <div class="virtual-key" data-key="щ">Щ</div>
+          <div class="virtual-key" data-key="з">З</div>
+          <div class="virtual-key" data-key="х">Х</div>
+          <div class="virtual-key" data-key="ъ">Ъ</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="ф">Ф</div>
+          <div class="virtual-key" data-key="ы">Ы</div>
+          <div class="virtual-key" data-key="в">В</div>
+          <div class="virtual-key" data-key="а">А</div>
+          <div class="virtual-key" data-key="п">П</div>
+          <div class="virtual-key" data-key="р">Р</div>
+          <div class="virtual-key" data-key="о">О</div>
+          <div class="virtual-key" data-key="л">Л</div>
+          <div class="virtual-key" data-key="д">Д</div>
+          <div class="virtual-key" data-key="ж">Ж</div>
+          <div class="virtual-key" data-key="э">Э</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="я">Я</div>
+          <div class="virtual-key" data-key="ч">Ч</div>
+          <div class="virtual-key" data-key="с">С</div>
+          <div class="virtual-key" data-key="м">М</div>
+          <div class="virtual-key" data-key="и">И</div>
+          <div class="virtual-key" data-key="т">Т</div>
+          <div class="virtual-key" data-key="ь">Ь</div>
+          <div class="virtual-key" data-key="б">Б</div>
+          <div class="virtual-key" data-key="ю">Ю</div>
+          <div class="virtual-key" data-key=".">.</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key space" data-key=" ">Space</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+        </div>
+      </div>
+    </div>
     <!-- Подключение файла с фактами -->
     <script src="facts.js"></script>
     <script src="script.js"></script>
