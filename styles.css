@@ -1,1407 +1,1398 @@
-    <style>
-      /* Основные стили */
-      body {
-        font-family: "Montserrat", sans-serif;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-        color: #ffffff;
-        margin: 0;
-      }
-
-      .progress-bar-container {
-        width: 100%;
-        max-width: 800px;
-        margin-bottom: 60px;
-        display: none; /* Скрываем по умолчанию */
-      }
-
-      .progress-bar {
-        width: 100%;
-        height: 10px;
-        background: #444;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-top: -240px;
-      }
-
-      .progress-bar-fill {
-        height: 100%;
-        background: #4caf50;
-        width: 100%;
-        transition: width 1s linear;
-      }
-
-      .timer {
-        font-size: 1rem;
-        margin-top: 10px;
-        color: #4caf50;
-        display: none; /* Скрываем таймер по умолчанию */
-      }
-
-      .text-container {
-        font-size: 24px;
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 800px;
-        margin-bottom: 20px;
-        background: rgba(255, 255, 255, 0.1);
-
-        border-radius: 15px;
-
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        text-align: center;
-        justify-content: center;
-        margin-top: -120px;
-        max-height: calc(1.25 * 24px * 5);
-        overflow-y: auto;
-        scroll-behavior: smooth;
-        position: relative;
-        /* Скрываем полосу прокрутки */
-        scrollbar-width: none; /* Для Firefox */
-        -ms-overflow-style: none; /* Для IE и Edge */
-        pointer-events: none;
-
-        /* line-height: 1.5; */
-        padding: 0px;
-        /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
-        border: 20px solid #39384800;
-        border-top: 20px solid #39384800;
-      }
-
-      .text-container.timer-mode {
-        margin-top: -240px;
-        /* border: 1px solid #ccc; */
-        font-size: 16px;
-        /* line-height: 1.5; */
-        height: calc(1.25 * 24px * 5);
-        /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
-        border: 10px solid #39384800;
-        border-top: 10px solid #39384800;
-        margin-top: -240px;
-      }
-
-      /* Скрываем полосу прокрутки для Chrome, Safari и Opera */
-      .text-container::-webkit-scrollbar {
-        display: none;
-      }
-
-      /* Добавляем стили для активного текста */
-      .text-container.active-scroll {
-        overflow-y: auto;
-        scroll-behavior: smooth;
-      }
-
-      /* Стили для контейнера с текстом */
-      .text-wrapper {
-        position: relative;
-        width: 100%;
-        min-height: 100%;
-      }
-
-      /* Стили для активного слова */
-      .active-word {
-        background-color: rgba(76, 175, 80, 0.2);
-        border-radius: 3px;
-      }
-
-      /* Стили для текущей буквы */
-      .current-letter {
-        background-color: rgba(76, 175, 80, 0.4);
-        border-radius: 3px;
-      }
-
-      .word {
-        display: inline-block; /* Каждое слово оборачиваем в span */
-        white-space: nowrap; /* Запрещаем перенос внутри слова */
-        margin-right: 5px; /* Добавляем небольшой отступ между словами */
-      }
-
-      .letter {
-        padding: 0 2px;
-        transition: color 0.3s ease, border-color 0.3s ease;
-        font-weight: 700;
-        border-bottom: none; /* Изначально отключаем подчеркивание */
-      }
-
-      .correct {
-        color: #4caf50;
-      }
-
-      .incorrect {
-        color: #ff5252;
-      }
-
-      .stats {
-        display: none; /* Скрываем блок по умолчанию */
-        margin-top: 10px;
-        font-size: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-      }
-
-      .stats-active {
-        display: flex; /* Отображаем элементы в одну строку */
-        justify-content: space-between; /* Равномерно распределяем элементы */
-        align-items: center; /* Выравниваем элементы по центру по вертикали */
-        gap: 20px; /* Добавляем отступы между показателями */
-      }
-
-      .buttons {
-        margin-top: 20px;
-        display: flex;
-        gap: 10px;
-      }
-
-      .buttons button {
-        width: 50px;
-        height: 50px;
-        background: #4caf50;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .buttons button:hover {
-        background: #45a049;
-        transform: scale(1.1);
-      }
-
-      .timer-buttons {
-        display: none;
-        margin-top: 10px;
-        gap: 5px;
-      }
-
-      .timer-buttons button {
-        width: 50px;
-        height: 50px;
-        background: #444;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-      }
-
-      .timer-buttons button:hover {
-        background: #555;
-        transform: scale(1.1);
-      }
-
-      /* Стили для финальной панели */
-      .result-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        color: white;
-        animation: fadeIn 0.5s ease;
-        z-index: 2;
-      }
-
-      .result-content {
-        background: #2a2a40;
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 600px;
-        width: 100%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      }
-
-      .result-content h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: #4caf50;
-        font-weight: 700;
-      }
-
-      /* Контейнер для результатов */
-      .results-container {
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Центрируем по горизонтали */
-        gap: 40px; /* Расстояние между диаграммой и показателями */
-        margin-bottom: 20px;
-      }
-
-      /* Стили для кругового графика */
-      .accuracy-chart {
-        width: 150px;
-        height: 150px;
-      }
-
-      .chart {
-        width: 100%;
-        height: 100%;
-      }
-
-      .chart-background {
-        fill: none;
-        stroke: #444;
-        stroke-width: 10;
-      }
-
-      .chart-progress {
-        fill: none;
-        stroke: #4caf50;
-        stroke-width: 10;
-        stroke-dasharray: 283; /* 2 * π * r (45) */
-        stroke-dashoffset: 283;
-        transition: stroke-dashoffset 0.5s ease;
-      }
-
-      .chart-text {
-        font-size: 20px;
-        fill: #ffffff;
-        font-weight: bold;
-      }
-
-      /* Стили для показателей скорости и точности */
-      .stats-results {
-        font-size: 1.2rem;
-        text-align: left;
-      }
-
-      .stats-results div {
-        margin-bottom: 10px;
-      }
-
-      /* Стили для визуализации клавиатуры */
-      .keyboard-visualization {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Центрируем клавиатуру */
-        gap: 5px;
-        margin-top: 20px;
-      }
-
-      .keyboard-row {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-      }
-
-      .key {
-        width: 40px;
-        height: 40px;
-        background: #444;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        color: white;
-        transition: background 0.3s ease;
-      }
-
-      .key.missed {
-        background: #ff5252;
-      }
-
-      /* Стили для кнопки "Продолжить" */
-      .result-content button {
-        padding: 10px 20px;
-        background: #4caf50;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-        margin-top: 20px; /* Добавляем отступ сверху */
-      }
-
-      .result-content button:hover {
-        background: #45a049;
-        transform: scale(1.05);
-      }
-
-      /* Стили для текста "Приготовьтесь! Поехали!" */
-      .ready-text {
-        color: #4caf50; /* Зеленый цвет */
-        font-size: 1.2rem;
-        margin-top: 10px;
-        font-weight: bold;
-      }
-
-      /* Стили для кнопки настроек */
-      .settings-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #4caf50;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease, transform 0.2s ease;
-      }
-
-      .settings-button:hover {
-        background: #45a049;
-        transform: scale(1.1);
-      }
-
-      /* Стили для всплывающего окна настроек */
-      .settings-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        color: white;
-        animation: fadeIn 0.5s ease;
-      }
-
-      .settings-content {
-        background: #2a2a40;
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      }
-
-      .settings-content h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        color: #4caf50;
-        font-weight: 700;
-      }
-
-      .settings-content label {
-        display: block;
-        margin-bottom: 10px;
-        font-size: 1rem;
-      }
-
-      .settings-content input,
-      .settings-content select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        border: none;
-        background: #444;
-        color: white;
-      }
-
-      .settings-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-      }
-
-      .settings-buttons button {
-        padding: 10px 20px;
-        background: #4caf50;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-      }
-
-      .settings-buttons button:hover {
-        background: #45a049;
-        transform: scale(1.05);
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
-    <style>
-      /* Стили для всплывающего окна настроек */
-      .settings-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        color: white;
-        animation: fadeIn 0.5s ease;
-        z-index: 1000;
-      }
-
-      .settings-content {
-        background: linear-gradient(145deg, #2a2a40, #1e1e2f);
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        transform: scale(0.9);
-        opacity: 0;
-        animation: scaleUp 0.3s ease forwards;
-      }
-
-      @keyframes scaleUp {
-        to {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-
-      .settings-content h2 {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-        color: #4caf50;
-        font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      }
-
-      .settings-content label {
-        display: block;
-        margin-bottom: 10px;
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.9);
-        text-align: left;
-      }
-
-      .settings-content input,
-      .settings-content select {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: none;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 1rem;
-        transition: background 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .settings-content input:focus,
-      .settings-content select:focus {
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-        outline: none;
-      }
-
-      .settings-content input[type="color"] {
-        padding: 5px;
-        height: 50px;
-        cursor: pointer;
-      }
-
-      .settings-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 20px;
-      }
-
-      .settings-buttons button {
-        padding: 12px 24px;
-        background: linear-gradient(145deg, #4caf50, #45a049);
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
-        flex: 1;
-      }
-
-      .settings-buttons button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-      }
-
-      .settings-buttons button:active {
-        transform: scale(0.95);
-      }
-
-      /* Анимация для закрытия окна */
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-        }
-      }
-
-      .settings-overlay.closing {
-        animation: fadeOut 0.3s ease forwards;
-      }
-
-      .settings-content.closing {
-        animation: scaleDown 0.3s ease forwards;
-      }
-
-      @keyframes scaleDown {
-        from {
-          transform: scale(1);
-          opacity: 1;
-        }
-        to {
-          transform: scale(0.9);
-          opacity: 0;
-        }
-      }
-    </style>
-    <style>
-      :root {
-        --bg-color: #2d333b;
-        --border-color: #444c56;
-        --text-color: #adbac7;
-        --hover-bg: #373e47;
-        --active-bg: #444c56;
-        --dropdown-bg: #343b44;
-        --font-primary: "Inter", system-ui, sans-serif;
-        --font-secondary: "Roboto Mono", monospace;
-      }
-
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap");
-
-      .sidebar {
-        width: 72px;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        background: var(--bg-color);
-        border-right: 1px solid var(--border-color);
-        padding: 1rem 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        transition: width 0.2s ease;
-        font-family: var(--font-primary);
-        z-index: 1;
-      }
-
-      .sidebar:hover {
-        width: 240px;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0 1rem;
-        margin-bottom: 1rem;
-        text-decoration: none;
-        color: var(--text-color);
-      }
-
-      .logo-icon {
-        flex-shrink: 0;
-      }
-
-      .logo-text {
-        font-weight: 600;
-        font-size: 1.1rem;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        font-family: var(--font-secondary);
-      }
-
-      .sidebar:hover .logo-text {
-        opacity: 1;
-      }
-
-      .menu-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.01rem;
-        padding: 0 0.5rem;
-      }
-
-      .menu-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 6px;
-        color: var(--text-color);
-        text-decoration: none;
-        transition: all 0.2s ease;
-        position: relative;
-      }
-
-      .menu-item:hover {
-        background: var(--hover-bg);
-      }
-
-      .menu-item.active {
-        background: #ffffff00;
-      }
-
-      .menu-item svg {
-        flex-shrink: 0;
-        width: 24px;
-        height: 24px;
-      }
-
-      .menu-item span {
-        opacity: 0;
-        white-space: nowrap;
-        transition: opacity 0.2s ease;
-      }
-
-      .sidebar:hover .menu-item span {
-        opacity: 1;
-      }
-
-      /* Стили для выпадающего меню */
-      .toggle-checkbox {
-        display: none;
-      }
-
-      .dropdown-toggle {
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .dropdown-arrow {
-        margin-left: auto;
-        transform: rotate(0deg);
-        transition: transform 0.2s ease;
-      }
-
-      .subjects-panel {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.7s ease;
-        padding-left: 2.5rem;
-      }
-
-      /* Гарантированное скрытие при свернутой панели */
-      .sidebar:not(:hover) #lessons-toggle:checked ~ .subjects-panel {
-        max-height: 0 !important;
-        margin: 0 !important;
-        opacity: 0 !important;
-      }
-
-      /* Отключаем переходы при скрытой панели */
-      .sidebar:not(:hover) .subjects-panel {
-        transition: none;
-      }
-      #lessons-toggle:checked ~ .subjects-panel {
-        max-height: 500px;
-      }
-
-      #lessons-toggle:checked + .dropdown-toggle .dropdown-arrow {
-        transform: rotate(180deg);
-      }
-
-      .subject-item {
-        padding: 0.5rem 1rem;
-        color: var(--text-color);
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9em;
-        transition: background 0.2s ease;
-      }
-
-      .subject-item:hover {
-        background: var(--hover-bg);
-      }
-
-      /* Группа настроек внизу */
-      .settings-group {
-        margin-top: auto;
-        padding-bottom: 1rem;
-      }
-    </style>
-    <style>
-      /* Обновленные стили для выпадающих меню */
-      .dropdown-menu {
-        border-radius: 6px;
-
-        opacity: 0;
-        visibility: hidden;
-        transform: translateX(-10px);
-        transition: all 0.2s ease;
-
-        z-index: 100;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        padding-left: 2.5rem;
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .dropdown-menu.active {
-        opacity: 1;
-        visibility: visible;
-        /* transform: translateX(0); */
-        max-height: 220px;
-      }
-      #lessons-toggle:checked ~ .dropdown-menu {
-        max-height: 500px;
-      }
-
-      .theme-option {
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-
-        padding: 0.5rem 1rem;
-        color: var(--text-color);
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9em;
-        transition: background 0.2sease;
-      }
-
-      .theme-option:hover {
-        background: var(--hover-bg);
-      }
-
-      /* Фикс для стрелки */
-      .dropdown-arrow {
-        right: 12px;
-        transition: transform 0.2s ease;
-      }
-
-      /* Темы оформления */
-      .theme-dark {
-        --bg-color: #1a1a2e;
-        --border-color: #444c5600;
-        --text-color: #adbac7;
-        --text-color: #ffffff;
-        --hover-bg: #373e47;
-        --active-bg: #444c56;
-        --dropdown-bg: #343b44;
-      }
-
-      .theme-light {
-        --bg-color: #ffffff;
-        --border-color: #e4e4e4;
-        --text-color: #2d333b;
-        --hover-bg: #f5f5f5;
-        --active-bg: #e8e8e8;
-        --dropdown-bg: #ffffff;
-      }
-      .theme-ocean {
-        --bg-color: #25336d;
-        --border-color: #444c5600;
-        --text-color: #adbac7;
-        --text-color: #ffffff;
-        --hover-bg: #373e47;
-        --active-bg: #444c56;
-        --dropdown-bg: #343b44;
-      }
-      /* Добавляем новую тему СССР */
-      .theme-ussr {
-        --bg-color: #fcf9f2; /* Основной фон */
-        --border-color: #801310; /* Дополнительный цвет для границ */
-        --text-color: #302e2f; /* Цвет текста */
-        --hover-bg: #fa3f27; /* Цвет при наведении */
-        --active-bg: #801310; /* Активный цвет */
-        --dropdown-bg: #fcf9f2; /* Фон выпадающих меню */
-      }
-
-      /* Применяем градиент для фона */
-      .theme-ussr {
-        background: linear-gradient(135deg, #fcf9f2, #fcf9f2);
-        color: var(--text-color);
-      }
-      /* Обновляем стили для кнопок в теме СССР */
-      .theme-ussr .buttons button {
-        background: #c4000f; /* Основной цвет кнопок */
-        color: #fcf9f2; /* Цвет текста на кнопках */
-      }
-      .theme-ussr .settings-button {
-        background: #a1b227;
-      }
-      .theme-ussr .ready-text {
-        color: #801310;
-      }
-      .theme-ussr .buttons button:hover {
-        background: #801310; /* Цвет кнопок при наведении */
-      }
-
-      /* Обновляем стили для прогресс-бара */
-      .theme-ussr .progress-bar {
-        background: #801310; /* Цвет фона прогресс-бара */
-      }
-
-      .theme-ussr .progress-bar-fill {
-        background: #fa3f27; /* Цвет заполнения прогресс-бара */
-      }
-
-      /* Обновляем стили для клавиатуры */
-      .theme-ussr .key {
-        background: #a1b227; /* Цвет клавиш */
-        color: #fcf9f2; /* Цвет текста на клавишах */
-      }
-
-      .theme-ussr .key.missed {
-        background: #c4000f; /* Цвет клавиш с ошибками */
-      }
-      .theme-ussr .chart-progress {
-        fill: none;
-        stroke: #a0b42e;
-        stroke-width: 10;
-        stroke-dasharray: 283;
-        stroke-dashoffset: 283;
-        transition: stroke-dashoffset 0.5sease;
-      }
-      .theme-ussr .chart-text {
-        font-size: 20px;
-        fill: #000000;
-        font-weight: bold;
-      }
-
-      .theme-ussr .result-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000000de;
-        justify-content: center;
-        align-items: center;
-        color: #000000;
-        animation: fadeIn 0.5sease;
-      }
-      .theme-ussr .result-content h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: #a0b42e;
-        font-weight: 700;
-      }
-
-      .theme-ussr .chart-background {
-        fill: none;
-        stroke: #888686;
-        stroke-width: 10;
-      }
-      .theme-ussr .result-content button {
-        padding: 10px 20px;
-        background: #a0b42e;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3sease, transform 0.2sease;
-        margin-top: 20px;
-      }
-      .theme-ussr .result-content {
-        background: #fcf9f2;
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 600px;
-        width: 100%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      }
-
-      /* Обновляем стили для текста */
-      .theme-ussr .text-container {
-        color: #302e2f; /* Цвет текста */
-        background: rgba(252, 249, 242, 0.9); /* Фон текстового контейнера */
-      }
-
-      /* Обновляем стили для статистики */
-      .theme-ussr .stats {
-        background: rgba(252, 249, 242, 0.9); /* Фон статистики */
-        color: #302e2f; /* Цвет текста статистики */
-      }
-      /* Скрываем герб СССР по умолчанию */
-      .ussr-logo {
-        display: none;
-      }
-
-      /* Показываем герб СССР при выборе темы "СССР" */
-      .theme-ussr .default-logo {
-        display: none;
-      }
-
-      .theme-ussr .ussr-logo {
-        display: block;
-      }
-      /* Темы оформления */
-      .theme-dark {
-        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-      }
-
-      .theme-light {
-        background: linear-gradient(135deg, #f0f0f5, #ffffff);
-        color: #333;
-      }
-
-      .theme-ocean {
-        background: linear-gradient(135deg, #1a2a6c, #3a6073);
-      }
-    </style>
-    <style>
-      /* Добавляем анимацию для стрелок */
-      .dropdown-arrow {
-        transition: transform 0.2s ease, opacity 0.2s ease;
-      }
-
-      /* Скрываем элементы при свернутой панели */
-      .sidebar:not(:hover) .dropdown-arrow,
-      .sidebar:not(:hover) .subjects-panel,
-      .sidebar:not(:hover) .dropdown-menu {
-        opacity: 0;
-        pointer-events: none;
-        max-height: 0 !important;
-        margin: 0 !important;
-        opacity: 0 !important;
-      }
-
-      /* Показываем элементы при наведении */
-      .sidebar:hover .dropdown-arrow,
-      .sidebar:hover .subjects-panel,
-      .sidebar:hover .dropdown-menu {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      /* Обновляем стили для кнопки темы */
-      .menu-group .dropdown-toggle {
-        background: transparent;
-        border: none;
-        width: auto;
-        text-align: left;
-        padding: 0.75rem 1rem;
-      }
-      /* В раздел стилей сайдбара */
-      .subject-item.active-subject {
-        background: rgba(76, 175, 80, 0.15);
-        border-left: 4px solid #4caf50;
-        font-weight: 500;
-      }
-
-      /* Для темы СССР */
-      .theme-ussr .subject-item.active-subject {
-        border-left-color: #a0b42e;
-        background: rgba(160, 180, 46, 0.15);
-      }
-      .subject-item {
-        transition: all 0.2s ease;
-        cursor: pointer;
-      }
-
-      .subject-item:hover {
-        transform: translateX(5px);
-      }
-      /* Стили для активной темы */
-      .theme-option.active-theme {
-        background: rgba(76, 175, 80, 0.15);
-        border-left: 4px solid #4caf50;
-        font-weight: 500;
-      }
-
-      /* Адаптация для разных тем */
-      .theme-light .theme-option.active-theme {
-        border-left-color: #2e7d32;
-        background: rgba(46, 125, 50, 0.1);
-      }
-
-      .theme-ussr .theme-option.active-theme {
-        border-left-color: #a0b42e;
-        background: rgba(160, 180, 46, 0.15);
-      }
-
-      .theme-ocean .theme-option.active-theme {
-        border-left-color: #2196f3;
-        background: rgba(33, 150, 243, 0.1);
-      }
-      /* Общие стили для всех элементов меню */
-      .subject-item,
-      .theme-option {
-        transition: all 0.2s ease;
-        cursor: pointer;
-        padding: 8px 12px;
-        margin: 2px 0;
-      }
-
-      .subject-item:hover,
-      .theme-option:hover {
-        transform: translateX(5px);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      /* Для светлой темы */
-      .theme-light .subject-item:hover,
-      .theme-light .theme-option:hover {
-        background: rgba(0, 0, 0, 0.05);
-      }
-      /* Для ссср темы */
-      .theme-ussr .subject-item:hover,
-      .theme-ussr .theme-option:hover {
-        background: #2f1e1f15;
-      }
-      .theme-ussr .theme-option:hover {
-        background: #2f1e1f15;
-      }
-      .menu-item:hover {
-        background: #2f1e1f15;
-      }
-    </style>
-    <style>
-      .custom-text-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        color: white;
-        z-index: 1000;
-      }
-
-      .custom-text-content {
-        background: #2a2a40;
-        padding: 30px;
-        border-radius: 15px;
-        width: 80%;
-        max-width: 600px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      }
-
-      #custom-text-input {
-        width: 95%;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 10px;
-        border: 1px solid #444;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-family: inherit;
-        font-size: 16px;
-        resize: vertical;
-        min-height: 150px;
-      }
-      .custom-text-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        color: white;
-        z-index: 1000;
-      }
-      .menu-item span {
-        /* opacity: 0; */
-        /* white-space: nowrap; */
-        transition: opacity 0.2sease;
-        font-size: 1rem;
-        font-family: var(--font-primary);
-      }
-    </style>
-    <style>
-      /* Стили для виртуальной клавиатуры */
-      .virtual-keyboard-container {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        /* width: 90%; */
-        max-width: 1000px;
-        background: rgb(27 25 46);
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        z-index: 0;
-        /* backdrop-filter: blur(5px); */
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        animation: fadeIn 0.5s ease-in-out;
-      }
-
-      .virtual-keyboard {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-      }
-
-      .virtual-keyboard-row {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-      }
-
-      .virtual-key {
-        min-width: 40px;
-        height: 40px;
-        background: rgb(57 57 74);
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        color: white;
-        transition: all 0.2s ease;
-        user-select: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .virtual-key.active {
-        background: #4caf50;
-        transform: translateY(2px);
-        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-      }
-
-      .virtual-key.space {
-        width: 300px;
-      }
-
-      .virtual-key.wide {
-        min-width: 60px;
-      }
-
-      .virtual-key.extra-wide {
-        min-width: 80px;
-      }
-
-      /* Адаптация для разных тем */
-      .theme-light .virtual-keyboard-container {
-        background: rgb(240, 240, 245);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-      }
-
-      .theme-light .virtual-key {
-        background: #000000;
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      .theme-light .virtual-key.active {
-        background: #2e7d32;
-        color: white;
-      }
-
-      .theme-ocean .virtual-keyboard-container {
-        background: rgba(26, 42, 108, 0.8);
-      }
-
-      .theme-ocean .virtual-key.active {
-        background: #2196f3;
-      }
-
-      .theme-ussr .virtual-keyboard-container {
-        background: rgba(252, 249, 242, 0.8);
-      }
-
-      .theme-ussr .virtual-key {
-        background: rgb(182 0 23);
-        color: #fbf9f2;
-      }
-
-      .theme-ussr .virtual-key.active {
-        background: #6f0710;
-        color: #fcf9f2;
-      }
-
-      /* Переключатель видимости клавиатуры */
-      .keyboard-toggle {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        background: #4caf50;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        display: none; /* Скрываем кнопку */
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease, transform 0.2s ease;
-        z-index: 101;
-      }
-
-      .keyboard-toggle:hover {
-        background: #45a049;
-        transform: scale(1.1);
-      }
-
-      .theme-ussr .keyboard-toggle {
-        background: #c4000f;
-      }
-
-      .theme-ussr .keyboard-toggle:hover {
-        background: #801310;
-      }
-
-      .theme-light .keyboard-toggle {
-        background: #2e7d32;
-      }
-
-      .theme-ocean .keyboard-toggle {
-        background: #2196f3;
-      }
-    </style>
-    <style>
-      /* Стили для мобильного предупреждения */
-      .mobile-warning {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #1e1e2f;
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-      }
-
-      .mobile-warning-content {
-        color: #ffffff;
-        font-size: 24px;
-        line-height: 1.5;
-        max-width: 80%;
-      }
-
-      .mobile-warning-icon {
-        font-size: 48px;
-        margin-bottom: 20px;
-        color: #4caf50;
-      }
-
-      @media (max-width: 768px) {
-        .mobile-warning {
-          display: flex;
-        }
-      }
-      @media (max-width: 1024px) {
-        .mobile-warning {
-          display: flex;
-        }
-      }
-      @media (max-width: 1200px) {
-        .progress-bar {
-          width: 100%;
-          height: 10px;
-          background: #444;
-          border-radius: 5px;
-          overflow: hidden;
-          margin-top: -240px;
-        }
-
-        .text-container {
-          font-size: 24px;
-          display: flex;
-          flex-wrap: wrap;
-          max-width: 800px;
-          margin-bottom: 20px;
-          background: rgba(255, 255, 255, 0.1);
-
-          border-radius: 15px;
-
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          text-align: center;
-          justify-content: center;
-          margin-top: -240px;
-          max-height: calc(1.25 * 24px * 5);
-          overflow-y: auto;
-          scroll-behavior: smooth;
-          position: relative;
-          /* Скрываем полосу прокрутки */
-          scrollbar-width: none; /* Для Firefox */
-          -ms-overflow-style: none; /* Для IE и Edge */
-          pointer-events: none;
-
-          /* line-height: 1.5; */
-          padding: 0px;
-          /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
-          border: 20px solid #39384800;
-          border-top: 20px solid #39384800;
-        }
-
-        .text-container.timer-mode {
-          margin-top: -240px;
-          /* border: 1px solid #ccc; */
-          font-size: 16px;
-          /* line-height: 1.5; */
-          height: calc(1.25 * 24px * 5);
-          /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
-          border: 10px solid #39384800;
-          border-top: 10px solid #39384800;
-          margin-top: -240px;
-        }
-        .stats-active {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 20px;
-        }
-
-        .stats {
-          display: none;
-          margin-top: 10px;
-          font-size: 1rem;
-          background: rgba(255, 255, 255, 0.1);
-          padding: 10px;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-          text-align: center;
-        }
-
-        .stats-active > div {
-          display: inline-block; /* Отображает элементы в одну строку */
-          flex: 1; /* Позволяет элементам занимать доступное пространство */
-          text-align: center; /* Центрирует текст внутри каждого элемента */
-          white-space: nowrap; /* Предотвращает перенос текста */
-        }
-      }
-    </style>
+/* Основные стили */
+body {
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+  color: #ffffff;
+  margin: 0;
+}
+
+.progress-bar-container {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 60px;
+  display: none; /* Скрываем по умолчанию */
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #444;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: -240px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #4caf50;
+  width: 100%;
+  transition: width 1s linear;
+}
+
+.timer {
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #4caf50;
+  display: none; /* Скрываем таймер по умолчанию */
+}
+
+.text-container {
+  font-size: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+
+  border-radius: 15px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  justify-content: center;
+  margin-top: -120px;
+  max-height: calc(1.25 * 24px * 5);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: relative;
+  /* Скрываем полосу прокрутки */
+  scrollbar-width: none; /* Для Firefox */
+  -ms-overflow-style: none; /* Для IE и Edge */
+  pointer-events: none;
+
+  /* line-height: 1.5; */
+  padding: 0px;
+  /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+  border: 20px solid #39384800;
+  border-top: 20px solid #39384800;
+}
+
+.text-container.timer-mode {
+  margin-top: -240px;
+  /* border: 1px solid #ccc; */
+  font-size: 16px;
+  /* line-height: 1.5; */
+  height: calc(1.25 * 24px * 5);
+  /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+  border: 10px solid #39384800;
+  border-top: 10px solid #39384800;
+  margin-top: -240px;
+}
+
+/* Скрываем полосу прокрутки для Chrome, Safari и Opera */
+.text-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Добавляем стили для активного текста */
+.text-container.active-scroll {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Стили для контейнера с текстом */
+.text-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
+/* Стили для активного слова */
+.active-word {
+  background-color: rgba(76, 175, 80, 0.2);
+  border-radius: 3px;
+}
+
+/* Стили для текущей буквы */
+.current-letter {
+  background-color: rgba(76, 175, 80, 0.4);
+  border-radius: 3px;
+}
+
+.word {
+  display: inline-block; /* Каждое слово оборачиваем в span */
+  white-space: nowrap; /* Запрещаем перенос внутри слова */
+  margin-right: 5px; /* Добавляем небольшой отступ между словами */
+}
+
+.letter {
+  padding: 0 2px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  font-weight: 700;
+  border-bottom: none; /* Изначально отключаем подчеркивание */
+}
+
+.correct {
+  color: #4caf50;
+}
+
+.incorrect {
+  color: #ff5252;
+}
+
+.stats {
+  display: none; /* Скрываем блок по умолчанию */
+  margin-top: 10px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.stats-active {
+  display: flex; /* Отображаем элементы в одну строку */
+  justify-content: space-between; /* Равномерно распределяем элементы */
+  align-items: center; /* Выравниваем элементы по центру по вертикали */
+  gap: 20px; /* Добавляем отступы между показателями */
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  width: 50px;
+  height: 50px;
+  background: #4caf50;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons button:hover {
+  background: #45a049;
+  transform: scale(1.1);
+}
+
+.timer-buttons {
+  display: none;
+  margin-top: 10px;
+  gap: 5px;
+}
+
+.timer-buttons button {
+  width: 50px;
+  height: 50px;
+  background: #444;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.timer-buttons button:hover {
+  background: #555;
+  transform: scale(1.1);
+}
+
+/* Стили для финальной панели */
+.result-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  animation: fadeIn 0.5s ease;
+  z-index: 2;
+}
+
+.result-content {
+  background: #2a2a40;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.result-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #4caf50;
+  font-weight: 700;
+}
+
+/* Контейнер для результатов */
+.results-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Центрируем по горизонтали */
+  gap: 40px; /* Расстояние между диаграммой и показателями */
+  margin-bottom: 20px;
+}
+
+/* Стили для кругового графика */
+.accuracy-chart {
+  width: 150px;
+  height: 150px;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-background {
+  fill: none;
+  stroke: #444;
+  stroke-width: 10;
+}
+
+.chart-progress {
+  fill: none;
+  stroke: #4caf50;
+  stroke-width: 10;
+  stroke-dasharray: 283; /* 2 * π * r (45) */
+  stroke-dashoffset: 283;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.chart-text {
+  font-size: 20px;
+  fill: #ffffff;
+  font-weight: bold;
+}
+
+/* Стили для показателей скорости и точности */
+.stats-results {
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.stats-results div {
+  margin-bottom: 10px;
+}
+
+/* Стили для визуализации клавиатуры */
+.keyboard-visualization {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрируем клавиатуру */
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.key {
+  width: 40px;
+  height: 40px;
+  background: #444;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.key.missed {
+  background: #ff5252;
+}
+
+/* Стили для кнопки "Продолжить" */
+.result-content button {
+  padding: 10px 20px;
+  background: #4caf50;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-top: 20px; /* Добавляем отступ сверху */
+}
+
+.result-content button:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+/* Стили для текста "Приготовьтесь! Поехали!" */
+.ready-text {
+  color: #4caf50; /* Зеленый цвет */
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Стили для кнопки настроек */
+.settings-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #4caf50;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.settings-button:hover {
+  background: #45a049;
+  transform: scale(1.1);
+}
+
+/* Стили для всплывающего окна настроек */
+.settings-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  animation: fadeIn 0.5s ease;
+}
+
+.settings-content {
+  background: #2a2a40;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.settings-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #4caf50;
+  font-weight: 700;
+}
+
+.settings-content label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.settings-content input,
+.settings-content select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: none;
+  background: #444;
+  color: white;
+}
+
+.settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.settings-buttons button {
+  padding: 10px 20px;
+  background: #4caf50;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.settings-buttons button:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Стили для всплывающего окна настроек */
+.settings-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  animation: fadeIn 0.5s ease;
+  z-index: 1000;
+}
+
+.settings-content {
+  background: linear-gradient(145deg, #2a2a40, #1e1e2f);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transform: scale(0.9);
+  opacity: 0;
+  animation: scaleUp 0.3s ease forwards;
+}
+
+@keyframes scaleUp {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.settings-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #4caf50;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.settings-content label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+}
+
+.settings-content input,
+.settings-content select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-content input:focus,
+.settings-content select:focus {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  outline: none;
+}
+
+.settings-content input[type="color"] {
+  padding: 5px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.settings-buttons button {
+  padding: 12px 24px;
+  background: linear-gradient(145deg, #4caf50, #45a049);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  flex: 1;
+}
+
+.settings-buttons button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.settings-buttons button:active {
+  transform: scale(0.95);
+}
+
+/* Анимация для закрытия окна */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.settings-overlay.closing {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.settings-content.closing {
+  animation: scaleDown 0.3s ease forwards;
+}
+
+@keyframes scaleDown {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+:root {
+  --bg-color: #2d333b;
+  --border-color: #444c56;
+  --text-color: #adbac7;
+  --hover-bg: #373e47;
+  --active-bg: #444c56;
+  --dropdown-bg: #343b44;
+  --font-primary: "Inter", system-ui, sans-serif;
+  --font-secondary: "Roboto Mono", monospace;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap");
+
+.sidebar {
+  width: 72px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: var(--bg-color);
+  border-right: 1px solid var(--border-color);
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: width 0.2s ease;
+  font-family: var(--font-primary);
+  z-index: 1;
+}
+
+.sidebar:hover {
+  width: 240px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.logo-icon {
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-weight: 600;
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-family: var(--font-secondary);
+}
+
+.sidebar:hover .logo-text {
+  opacity: 1;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.01rem;
+  padding: 0 0.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.menu-item:hover {
+  background: var(--hover-bg);
+}
+
+.menu-item.active {
+  background: #ffffff00;
+}
+
+.menu-item svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.menu-item span {
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar:hover .menu-item span {
+  opacity: 1;
+}
+
+/* Стили для выпадающего меню */
+.toggle-checkbox {
+  display: none;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.subjects-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.7s ease;
+  padding-left: 2.5rem;
+}
+
+/* Гарантированное скрытие при свернутой панели */
+.sidebar:not(:hover) #lessons-toggle:checked ~ .subjects-panel {
+  max-height: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Отключаем переходы при скрытой панели */
+.sidebar:not(:hover) .subjects-panel {
+  transition: none;
+}
+#lessons-toggle:checked ~ .subjects-panel {
+  max-height: 500px;
+}
+
+#lessons-toggle:checked + .dropdown-toggle .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.subject-item {
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.2s ease;
+}
+
+.subject-item:hover {
+  background: var(--hover-bg);
+}
+
+/* Группа настроек внизу */
+.settings-group {
+  margin-top: auto;
+  padding-bottom: 1rem;
+}
+
+/* Обновленные стили для выпадающих меню */
+.dropdown-menu {
+  border-radius: 6px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.2s ease;
+
+  z-index: 100;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding-left: 2.5rem;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-menu.active {
+  opacity: 1;
+  visibility: visible;
+  /* transform: translateX(0); */
+  max-height: 220px;
+}
+#lessons-toggle:checked ~ .dropdown-menu {
+  max-height: 500px;
+}
+
+.theme-option {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.2sease;
+}
+
+.theme-option:hover {
+  background: var(--hover-bg);
+}
+
+/* Фикс для стрелки */
+.dropdown-arrow {
+  right: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* Темы оформления */
+.theme-dark {
+  --bg-color: #1a1a2e;
+  --border-color: #444c5600;
+  --text-color: #adbac7;
+  --text-color: #ffffff;
+  --hover-bg: #373e47;
+  --active-bg: #444c56;
+  --dropdown-bg: #343b44;
+}
+
+.theme-light {
+  --bg-color: #ffffff;
+  --border-color: #e4e4e4;
+  --text-color: #2d333b;
+  --hover-bg: #f5f5f5;
+  --active-bg: #e8e8e8;
+  --dropdown-bg: #ffffff;
+}
+.theme-ocean {
+  --bg-color: #25336d;
+  --border-color: #444c5600;
+  --text-color: #adbac7;
+  --text-color: #ffffff;
+  --hover-bg: #373e47;
+  --active-bg: #444c56;
+  --dropdown-bg: #343b44;
+}
+/* Добавляем новую тему СССР */
+.theme-ussr {
+  --bg-color: #fcf9f2; /* Основной фон */
+  --border-color: #801310; /* Дополнительный цвет для границ */
+  --text-color: #302e2f; /* Цвет текста */
+  --hover-bg: #fa3f27; /* Цвет при наведении */
+  --active-bg: #801310; /* Активный цвет */
+  --dropdown-bg: #fcf9f2; /* Фон выпадающих меню */
+}
+
+/* Применяем градиент для фона */
+.theme-ussr {
+  background: linear-gradient(135deg, #fcf9f2, #fcf9f2);
+  color: var(--text-color);
+}
+/* Обновляем стили для кнопок в теме СССР */
+.theme-ussr .buttons button {
+  background: #c4000f; /* Основной цвет кнопок */
+  color: #fcf9f2; /* Цвет текста на кнопках */
+}
+.theme-ussr .settings-button {
+  background: #a1b227;
+}
+.theme-ussr .ready-text {
+  color: #801310;
+}
+.theme-ussr .buttons button:hover {
+  background: #801310; /* Цвет кнопок при наведении */
+}
+
+/* Обновляем стили для прогресс-бара */
+.theme-ussr .progress-bar {
+  background: #801310; /* Цвет фона прогресс-бара */
+}
+
+.theme-ussr .progress-bar-fill {
+  background: #fa3f27; /* Цвет заполнения прогресс-бара */
+}
+
+/* Обновляем стили для клавиатуры */
+.theme-ussr .key {
+  background: #a1b227; /* Цвет клавиш */
+  color: #fcf9f2; /* Цвет текста на клавишах */
+}
+
+.theme-ussr .key.missed {
+  background: #c4000f; /* Цвет клавиш с ошибками */
+}
+.theme-ussr .chart-progress {
+  fill: none;
+  stroke: #a0b42e;
+  stroke-width: 10;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  transition: stroke-dashoffset 0.5sease;
+}
+.theme-ussr .chart-text {
+  font-size: 20px;
+  fill: #000000;
+  font-weight: bold;
+}
+
+.theme-ussr .result-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000de;
+  justify-content: center;
+  align-items: center;
+  color: #000000;
+  animation: fadeIn 0.5sease;
+}
+.theme-ussr .result-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #a0b42e;
+  font-weight: 700;
+}
+
+.theme-ussr .chart-background {
+  fill: none;
+  stroke: #888686;
+  stroke-width: 10;
+}
+.theme-ussr .result-content button {
+  padding: 10px 20px;
+  background: #a0b42e;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3sease, transform 0.2sease;
+  margin-top: 20px;
+}
+.theme-ussr .result-content {
+  background: #fcf9f2;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Обновляем стили для текста */
+.theme-ussr .text-container {
+  color: #302e2f; /* Цвет текста */
+  background: rgba(252, 249, 242, 0.9); /* Фон текстового контейнера */
+}
+
+/* Обновляем стили для статистики */
+.theme-ussr .stats {
+  background: rgba(252, 249, 242, 0.9); /* Фон статистики */
+  color: #302e2f; /* Цвет текста статистики */
+}
+/* Скрываем герб СССР по умолчанию */
+.ussr-logo {
+  display: none;
+}
+
+/* Показываем герб СССР при выборе темы "СССР" */
+.theme-ussr .default-logo {
+  display: none;
+}
+
+.theme-ussr .ussr-logo {
+  display: block;
+}
+/* Темы оформления */
+.theme-dark {
+  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+}
+
+.theme-light {
+  background: linear-gradient(135deg, #f0f0f5, #ffffff);
+  color: #333;
+}
+
+.theme-ocean {
+  background: linear-gradient(135deg, #1a2a6c, #3a6073);
+}
+
+/* Добавляем анимацию для стрелок */
+.dropdown-arrow {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Скрываем элементы при свернутой панели */
+.sidebar:not(:hover) .dropdown-arrow,
+.sidebar:not(:hover) .subjects-panel,
+.sidebar:not(:hover) .dropdown-menu {
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Показываем элементы при наведении */
+.sidebar:hover .dropdown-arrow,
+.sidebar:hover .subjects-panel,
+.sidebar:hover .dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Обновляем стили для кнопки темы */
+.menu-group .dropdown-toggle {
+  background: transparent;
+  border: none;
+  width: auto;
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+/* В раздел стилей сайдбара */
+.subject-item.active-subject {
+  background: rgba(76, 175, 80, 0.15);
+  border-left: 4px solid #4caf50;
+  font-weight: 500;
+}
+
+/* Для темы СССР */
+.theme-ussr .subject-item.active-subject {
+  border-left-color: #a0b42e;
+  background: rgba(160, 180, 46, 0.15);
+}
+.subject-item {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.subject-item:hover {
+  transform: translateX(5px);
+}
+/* Стили для активной темы */
+.theme-option.active-theme {
+  background: rgba(76, 175, 80, 0.15);
+  border-left: 4px solid #4caf50;
+  font-weight: 500;
+}
+
+/* Адаптация для разных тем */
+.theme-light .theme-option.active-theme {
+  border-left-color: #2e7d32;
+  background: rgba(46, 125, 50, 0.1);
+}
+
+.theme-ussr .theme-option.active-theme {
+  border-left-color: #a0b42e;
+  background: rgba(160, 180, 46, 0.15);
+}
+
+.theme-ocean .theme-option.active-theme {
+  border-left-color: #2196f3;
+  background: rgba(33, 150, 243, 0.1);
+}
+/* Общие стили для всех элементов меню */
+.subject-item,
+.theme-option {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: 2px 0;
+}
+
+.subject-item:hover,
+.theme-option:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Для светлой темы */
+.theme-light .subject-item:hover,
+.theme-light .theme-option:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+/* Для ссср темы */
+.theme-ussr .subject-item:hover,
+.theme-ussr .theme-option:hover {
+  background: #2f1e1f15;
+}
+.theme-ussr .theme-option:hover {
+  background: #2f1e1f15;
+}
+.menu-item:hover {
+  background: #2f1e1f15;
+}
+
+.custom-text-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 1000;
+}
+
+.custom-text-content {
+  background: #2a2a40;
+  padding: 30px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#custom-text-input {
+  width: 95%;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 150px;
+}
+.custom-text-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 1000;
+}
+.menu-item span {
+  /* opacity: 0; */
+  /* white-space: nowrap; */
+  transition: opacity 0.2sease;
+  font-size: 1rem;
+  font-family: var(--font-primary);
+}
+
+/* Стили для виртуальной клавиатуры */
+.virtual-keyboard-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* width: 90%; */
+  max-width: 1000px;
+  background: rgb(27 25 46);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 0;
+  /* backdrop-filter: blur(5px); */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.virtual-keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.virtual-key {
+  min-width: 40px;
+  height: 40px;
+  background: rgb(57 57 74);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  transition: all 0.2s ease;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.virtual-key.active {
+  background: #4caf50;
+  transform: translateY(2px);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+.virtual-key.space {
+  width: 300px;
+}
+
+.virtual-key.wide {
+  min-width: 60px;
+}
+
+.virtual-key.extra-wide {
+  min-width: 80px;
+}
+
+/* Адаптация для разных тем */
+.theme-light .virtual-keyboard-container {
+  background: rgb(240, 240, 245);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .virtual-key {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-light .virtual-key.active {
+  background: #2e7d32;
+  color: white;
+}
+
+.theme-ocean .virtual-keyboard-container {
+  background: rgba(26, 42, 108, 0.8);
+}
+
+.theme-ocean .virtual-key.active {
+  background: #2196f3;
+}
+
+.theme-ussr .virtual-keyboard-container {
+  background: rgba(252, 249, 242, 0.8);
+}
+
+.theme-ussr .virtual-key {
+  background: rgb(182 0 23);
+  color: #fbf9f2;
+}
+
+.theme-ussr .virtual-key.active {
+  background: #6f0710;
+  color: #fcf9f2;
+}
+
+/* Переключатель видимости клавиатуры */
+.keyboard-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #4caf50;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: none; /* Скрываем кнопку */
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+  z-index: 101;
+}
+
+.keyboard-toggle:hover {
+  background: #45a049;
+  transform: scale(1.1);
+}
+
+.theme-ussr .keyboard-toggle {
+  background: #c4000f;
+}
+
+.theme-ussr .keyboard-toggle:hover {
+  background: #801310;
+}
+
+.theme-light .keyboard-toggle {
+  background: #2e7d32;
+}
+
+.theme-ocean .keyboard-toggle {
+  background: #2196f3;
+}
+
+/* Стили для мобильного предупреждения */
+.mobile-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1e1e2f;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.mobile-warning-content {
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1.5;
+  max-width: 80%;
+}
+
+.mobile-warning-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #4caf50;
+}
+
+@media (max-width: 768px) {
+  .mobile-warning {
+    display: flex;
+  }
+}
+@media (max-width: 1024px) {
+  .mobile-warning {
+    display: flex;
+  }
+}
+@media (max-width: 1200px) {
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #444;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: -240px;
+  }
+
+  .text-container {
+    font-size: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1);
+
+    border-radius: 15px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    justify-content: center;
+    margin-top: -240px;
+    max-height: calc(1.25 * 24px * 5);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    position: relative;
+    /* Скрываем полосу прокрутки */
+    scrollbar-width: none; /* Для Firefox */
+    -ms-overflow-style: none; /* Для IE и Edge */
+    pointer-events: none;
+
+    /* line-height: 1.5; */
+    padding: 0px;
+    /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+    border: 20px solid #39384800;
+    border-top: 20px solid #39384800;
+  }
+
+  .text-container.timer-mode {
+    margin-top: -240px;
+    /* border: 1px solid #ccc; */
+    font-size: 16px;
+    /* line-height: 1.5; */
+    height: calc(1.25 * 24px * 5);
+    /* box-sizing: border-box; */ /* Включает padding и border в высоту элемента */
+    border: 10px solid #39384800;
+    border-top: 10px solid #39384800;
+    margin-top: -240px;
+  }
+  .stats-active {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stats {
+    display: none;
+    margin-top: 10px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .stats-active > div {
+    display: inline-block; /* Отображает элементы в одну строку */
+    flex: 1; /* Позволяет элементам занимать доступное пространство */
+    text-align: center; /* Центрирует текст внутри каждого элемента */
+    white-space: nowrap; /* Предотвращает перенос текста */
+  }
+}
