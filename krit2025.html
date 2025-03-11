@@ -21,7 +21,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Добавляем элемент предупреждения для мобильных устройств -->
@@ -413,7 +413,63 @@
         </div>
       </div>
     </div>
+    <button class="keyboard-toggle" id="keyboard-toggle">
+      <i class="fas fa-keyboard"></i>
+    </button>
 
+    <div class="virtual-keyboard-container" id="virtual-keyboard-container">
+      <div class="virtual-keyboard">
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="й">Й</div>
+          <div class="virtual-key" data-key="ц">Ц</div>
+          <div class="virtual-key" data-key="у">У</div>
+          <div class="virtual-key" data-key="к">К</div>
+          <div class="virtual-key" data-key="е">Е</div>
+          <div class="virtual-key" data-key="н">Н</div>
+          <div class="virtual-key" data-key="г">Г</div>
+          <div class="virtual-key" data-key="ш">Ш</div>
+          <div class="virtual-key" data-key="щ">Щ</div>
+          <div class="virtual-key" data-key="з">З</div>
+          <div class="virtual-key" data-key="х">Х</div>
+          <div class="virtual-key" data-key="ъ">Ъ</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="ф">Ф</div>
+          <div class="virtual-key" data-key="ы">Ы</div>
+          <div class="virtual-key" data-key="в">В</div>
+          <div class="virtual-key" data-key="а">А</div>
+          <div class="virtual-key" data-key="п">П</div>
+          <div class="virtual-key" data-key="р">Р</div>
+          <div class="virtual-key" data-key="о">О</div>
+          <div class="virtual-key" data-key="л">Л</div>
+          <div class="virtual-key" data-key="д">Д</div>
+          <div class="virtual-key" data-key="ж">Ж</div>
+          <div class="virtual-key" data-key="э">Э</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key" data-key="я">Я</div>
+          <div class="virtual-key" data-key="ч">Ч</div>
+          <div class="virtual-key" data-key="с">С</div>
+          <div class="virtual-key" data-key="м">М</div>
+          <div class="virtual-key" data-key="и">И</div>
+          <div class="virtual-key" data-key="т">Т</div>
+          <div class="virtual-key" data-key="ь">Ь</div>
+          <div class="virtual-key" data-key="б">Б</div>
+          <div class="virtual-key" data-key="ю">Ю</div>
+          <div class="virtual-key" data-key=".">.</div>
+        </div>
+
+        <div class="virtual-keyboard-row">
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key space" data-key=" ">Space</div>
+          <div class="virtual-key wide" data-key="Alt">Alt</div>
+          <div class="virtual-key wide" data-key="Control">Ctrl</div>
+        </div>
+      </div>
+    </div>
     <!-- Подключение файла с фактами -->
     <script src="facts.js"></script>
     <script src="script.js"></script>
