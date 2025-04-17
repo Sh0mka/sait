@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Свагометр</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        transition: background-color 0.3s ease;
+        user-select: none;
+      }
+
+      body.alert {
+        background-color: #ff0000;
+      }
+
+      body.reset {
+        background-color: #007bff;
+      }
+
+      .container {
+        background-color: #222;
+        color: #fff;
+        border-radius: 25px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        width: 380px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+      }
+
+      h1 {
+        font-size: 2.8em;
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      .sub-title {
+        color: #777;
+        font-size: 1em;
+        margin-top: 5px;
+        margin-bottom: 20px;
+      }
+
+      .level-container {
+        background-color: #333;
+        border-radius: 18px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+      }
+
+      .emotion {
+        font-size: 2em;
+        color: #aaa;
+        opacity: 0.7;
+        transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      .level-container .start-emotion {
+        color: #4caf50; /* Зеленый в начале */
+      }
+
+      .level-container .end-emotion {
+        color: #f44336; /* Красный в конце */
+      }
+
+      .level-indicator {
+        background-color: #444;
+        border-radius: 10px;
+        height: 30px;
+        width: 75%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .level-bar {
+        background: linear-gradient(
+          to right,
+          #4caf50,
+          #ffeb3b,
+          #ff9800,
+          #f44336
+        ); /* Более яркий градиент */
+        height: 100%;
+        border-radius: 10px;
+        width: 0%;
+        transition: width 0.3s ease-in-out, background 0.3s ease-in-out; /* Анимация фона */
+      }
+
+      .value-container {
+        background-color: #333;
+        border-radius: 18px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out; /* Тактильная обратная связь */
+      }
+
+      .value-container:active {
+        transform: scale(0.95);
+      }
+
+      .swag-value {
+        font-size: 4.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: -2px;
+        color: #fff;
+        transition: color 0.3s ease;
+      }
+
+      .swag-value.alert-text {
+        color: #ff0000;
+      }
+
+      .swag-unit {
+        color: #777;
+        font-size: 1.4em;
+      }
+
+      .sensitivity-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #777;
+        font-size: 1em;
+        margin-bottom: 25px;
+      }
+
+      .sensitivity-value {
+        background-color: #333;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: bold;
+      }
+
+      .made-by {
+        color: #555;
+        font-size: 0.9em;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="header">
+        <h1>Свагометр</h1>
+      </div>
+      <div class="sub-title">СВ-2025</div>
+
+      <div class="level-container">
+        <span class="emotion start-emotion">&#128532;</span>
+        <div class="level-indicator">
+          <div class="level-bar" id="swagLevelBar"></div>
+        </div>
+        <span class="emotion end-emotion">&#128128;</span>
+      </div>
+
+      <div class="value-container" id="valueContainer">
+        <div class="swag-value" id="swagValue">0</div>
+        <div class="swag-unit">СВГ</div>
+      </div>
+
+      <div class="sensitivity-container">
+        <div>ЧУВСТВИТЕЛЬНОСТЬ</div>
+        <div class="sensitivity-value">x1.0</div>
+      </div>
+
+      <div class="made-by">MADE BY SHOMKA</div>
+    </div>
+
+    <script>
+      const body = document.body;
+      const container = document.getElementById("container");
+      const valueContainer = document.getElementById("valueContainer");
+      const swagLevelBar = document.getElementById("swagLevelBar");
+      const swagValueDisplay = document.getElementById("swagValue");
+      const startEmotion = document.querySelector(".start-emotion");
+      const endEmotion = document.querySelector(".end-emotion");
+      let currentSwag = 0;
+      const maxSwag = 100;
+      const incrementStep = 1;
+      const incrementInterval = 50;
+      let holdIntervalId = null;
+      let isIncreasing = true;
+      let alertIntervalId = null;
+
+      function updateSwagDisplay(value) {
+        swagLevelBar.style.width = `${value}%`;
+        swagValueDisplay.textContent = Math.round(value);
+
+        body.classList.remove("alert");
+        body.classList.remove("reset");
+        swagValueDisplay.classList.remove("alert-text");
+        clearInterval(alertIntervalId);
+
+        // Плавное изменение цвета эмодзи
+        const startColor = [76, 175, 80]; // Зеленый (RGB)
+        const endColor = [244, 67, 54]; // Красный (RGB)
+        const currentColor = startColor.map((start, index) => {
+          const end = endColor[index];
+          return Math.round(start + (end - start) * (value / maxSwag));
+        });
+        startEmotion.style.color = `rgb(${currentColor.join(",")})`;
+        endEmotion.style.color = `rgb(${endColor
+          .map((c) => Math.round(c * (value / maxSwag)))
+          .join(",")})`;
+
+        if (value >= maxSwag) {
+          body.classList.add("alert");
+          swagValueDisplay.classList.add("alert-text");
+          alertIntervalId = setInterval(() => {
+            body.classList.toggle("alert");
+          }, 500);
+        } else if (value <= 0) {
+          body.classList.add("reset");
+        }
+      }
+
+      function changeSwag() {
+        if (isIncreasing) {
+          currentSwag = Math.min(currentSwag + incrementStep, maxSwag);
+        } else {
+          currentSwag = Math.max(currentSwag - incrementStep, 0);
+        }
+        updateSwagDisplay(currentSwag);
+
+        if (currentSwag >= maxSwag || currentSwag <= 0) {
+          clearInterval(holdIntervalId);
+        }
+      }
+
+      container.addEventListener("mousedown", (event) => {
+        if (
+          event.target !== valueContainer &&
+          !valueContainer.contains(event.target)
+        ) {
+          clearInterval(holdIntervalId);
+          holdIntervalId = setInterval(changeSwag, incrementInterval);
+        }
+      });
+
+      container.addEventListener("mouseup", () => {
+        clearInterval(holdIntervalId);
+      });
+
+      container.addEventListener("mouseleave", () => {
+        clearInterval(holdIntervalId);
+      });
+
+      valueContainer.addEventListener("click", () => {
+        isIncreasing = !isIncreasing;
+        clearInterval(holdIntervalId);
+        clearInterval(alertIntervalId);
+        body.classList.remove("alert");
+        swagValueDisplay.classList.remove("alert-text");
+        holdIntervalId = setInterval(changeSwag, incrementInterval);
+      });
+
+      updateSwagDisplay(currentSwag);
+    </script>
+  </body>
+</html>
