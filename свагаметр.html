@@ -1,292 +1,363 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Свагометр</title>
     <style>
-        body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            transition: background-color 0.3s ease;
-            user-select: none;
-            padding-left: 20px;
-            padding-right: 20px;
-            box-sizing: border-box;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        transition: background-color 0.3s ease;
+        user-select: none;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+      }
 
-        body.alert {
-            background-color: #ff0000;
-        }
+      body.alert {
+        background-color: #ff0000;
+      }
 
-        body.reset {
-            background-color: #007bff;
-        }
+      body.reset {
+        background-color: #000;
+      }
 
-        .container {
-            background-color: #222;
-            color: #fff;
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            width: 380px;
-        }
+      .container {
+        background-color: #222;
+        color: #fff;
+        border-radius: 25px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        width: 380px;
+      }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+      }
 
-        h1 {
-            font-size: 2.8em;
-            margin: 0;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+      h1 {
+        font-size: 2.8em;
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
 
-        .sub-title {
-            color: #777;
-            font-size: 1em;
-            margin-top: 5px;
-            margin-bottom: 20px;
-        }
+      .sub-title {
+        color: #777;
+        font-size: 1em;
+        margin-top: 5px;
+        margin-bottom: 20px;
+      }
 
-        .level-container {
-            background-color: #333;
-            border-radius: 18px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
+      .level-container {
+        background-color: #333;
+        border-radius: 18px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        border: 1px solid #4d4c4c;
+      }
 
-        .emotion {
-            font-size: 2em;
-            color: #aaa;
-            opacity: 0.7;
-            transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
-        }
+      .emotion {
+        font-size: 2em;
+        color: #aaa;
+        opacity: 0.7;
+        transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
 
-        .level-container .start-emotion {
-            color: #4caf50; /* Зеленый в начале */
-        }
+      .level-container .start-emotion {
+        color: #4caf50; /* Зеленый в начале */
+      }
 
-        .level-container .end-emotion {
-            color: #f44336; /* Красный в конце */
-        }
+      .level-container .end-emotion {
+        color: #f44336; /* Красный в конце */
+      }
 
-        .level-indicator {
-            background-color: #444;
-            border-radius: 10px;
-            height: 30px;
-            width: 75%;
-            overflow: hidden;
-            position: relative;
-        }
+      .level-indicator {
+        background-color: #444;
+        border-radius: 10px;
+        height: 30px;
+        width: 75%;
+        overflow: hidden;
+        position: relative;
+      }
 
-        .level-bar {
-            background: linear-gradient(
-                to right,
-                #4caf50,
-                #ffeb3b,
-                #ff9800,
-                #f44336
-            ); /* Более яркий градиент */
-            height: 100%;
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.3s ease-in-out, background 0.3s ease-in-out; /* Анимация фона */
-        }
+      .level-bar {
+        background: linear-gradient(
+          to right,
+          #4caf50,
+          #ffeb3b,
+          #ff9800,
+          #f44336
+        ); /* Более яркий градиент */
+        height: 100%;
+        border-radius: 10px;
+        width: 0%;
+        transition: width 0.3s ease-in-out, background 0.3s ease-in-out; /* Анимация фона */
+      }
 
-        .value-container {
-            background-color: #333;
-            border-radius: 18px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 25px;
-            cursor: pointer;
-            transition: transform 0.1s ease-in-out; /* Тактильная обратная связь */
-        }
+      .value-container {
+        background-color: #333;
+        border-radius: 18px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out; /* Тактильная обратная связь */
+        border: 1px solid #4d4c4c;
+        -webkit-tap-highlight-color: transparent; /* Убираем подсветку для iOS */
+      }
 
-        .value-container:active {
-            transform: scale(0.95);
-        }
+      .value-container:active {
+        transform: scale(0.95);
+        border: 1px solid #4d4c4c;
+      }
 
-        .swag-value {
-            font-size: 4.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-            letter-spacing: -2px;
-            color: #fff;
-            transition: color 0.3s ease;
-        }
+      .swag-value {
+        font-size: 4.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: -2px;
+        color: #fff;
+        transition: color 0.3s ease;
+      }
 
-        .swag-value.alert-text {
-            color: #ff0000;
-        }
+      .swag-value.alert-text {
+        color: #ff0000;
+      }
 
-        .swag-unit {
-            color: #777;
-            font-size: 1.4em;
-        }
+      .swag-unit {
+        color: #777;
+        font-size: 1.4em;
+      }
 
-        .sensitivity-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #777;
-            font-size: 1em;
-            margin-bottom: 25px;
-        }
+      .sensitivity-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #777;
+        font-size: 1em;
+        margin-bottom: 25px;
+      }
 
-        .sensitivity-value {
-            background-color: #333;
-            border-radius: 12px;
-            padding: 12px 18px;
-            font-weight: bold;
-        }
+      .sensitivity-value {
+        background-color: #333;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.3s ease-in-out; /* Добавляем transition */
+      }
 
-        .made-by {
-            color: #555;
-            font-size: 0.9em;
-            margin-top: 20px;
-        }
+      .sensitivity-value.random-mode {
+        color: #fff;
+        transform: scale(1.1);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container" id="container">
-        <div class="header">
-            <h1>Свагометр</h1>
-        </div>
-        <div class="sub-title">СВ-2025</div>
+      <div class="header">
+        <h1>Свагометр</h1>
+      </div>
+      <div class="sub-title">СВ-2025</div>
 
-        <div class="level-container">
-            <span class="emotion start-emotion">&#128532;</span>
-            <div class="level-indicator">
-                <div class="level-bar" id="swagLevelBar"></div>
-            </div>
-            <span class="emotion end-emotion">&#128128;</span>
+      <div class="level-container">
+        <span class="emotion start-emotion">&#128532;</span>
+        <div class="level-indicator">
+          <div class="level-bar" id="swagLevelBar"></div>
         </div>
+        <span class="emotion end-emotion">&#128128;</span>
+      </div>
 
-        <div class="value-container" id="valueContainer">
-            <div class="swag-value" id="swagValue">0</div>
-            <div class="swag-unit">СВГ</div>
-        </div>
+      <div class="value-container" id="valueContainer">
+        <div class="swag-value" id="swagValue">0</div>
+        <div class="swag-unit">СВГ</div>
+      </div>
 
-        <div class="sensitivity-container">
-            <div>ЧУВСТВИТЕЛЬНОСТЬ</div>
-            <div class="sensitivity-value">x1.0</div>
-        </div>
+      <div class="sensitivity-container">
+        <div>ЧУВСТВИТЕЛЬНОСТЬ</div>
+        <div class="sensitivity-value" id="sensitivityButton">x1.0</div>
+      </div>
 
-        <div class="made-by">MADE BY SHOMKA</div>
+      <div class="made-by">MADE BY SHOMKA</div>
     </div>
 
     <script>
-        const body = document.body;
-        const container = document.getElementById("container");
-        const valueContainer = document.getElementById("valueContainer");
-        const swagLevelBar = document.getElementById("swagLevelBar");
-        const swagValueDisplay = document.getElementById("swagValue");
-        const startEmotion = document.querySelector(".start-emotion");
-        const endEmotion = document.querySelector(".end-emotion");
-        let currentSwag = 0;
-        const maxSwag = 100;
-        const incrementStep = 1;
-        const incrementInterval = 50;
-        let holdIntervalId = null;
-        let isIncreasing = true;
-        let alertIntervalId = null;
+      const body = document.body;
+      const container = document.getElementById("container");
+      const valueContainer = document.getElementById("valueContainer");
+      const swagLevelBar = document.getElementById("swagLevelBar");
+      const swagValueDisplay = document.getElementById("swagValue");
+      const startEmotion = document.querySelector(".start-emotion");
+      const endEmotion = document.querySelector(".end-emotion");
+      const sensitivityButton = document.getElementById("sensitivityButton");
+      let currentSwag = 0;
+      const maxSwag = 100;
+      const incrementStep = 1;
+      const incrementInterval = 50;
+      let holdIntervalId = null;
+      let isIncreasing = true;
+      let alertIntervalId = null;
+      let holdStartTime = null;
+      const stopHoldDelay = 500; // 0.5 секунды в миллисекундах
+      let isHolding = false;
+      let stopTimeoutId = null;
+      let randomMode = false;
+      let manualControlEnabled = true;
+      let randomAnimationIntervalId = null;
 
-        function updateSwagDisplay(value) {
-            swagLevelBar.style.width = `${value}%`;
-            swagValueDisplay.textContent = Math.round(value);
+      function updateSwagDisplay(value) {
+        swagLevelBar.style.width = `${value}%`;
+        swagValueDisplay.textContent = Math.round(value);
 
-            body.classList.remove("alert");
-            body.classList.remove("reset"); // Убираем класс reset при каждом обновлении
-            swagValueDisplay.classList.remove("alert-text");
-            clearInterval(alertIntervalId);
+        body.classList.remove("alert");
+        body.classList.remove("reset");
+        swagValueDisplay.classList.remove("alert-text");
+        clearInterval(alertIntervalId);
 
-            // Плавное изменение цвета эмодзи
-            const startColor = [76, 175, 80]; // Зеленый (RGB)
-            const endColor = [244, 67, 54]; // Красный (RGB)
-            const currentColor = startColor.map((start, index) => {
-                const end = endColor[index];
-                return Math.round(start + (end - start) * (value / maxSwag));
-            });
-            startEmotion.style.color = `rgb(${currentColor.join(",")})`;
-            endEmotion.style.color = `rgb(${endColor
-                .map((c) => Math.round(c * (value / maxSwag)))
-                .join(",")})`;
+        // Плавное изменение цвета эмодзи
+        const startColor = [76, 175, 80]; // Зеленый (RGB)
+        const endColor = [244, 67, 54]; // Красный (RGB)
+        const currentColor = startColor.map((start, index) => {
+          const end = endColor[index];
+          return Math.round(start + (end - start) * (value / maxSwag));
+        });
+        startEmotion.style.color = `rgb(${currentColor.join(",")})`;
+        endEmotion.style.color = `rgb(${endColor
+          .map((c) => Math.round(c * (value / maxSwag)))
+          .join(",")})`;
 
-            if (value >= maxSwag) {
-                body.classList.add("alert");
-                swagValueDisplay.classList.add("alert-text");
-                alertIntervalId = setInterval(() => {
-                    body.classList.toggle("alert");
-                }, 500);
-            } else if (value <= 0) {
-                // Класс reset добавляется только если значение действительно равно 0
-                if (value === 0) {
-                    body.classList.add("reset");
-                }
-            }
+        if (value >= maxSwag) {
+          body.classList.add("alert");
+          swagValueDisplay.classList.add("alert-text");
+          alertIntervalId = setInterval(() => {
+            body.classList.toggle("alert");
+          }, 500);
+        } else if (value <= 0) {
+          if (value === 0) {
+            body.classList.add("reset");
+          }
         }
+      }
 
-        function changeSwag() {
-            if (isIncreasing) {
-                currentSwag = Math.min(currentSwag + incrementStep, maxSwag);
+      function changeSwag() {
+        if (manualControlEnabled) {
+          if (isIncreasing) {
+            currentSwag = Math.min(currentSwag + incrementStep, maxSwag);
+          } else {
+            currentSwag = Math.max(currentSwag - incrementStep, 0);
+          }
+          updateSwagDisplay(currentSwag);
+        }
+      }
+
+      body.addEventListener("mousedown", (event) => {
+        isHolding = true;
+        clearInterval(holdIntervalId);
+        holdIntervalId = setInterval(changeSwag, incrementInterval);
+        holdStartTime = Date.now();
+
+        // Запускаем таймер для остановки через 0.5 секунды
+        stopTimeoutId = setTimeout(() => {
+          if (isHolding) {
+            clearInterval(holdIntervalId);
+          }
+        }, stopHoldDelay);
+      });
+
+      body.addEventListener("mouseup", () => {
+        isHolding = false;
+        clearInterval(holdIntervalId);
+        clearTimeout(stopTimeoutId); // Очищаем таймер, если отпустили раньше
+      });
+
+      body.addEventListener("mouseleave", () => {
+        isHolding = false;
+        clearInterval(holdIntervalId);
+        clearTimeout(stopTimeoutId); // Очищаем таймер, если курсор ушел раньше
+      });
+
+      body.addEventListener("click", () => {
+        // Предотвращаем смену направления во время удержания для остановки
+        if (
+          manualControlEnabled &&
+          Date.now() - holdStartTime < stopHoldDelay
+        ) {
+          isIncreasing = !isIncreasing;
+          clearInterval(holdIntervalId);
+          clearInterval(alertIntervalId);
+          body.classList.remove("alert");
+          body.classList.remove("reset");
+          swagValueDisplay.classList.remove("alert-text");
+          holdIntervalId = setInterval(changeSwag, incrementInterval);
+        }
+        clearTimeout(stopTimeoutId); // Очищаем таймер при клике
+        holdStartTime = null;
+      });
+
+      sensitivityButton.addEventListener("click", () => {
+        randomMode = !randomMode;
+        sensitivityButton.classList.toggle("random-mode");
+        manualControlEnabled = !randomMode;
+        clearInterval(holdIntervalId); // Отключаем ручное управление при вкл. рандома
+        clearInterval(randomAnimationIntervalId); // Очищаем предыдущий интервал анимации
+        if (!randomMode) {
+          holdIntervalId = setInterval(changeSwag, incrementInterval); // Включаем ручное управление при выкл. рандома
+        }
+      });
+
+      valueContainer.addEventListener("click", () => {
+        if (randomMode) {
+          clearInterval(randomAnimationIntervalId); // Останавливаем возможную предыдущую анимацию
+          const targetValue = Math.floor(Math.random() * (maxSwag + 1));
+          const duration = 500; // Длительность анимации в миллисекундах
+          const startTime = Date.now();
+          let startValue = 0; // Всегда начинаем с нуля
+
+          // Сбрасываем текущее значение currentSwag на 0
+          currentSwag = 0;
+          updateSwagDisplay(currentSwag); // Обновляем отображение
+
+          function animateRandom() {
+            const currentTime = Date.now();
+            const elapsed = currentTime - startTime;
+            if (elapsed < duration) {
+              const progress = elapsed / duration;
+              currentSwag = Math.round(
+                startValue + (targetValue - startValue) * progress
+              );
+              updateSwagDisplay(currentSwag);
             } else {
-                currentSwag = Math.max(currentSwag - incrementStep, 0);
+              currentSwag = targetValue;
+              updateSwagDisplay(currentSwag);
+              clearInterval(randomAnimationIntervalId);
             }
-            updateSwagDisplay(currentSwag);
+          }
 
-            if (currentSwag >= maxSwag || currentSwag <= 0) {
-                clearInterval(holdIntervalId);
-            }
+          randomAnimationIntervalId = setInterval(animateRandom, 20); // Обновляем значение несколько раз в секунду
         }
+      });
 
-        container.addEventListener("mousedown", (event) => {
-            if (
-                event.target !== valueContainer &&
-                !valueContainer.contains(event.target)
-            ) {
-                clearInterval(holdIntervalId);
-                holdIntervalId = setInterval(changeSwag, incrementInterval);
-            }
-        });
-
-        container.addEventListener("mouseup", () => {
-            clearInterval(holdIntervalId);
-        });
-
-        container.addEventListener("mouseleave", () => {
-            clearInterval(holdIntervalId);
-        });
-
-        valueContainer.addEventListener("click", () => {
-            isIncreasing = !isIncreasing;
-            clearInterval(holdIntervalId);
-            clearInterval(alertIntervalId);
-            body.classList.remove("alert");
-            body.classList.remove("reset"); // Убираем reset при смене направления
-            swagValueDisplay.classList.remove("alert-text");
-            holdIntervalId = setInterval(changeSwag, incrementInterval);
-        });
-
-        // Начальное отображение - убедимся, что reset не применен
-        updateSwagDisplay(currentSwag);
-        body.classList.remove("reset"); // Убираем reset при загрузке
+      updateSwagDisplay(currentSwag);
+      body.classList.remove("reset");
     </script>
-</body>
+  </body>
 </html>
