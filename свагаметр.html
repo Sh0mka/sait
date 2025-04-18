@@ -45,7 +45,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 25px;
+        margin-bottom: 15px; /* Уменьшим отступ */
+        flex-direction: column; /* Чтобы подзаголовок был под заголовком */
       }
 
       h1 {
@@ -55,11 +56,39 @@
         letter-spacing: 1px;
       }
 
+      .swag-level-text {
+        font-size: 1.2em;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #ddd; /* Default color */
+      }
+
+      .swag-level-text.low {
+        color: #42a5f5; /* Синий */
+      }
+
+      .swag-level-text.present {
+        color: #66bb6a; /* Зеленый */
+      }
+
+      .swag-level-text.high {
+        color: #ffca28; /* Желтый */
+      }
+
+      .swag-level-text.critical {
+        color: #ffa726; /* Оранжевый */
+      }
+
+      .swag-level-text.lethal {
+        color: #ef5350; /* Красный */
+      }
+
       .sub-title {
         color: #777;
         font-size: 1em;
         margin-top: 5px;
-        margin-bottom: 20px;
+        margin-bottom: 15px; /* Уменьшим отступ */
       }
 
       .level-container {
@@ -176,8 +205,9 @@
     <div class="container" id="container">
       <div class="header">
         <h1>Свагометр</h1>
+        <div class="swag-level-text" id="swagLevelText">Свага отсутствует</div>
+        <div class="sub-title">СВ-2025</div>
       </div>
-      <div class="sub-title">СВ-2025</div>
 
       <div class="level-container">
         <span class="emotion start-emotion">&#128532;</span>
@@ -209,6 +239,7 @@
       const startEmotion = document.querySelector(".start-emotion");
       const endEmotion = document.querySelector(".end-emotion");
       const sensitivityButton = document.getElementById("sensitivityButton");
+      const swagLevelTextDisplay = document.getElementById("swagLevelText");
       let currentSwag = 0;
       const maxSwag = 100;
       const incrementStep = 1;
@@ -225,14 +256,34 @@
       let randomAnimationIntervalId = null;
       const specialPhrases = {
         42: "42 БРАТУХА!",
-        55: "ВЕНОМ БОЙ!",
+        55: "55! ВЕНОМ БОЙ!",
         80: "Эльф 80 уровня",
         47: "47 хромосом",
         52: "ЫЫЫ 52 СМИФНО",
         89: "89 IQ",
-        6: "Вупсень? Пупсень? Сикс?",
+        6: "6? Четыре?",
+        5: "Задание на 5+",
+        0: "полный 0",
+        99: "99! Почти, но нет",
       };
       let isAnimatingRandom = false;
+
+      function getSwagLevelText(value) {
+        if (value >= 0 && value <= 20) {
+          return { text: "Свага отсутствует", class: "" };
+        } else if (value >= 21 && value <= 40) {
+          return { text: "Уровень сваги низкий", class: "low" };
+        } else if (value >= 41 && value <= 60) {
+          return { text: "Свага присутствует", class: "present" };
+        } else if (value >= 61 && value <= 80) {
+          return { text: "Высокий уровень сваги", class: "high" };
+        } else if (value >= 81 && value <= 99) {
+          return { text: "Критический уровень сваги", class: "critical" };
+        } else if (value === 100) {
+          return { text: "Летальный уровень сваги", class: "lethal" };
+        }
+        return { text: "", class: "" };
+      }
 
       function clearAlertTimeouts() {
         alertTimeoutIds.forEach(clearTimeout);
@@ -266,6 +317,10 @@
         const roundedValue = Math.round(value);
         swagValueDisplay.textContent =
           (isFinalRandomValue && specialPhrases[roundedValue]) || roundedValue;
+
+        const levelInfo = getSwagLevelText(roundedValue);
+        swagLevelTextDisplay.textContent = levelInfo.text;
+        swagLevelTextDisplay.className = `swag-level-text ${levelInfo.class}`;
 
         body.classList.remove("reset");
         swagValueDisplay.classList.remove("alert-text");
@@ -362,7 +417,7 @@
         clearAlertTimeouts(); // Очищаем возможные мигания при смене режима
         body.classList.remove("alert");
         isAnimatingRandom = false;
-        updateSwagDisplay(currentSwag); // Обновляем до числового значения при смене режима
+        updateSwagDisplay(currentSwag); // Обновляем до числового значения и уровня сваги при смене режима
         if (!randomMode) {
           holdIntervalId = setInterval(changeSwag, incrementInterval); // Включаем ручное управление при выкл. рандома
         }
@@ -400,10 +455,13 @@
 
           animationInterval = setInterval(animateRandom, 20); // Обновляем значение несколько раз в секунду
           randomAnimationIntervalId = animationInterval; // Сохраняем ID интервала
+        } else if (manualControlEnabled) {
+          // Обновляем текст уровня сваги при ручном изменении
+          updateSwagDisplay(currentSwag);
         }
       });
 
-      updateSwagDisplay(currentSwag);
+      updateSwagDisplay(currentSwag); // Обновляем при загрузке страницы
       body.classList.remove("reset");
     </script>
   </body>
