@@ -18,7 +18,7 @@
         margin: 0;
         transition: background-color 0.3s ease;
         user-select: none;
-        padding: 20px; /* Универсальный отступ для body */
+        padding: 20px;
         box-sizing: border-box;
       }
 
@@ -37,8 +37,8 @@
         padding: 30px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
         text-align: center;
-        width: 100%; /* Занимает всю доступную ширину */
-        max-width: 380px; /* Максимальная ширина на больших экранах */
+        width: 100%;
+        max-width: 380px;
         box-sizing: border-box;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7),
           0 10px 15px rgba(0, 0, 0, 0.5);
@@ -54,14 +54,14 @@
       }
 
       h1 {
-        font-size: 2.5em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 2.5em;
         margin: 0;
         font-weight: bold;
         letter-spacing: 1px;
       }
 
       .swag-level-text {
-        font-size: 1.1em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 1.1em;
         margin-top: 5px;
         margin-bottom: 10px;
         font-weight: bold;
@@ -90,7 +90,7 @@
 
       .sub-title {
         color: #777;
-        font-size: 0.9em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 0.9em;
         margin-top: 5px;
         margin-bottom: 15px;
       }
@@ -108,7 +108,7 @@
       }
 
       .emotion {
-        font-size: 1.8em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 1.8em;
         color: #aaa;
         opacity: 0.7;
         transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -121,22 +121,22 @@
         width: 70%;
         overflow: hidden;
         position: relative;
-        display: flex; /* Используем flexbox для расположения полосок */
-        align-items: center; /* Выравниваем полоски по центру по вертикали */
-        padding: 2px; /* Небольшой отступ внутри контейнера */
+        display: flex;
+        align-items: center;
+        padding: 2px;
         box-sizing: border-box;
       }
 
       .swag-bar-segment {
         height: 100%;
-        width: calc(100% / 20); /* Рассчитываем ширину для 20 полосок */
-        margin-right: 2px; /* Небольшой отступ между полосками */
+        width: calc(100% / 20);
+        margin-right: 2px;
         border-radius: 2px;
         transition: background-color 0.3s ease-in-out;
       }
 
       .swag-bar-segment:last-child {
-        margin-right: 0; /* Убираем отступ у последней полоски */
+        margin-right: 0;
       }
 
       .level-bar {
@@ -144,9 +144,9 @@
           to right,
           #4caf50 0%,
           #aeea00 25%,
-          /* Светло-зеленый */ #ffeb3b 50%,
-          /* Желтый */ #ffc107 75%,
-          /* Оранжевый */ #f44336 100% /* Красный */
+          #ffeb3b 50%,
+          #ffc107 75%,
+          #f44336 100%
         );
         height: 100%;
         border-radius: 10px;
@@ -169,6 +169,7 @@
         background-color: #0d0d0d;
         border: 1px solid #4d4c4c;
         box-shadow: inset 0 0 10px #252525, 0 10px 15px rgba(0, 0, 0, 0.5);
+        min-height: 103.333px;
       }
 
       .value-container:active {
@@ -177,7 +178,7 @@
       }
 
       .swag-value {
-        font-size: 3.5em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 3.5em;
         font-weight: bold;
         margin-bottom: 5px;
         letter-spacing: -2px;
@@ -186,8 +187,8 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        padding-left: 10px; /* Уменьшим отступы для мобильных */
-        padding-right: 10px; /* Уменьшим отступы для мобильных */
+        padding-left: 10px;
+        padding-right: 10px;
       }
 
       .swag-value.alert-text {
@@ -196,7 +197,7 @@
 
       .swag-unit {
         color: #777;
-        font-size: 1.2em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 1.2em;
       }
 
       .sensitivity-container {
@@ -204,26 +205,26 @@
         justify-content: space-between;
         align-items: center;
         color: #777;
-        font-size: 0.9em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 0.9em;
         margin-bottom: 25px;
       }
 
       .sensitivity-value {
         background-color: #333;
         border-radius: 12px;
-        padding: 10px 15px; /* Уменьшим отступы для мобильных */
+        padding: 10px 15px;
         font-weight: bold;
         cursor: pointer;
         transition: color 0.2s ease, transform 0.3s ease-in-out;
-        width: 130px; /* Уменьшим ширину кнопки для мобильных */
-        height: 35px; /* Уменьшим высоту кнопки для мобильных */
+        width: 130px;
+        height: 35px;
         display: flex;
         align-items: center;
         justify-content: center;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 0.9em; /* Немного уменьшим шрифт кнопки по умолчанию */
+        font-size: 0.9em;
         background-color: #0d0d0d;
         border: 1px solid #4d4c4c;
         box-shadow: inset 0 0 10px #252525, 0 10px 15px rgba(0, 0, 0, 0.5);
@@ -231,16 +232,15 @@
 
       .sensitivity-value.random-mode {
         color: #fff;
-        transform: scale(1.05); /* Немного уменьшим эффект при random-mode */
+        transform: scale(1);
       }
 
       .made-by {
         color: #555;
-        font-size: 0.8em; /* Немного уменьшим шрифт для мобильных */
+        font-size: 0.8em;
         margin-top: 20px;
       }
 
-      /* Медиа-запрос для экранов шириной до 600px (типичные мобильные) */
       @media (max-width: 600px) {
         h1 {
           font-size: 2.2em;
@@ -298,16 +298,16 @@
       </div>
 
       <div class="level-container">
-        <span class="emotion start-emotion">&#128532;</span>
+        <span class="emotion start-emotion">😔</span>
         <div class="level-indicator" id="levelIndicatorBars">
           <div class="level-bar" id="swagLevelBar"></div>
         </div>
-        <span class="emotion end-emotion">&#128128;</span>
+        <span class="emotion end-emotion">💀</span>
       </div>
 
       <div class="value-container" id="valueContainer">
         <div class="swag-value" id="swagValue">0</div>
-        <div class="swag-unit">СВГ</div>
+        <div class="swag-unit" id="swagUnit">СВГ</div>
       </div>
 
       <div class="sensitivity-container">
@@ -324,6 +324,7 @@
       const valueContainer = document.getElementById("valueContainer");
       const levelIndicatorBars = document.getElementById("levelIndicatorBars");
       const swagValueDisplay = document.getElementById("swagValue");
+      const swagUnitDisplay = document.getElementById("swagUnit");
       const startEmotion = document.querySelector(".start-emotion");
       const endEmotion = document.querySelector(".end-emotion");
       const sensitivityButton = document.getElementById("sensitivityButton");
@@ -339,8 +340,8 @@
       const stopHoldDelay = 500;
       let isHolding = false;
       let stopTimeoutId = null;
-      let randomMode = false;
-      let manualControlEnabled = true;
+      let randomMode = true;
+      let manualControlEnabled = false;
       let randomAnimationIntervalId = null;
       const specialPhrases = {
         42: "42 БРАТУХА!",
@@ -355,7 +356,7 @@
         99: "99! Почти, но нет",
       };
       let isAnimatingRandom = false;
-      const numberOfSegments = 20; // Количество полосок
+      const numberOfSegments = 20;
 
       function getSwagLevelText(value) {
         if (value >= 0 && value <= 20) {
@@ -363,7 +364,7 @@
         } else if (value >= 21 && value <= 40) {
           return { text: "Уровень сваги низкий", class: "low" };
         } else if (value >= 41 && value <= 60) {
-          return { text: "Свага присутствует", class: "present" };
+          return { text: " составляющий присутствует", class: "present" };
         } else if (value >= 61 && value <= 80) {
           return { text: "Высокий уровень сваги", class: "high" };
         } else if (value >= 81 && value <= 99) {
@@ -403,8 +404,7 @@
 
       function updateSwagDisplay(value, isFinalRandomValue = false) {
         const roundedValue = Math.round(value);
-        swagValueDisplay.textContent =
-          (isFinalRandomValue && specialPhrases[roundedValue]) || roundedValue;
+        swagValueDisplay.textContent = roundedValue;
 
         swagValueDisplay.style.fontSize = "3.5em";
         while (
@@ -417,6 +417,20 @@
           swagValueDisplay.style.fontSize = `${currentFontSize - 1}px`;
         }
 
+        swagUnitDisplay.textContent =
+          (isFinalRandomValue && specialPhrases[roundedValue]) || "СВГ";
+
+        swagUnitDisplay.style.fontSize = "1.2em";
+        while (
+          swagUnitDisplay.offsetWidth > valueContainer.offsetWidth &&
+          parseFloat(window.getComputedStyle(swagUnitDisplay).fontSize) > 8
+        ) {
+          let currentFontSize = parseFloat(
+            window.getComputedStyle(swagUnitDisplay).fontSize
+          );
+          swagUnitDisplay.style.fontSize = `${currentFontSize - 1}px`;
+        }
+
         const levelInfo = getSwagLevelText(roundedValue);
         swagLevelTextDisplay.textContent = levelInfo.text;
         swagLevelTextDisplay.className = `swag-level-text ${levelInfo.class}`;
@@ -425,8 +439,8 @@
         swagValueDisplay.classList.remove("alert-text");
         clearAlertTimeouts();
 
-        const startColor = [76, 175, 80]; // Зеленый (RGB)
-        const endColor = [244, 67, 54]; // Красный (RGB)
+        const startColor = [76, 175, 80];
+        const endColor = [244, 67, 54];
         const currentColor = startColor.map((start, index) => {
           const end = endColor[index];
           return Math.round(start + (end - start) * (value / maxSwag));
@@ -436,7 +450,6 @@
           .map((c) => Math.round(c * (value / maxSwag)))
           .join(",")})`;
 
-        // Обновляем цвет полосок
         const segments =
           levelIndicatorBars.querySelectorAll(".swag-bar-segment");
         const segmentsToShow = Math.round((value / maxSwag) * numberOfSegments);
@@ -447,13 +460,11 @@
             let r, g, b;
 
             if (progress < 0.5) {
-              // Зеленый к желтому (первая половина полосок)
               const ratio = progress / 0.5;
               r = Math.round(startColor[0] * (1 - ratio) + 255 * ratio);
               g = Math.round(startColor[1] * (1 - ratio) + 255 * ratio);
               b = Math.round(startColor[2] * (1 - ratio) + 0 * ratio);
             } else {
-              // Желтый к красному (вторая половина полосок)
               const ratio = (progress - 0.5) / 0.5;
               r = Math.round(255 * (1 - ratio) + endColor[0] * ratio);
               g = Math.round(255 * (1 - ratio) + endColor[1] * ratio);
@@ -461,7 +472,7 @@
             }
             segment.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
           } else {
-            segment.style.backgroundColor = "#333333"; // Цвет фона полосок
+            segment.style.backgroundColor = "#333333";
           }
         });
 
@@ -474,7 +485,7 @@
             body.classList.add("reset");
             segments.forEach(
               (segment) => (segment.style.backgroundColor = "#333333")
-            ); // Сбрасываем цвет полосок
+            );
           }
         }
       }
@@ -570,13 +581,12 @@
 
       window.addEventListener("load", () => {
         adjustSensitivityButtonFontSize();
-        // Создаем начальные полоски
         for (let i = 0; i < numberOfSegments; i++) {
           const segment = document.createElement("div");
           segment.classList.add("swag-bar-segment");
           levelIndicatorBars.appendChild(segment);
         }
-        updateSwagDisplay(currentSwag); // Обновляем при загрузке страницы
+        updateSwagDisplay(currentSwag);
         body.classList.remove("reset");
       });
 
@@ -617,9 +627,7 @@
         }
       });
 
-      // Инициализация полосок при загрузке
-
-      updateSwagDisplay(currentSwag); // Обновляем при загрузке страницы
+      updateSwagDisplay(currentSwag);
       body.classList.remove("reset");
     </script>
   </body>
