@@ -166,6 +166,11 @@
         letter-spacing: -2px;
         color: #fff;
         transition: color 0.3s ease;
+        white-space: nowrap; /* Предотвращаем перенос текста */
+        overflow: hidden; /* Скрываем выходящий за границы текст */
+        text-overflow: ellipsis; /* Добавляем многоточие для обрезанного текста (если нужно) */
+        padding-left: 15px; /* Добавляем внутренний отступ слева */
+        padding-right: 15px; /* Добавляем внутренний отступ справа */
       }
 
       .swag-value.alert-text {
@@ -198,6 +203,12 @@
       .sensitivity-value.random-mode {
         color: #fff;
         transform: scale(1.1);
+      }
+
+      .made-by {
+        color: #555;
+        font-size: 0.9em;
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -317,6 +328,21 @@
         const roundedValue = Math.round(value);
         swagValueDisplay.textContent =
           (isFinalRandomValue && specialPhrases[roundedValue]) || roundedValue;
+        swagValueDisplay.style.fontSize = ""; // Сбрасываем предыдущий размер шрифта
+
+        // Проверяем, не выходит ли текст за границы
+        if (swagValueDisplay.offsetWidth > valueContainer.offsetWidth) {
+          let fontSize = parseFloat(
+            window.getComputedStyle(swagValueDisplay).fontSize
+          );
+          while (
+            swagValueDisplay.offsetWidth > valueContainer.offsetWidth &&
+            fontSize > 10
+          ) {
+            fontSize -= 1;
+            swagValueDisplay.style.fontSize = `${fontSize}px`;
+          }
+        }
 
         const levelInfo = getSwagLevelText(roundedValue);
         swagLevelTextDisplay.textContent = levelInfo.text;
