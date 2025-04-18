@@ -115,21 +115,38 @@
       }
 
       .level-indicator {
-        background-color: #333333;
+        background-color: #0d0d0d;
         border-radius: 10px;
         height: 25px;
         width: 70%;
         overflow: hidden;
         position: relative;
+        display: flex; /* Используем flexbox для расположения полосок */
+        align-items: center; /* Выравниваем полоски по центру по вертикали */
+        padding: 2px; /* Небольшой отступ внутри контейнера */
+        box-sizing: border-box;
+      }
+
+      .swag-bar-segment {
+        height: 100%;
+        width: calc(100% / 20); /* Рассчитываем ширину для 20 полосок */
+        margin-right: 2px; /* Небольшой отступ между полосками */
+        border-radius: 2px;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      .swag-bar-segment:last-child {
+        margin-right: 0; /* Убираем отступ у последней полоски */
       }
 
       .level-bar {
         background: linear-gradient(
           to right,
-          #4caf50,
-          #ffeb3b,
-          #ff9800,
-          #f44336
+          #4caf50 0%,
+          #aeea00 25%,
+          /* Светло-зеленый */ #ffeb3b 50%,
+          /* Желтый */ #ffc107 75%,
+          /* Оранжевый */ #f44336 100% /* Красный */
         );
         height: 100%;
         border-radius: 10px;
@@ -282,7 +299,7 @@
 
       <div class="level-container">
         <span class="emotion start-emotion">&#128532;</span>
-        <div class="level-indicator">
+        <div class="level-indicator" id="levelIndicatorBars">
           <div class="level-bar" id="swagLevelBar"></div>
         </div>
         <span class="emotion end-emotion">&#128128;</span>
@@ -305,7 +322,7 @@
       const body = document.body;
       const container = document.getElementById("container");
       const valueContainer = document.getElementById("valueContainer");
-      const swagLevelBar = document.getElementById("swagLevelBar");
+      const levelIndicatorBars = document.getElementById("levelIndicatorBars");
       const swagValueDisplay = document.getElementById("swagValue");
       const startEmotion = document.querySelector(".start-emotion");
       const endEmotion = document.querySelector(".end-emotion");
@@ -317,9 +334,9 @@
       const incrementInterval = 50;
       let holdIntervalId = null;
       let isIncreasing = true;
-      let alertTimeoutIds = []; // Массив для хранения ID таймеров мигания
+      let alertTimeoutIds = [];
       let holdStartTime = null;
-      const stopHoldDelay = 500; // 0.5 секунды в миллисекундах
+      const stopHoldDelay = 500;
       let isHolding = false;
       let stopTimeoutId = null;
       let randomMode = false;
@@ -338,6 +355,7 @@
         99: "99! Почти, но нет",
       };
       let isAnimatingRandom = false;
+      const numberOfSegments = 20; // Количество полосок
 
       function getSwagLevelText(value) {
         if (value >= 0 && value <= 20) {
@@ -364,8 +382,8 @@
 
       function triggerAlert() {
         clearAlertTimeouts();
-        let blinkCount = 3; // Количество миганий
-        const blinkDelay = 300; // Задержка между миганиями
+        let blinkCount = 3;
+        const blinkDelay = 300;
 
         function blink() {
           if (blinkCount > 0) {
@@ -384,15 +402,11 @@
       }
 
       function updateSwagDisplay(value, isFinalRandomValue = false) {
-        swagLevelBar.style.width = `${value}%`;
         const roundedValue = Math.round(value);
         swagValueDisplay.textContent =
           (isFinalRandomValue && specialPhrases[roundedValue]) || roundedValue;
 
-        // Сбрасываем размер шрифта до начального значения (или достаточно большого)
-        swagValueDisplay.style.fontSize = "3.5em"; // Используем мобильный размер по умолчанию
-
-        // Проверяем, не выходит ли текст за границы, и уменьшаем шрифт, если выходит
+        swagValueDisplay.style.fontSize = "3.5em";
         while (
           swagValueDisplay.offsetWidth > valueContainer.offsetWidth &&
           parseFloat(window.getComputedStyle(swagValueDisplay).fontSize) > 10
@@ -411,7 +425,6 @@
         swagValueDisplay.classList.remove("alert-text");
         clearAlertTimeouts();
 
-        // Плавное изменение цвета эмодзи
         const startColor = [76, 175, 80]; // Зеленый (RGB)
         const endColor = [244, 67, 54]; // Красный (RGB)
         const currentColor = startColor.map((start, index) => {
@@ -423,6 +436,35 @@
           .map((c) => Math.round(c * (value / maxSwag)))
           .join(",")})`;
 
+        // Обновляем цвет полосок
+        const segments =
+          levelIndicatorBars.querySelectorAll(".swag-bar-segment");
+        const segmentsToShow = Math.round((value / maxSwag) * numberOfSegments);
+
+        segments.forEach((segment, index) => {
+          if (index < segmentsToShow) {
+            const progress = index / (numberOfSegments - 1);
+            let r, g, b;
+
+            if (progress < 0.5) {
+              // Зеленый к желтому (первая половина полосок)
+              const ratio = progress / 0.5;
+              r = Math.round(startColor[0] * (1 - ratio) + 255 * ratio);
+              g = Math.round(startColor[1] * (1 - ratio) + 255 * ratio);
+              b = Math.round(startColor[2] * (1 - ratio) + 0 * ratio);
+            } else {
+              // Желтый к красному (вторая половина полосок)
+              const ratio = (progress - 0.5) / 0.5;
+              r = Math.round(255 * (1 - ratio) + endColor[0] * ratio);
+              g = Math.round(255 * (1 - ratio) + endColor[1] * ratio);
+              b = Math.round(0 * (1 - ratio) + endColor[2] * ratio);
+            }
+            segment.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+          } else {
+            segment.style.backgroundColor = "#333333"; // Цвет фона полосок
+          }
+        });
+
         if (value >= maxSwag) {
           body.classList.add("alert");
           swagValueDisplay.classList.add("alert-text");
@@ -430,6 +472,9 @@
         } else if (value <= 0) {
           if (value === 0) {
             body.classList.add("reset");
+            segments.forEach(
+              (segment) => (segment.style.backgroundColor = "#333333")
+            ); // Сбрасываем цвет полосок
           }
         }
       }
@@ -451,7 +496,6 @@
         holdIntervalId = setInterval(changeSwag, incrementInterval);
         holdStartTime = Date.now();
 
-        // Запускаем таймер для остановки через 0.5 секунды
         stopTimeoutId = setTimeout(() => {
           if (isHolding) {
             clearInterval(holdIntervalId);
@@ -462,11 +506,10 @@
       function endHold() {
         isHolding = false;
         clearInterval(holdIntervalId);
-        clearTimeout(stopTimeoutId); // Очищаем таймер, если отпустили раньше
+        clearTimeout(stopTimeoutId);
       }
 
       function handleClickOrTap() {
-        // Предотвращаем смену направления во время удержания для остановки
         if (
           manualControlEnabled &&
           !isAnimatingRandom &&
@@ -474,13 +517,13 @@
         ) {
           isIncreasing = !isIncreasing;
           clearInterval(holdIntervalId);
-          clearAlertTimeouts(); // Очищаем возможные мигания при смене направления
+          clearAlertTimeouts();
           body.classList.remove("alert");
           body.classList.remove("reset");
           swagValueDisplay.classList.remove("alert-text");
           holdIntervalId = setInterval(changeSwag, incrementInterval);
         }
-        clearTimeout(stopTimeoutId); // Очищаем таймер при клике
+        clearTimeout(stopTimeoutId);
         holdStartTime = null;
       }
 
@@ -491,30 +534,29 @@
 
       body.addEventListener("touchstart", startHold);
       body.addEventListener("touchend", endHold);
-      body.addEventListener("touchcancel", endHold); // На случай, если касание было прервано
+      body.addEventListener("touchcancel", endHold);
 
       sensitivityButton.addEventListener("click", () => {
         randomMode = !randomMode;
         sensitivityButton.classList.toggle("random-mode");
         manualControlEnabled = !randomMode;
-        clearInterval(holdIntervalId); // Отключаем ручное управление при вкл. рандома
-        clearInterval(randomAnimationIntervalId); // Очищаем предыдущий интервал анимации
-        clearAlertTimeouts(); // Очищаем возможные мигания при смене режима
+        clearInterval(holdIntervalId);
+        clearInterval(randomAnimationIntervalId);
+        clearAlertTimeouts();
         body.classList.remove("alert");
         isAnimatingRandom = false;
-        updateSwagDisplay(currentSwag); // Обновляем до числового значения и уровня сваги при смене режима
+        updateSwagDisplay(currentSwag);
 
-        // Обновляем текст кнопки и подгоняем размер шрифта
         sensitivityButton.textContent = randomMode ? "x1.0" : "x1.0";
         adjustSensitivityButtonFontSize();
 
         if (!randomMode) {
-          holdIntervalId = setInterval(changeSwag, incrementInterval); // Включаем ручное управление при выкл. рандома
+          holdIntervalId = setInterval(changeSwag, incrementInterval);
         }
       });
 
       function adjustSensitivityButtonFontSize() {
-        sensitivityButton.style.fontSize = "0.9em"; // Сброс до мобильного размера по умолчанию
+        sensitivityButton.style.fontSize = "0.9em";
         while (
           sensitivityButton.scrollWidth > sensitivityButton.offsetWidth &&
           parseFloat(window.getComputedStyle(sensitivityButton).fontSize) > 0.5
@@ -526,16 +568,26 @@
         }
       }
 
-      window.addEventListener("load", adjustSensitivityButtonFontSize);
+      window.addEventListener("load", () => {
+        adjustSensitivityButtonFontSize();
+        // Создаем начальные полоски
+        for (let i = 0; i < numberOfSegments; i++) {
+          const segment = document.createElement("div");
+          segment.classList.add("swag-bar-segment");
+          levelIndicatorBars.appendChild(segment);
+        }
+        updateSwagDisplay(currentSwag); // Обновляем при загрузке страницы
+        body.classList.remove("reset");
+      });
 
       valueContainer.addEventListener("click", () => {
         if (randomMode && !isAnimatingRandom) {
           isAnimatingRandom = true;
-          clearInterval(randomAnimationIntervalId); // Останавливаем возможную предыдущую анимацию
+          clearInterval(randomAnimationIntervalId);
           const targetValue = Math.floor(Math.random() * (maxSwag + 1));
-          const duration = 500; // Длительность анимации в миллисекундах
+          const duration = 500;
           const startTime = Date.now();
-          let startValue = currentSwag; // Начинаем с текущего значения
+          let startValue = currentSwag;
           let animationInterval;
 
           function animateRandom() {
@@ -549,22 +601,23 @@
               updateSwagDisplay(currentSwag);
             } else {
               currentSwag = targetValue;
-              updateSwagDisplay(currentSwag, true); // Показываем фразу после анимации
+              updateSwagDisplay(currentSwag, true);
               clearInterval(animationInterval);
               isAnimatingRandom = false;
               if (currentSwag >= maxSwag) {
-                triggerAlert(); // Запускаем мигание после анимации в случайном режиме
+                triggerAlert();
               }
             }
           }
 
-          animationInterval = setInterval(animateRandom, 20); // Обновляем значение несколько раз в секунду
-          randomAnimationIntervalId = animationInterval; // Сохраняем ID интервала
+          animationInterval = setInterval(animateRandom, 20);
+          randomAnimationIntervalId = animationInterval;
         } else if (manualControlEnabled) {
-          // Обновляем текст уровня сваги при ручном изменении
           updateSwagDisplay(currentSwag);
         }
       });
+
+      // Инициализация полосок при загрузке
 
       updateSwagDisplay(currentSwag); // Обновляем при загрузке страницы
       body.classList.remove("reset");
