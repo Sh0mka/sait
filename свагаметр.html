@@ -18,8 +18,7 @@
         margin: 0;
         transition: background-color 0.3s ease;
         user-select: none;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding: 20px; /* Универсальный отступ для body */
         box-sizing: border-box;
       }
 
@@ -38,57 +37,59 @@
         padding: 30px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
         text-align: center;
-        width: 380px;
+        width: 100%; /* Занимает всю доступную ширину */
+        max-width: 380px; /* Максимальная ширина на больших экранах */
+        box-sizing: border-box;
       }
 
       .header {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 15px; /* Уменьшим отступ */
-        flex-direction: column; /* Чтобы подзаголовок был под заголовком */
+        margin-bottom: 15px;
+        flex-direction: column;
       }
 
       h1 {
-        font-size: 2.8em;
+        font-size: 2.5em; /* Немного уменьшим шрифт для мобильных */
         margin: 0;
         font-weight: bold;
         letter-spacing: 1px;
       }
 
       .swag-level-text {
-        font-size: 1.2em;
+        font-size: 1.1em; /* Немного уменьшим шрифт для мобильных */
         margin-top: 5px;
         margin-bottom: 10px;
         font-weight: bold;
-        color: #ddd; /* Default color */
+        color: #ddd;
       }
 
       .swag-level-text.low {
-        color: #42a5f5; /* Синий */
+        color: #42a5f5;
       }
 
       .swag-level-text.present {
-        color: #66bb6a; /* Зеленый */
+        color: #66bb6a;
       }
 
       .swag-level-text.high {
-        color: #ffca28; /* Желтый */
+        color: #ffca28;
       }
 
       .swag-level-text.critical {
-        color: #ffa726; /* Оранжевый */
+        color: #ffa726;
       }
 
       .swag-level-text.lethal {
-        color: #ef5350; /* Красный */
+        color: #ef5350;
       }
 
       .sub-title {
         color: #777;
-        font-size: 1em;
+        font-size: 0.9em; /* Немного уменьшим шрифт для мобильных */
         margin-top: 5px;
-        margin-bottom: 15px; /* Уменьшим отступ */
+        margin-bottom: 15px;
       }
 
       .level-container {
@@ -103,25 +104,17 @@
       }
 
       .emotion {
-        font-size: 2em;
+        font-size: 1.8em; /* Немного уменьшим шрифт для мобильных */
         color: #aaa;
         opacity: 0.7;
         transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
       }
 
-      .level-container .start-emotion {
-        color: #4caf50; /* Зеленый в начале */
-      }
-
-      .level-container .end-emotion {
-        color: #f44336; /* Красный в конце */
-      }
-
       .level-indicator {
         background-color: #444;
         border-radius: 10px;
-        height: 30px;
-        width: 75%;
+        height: 25px; /* Немного уменьшим высоту для мобильных */
+        width: 70%; /* Уменьшим ширину, чтобы эмодзи были виднее */
         overflow: hidden;
         position: relative;
       }
@@ -133,11 +126,11 @@
           #ffeb3b,
           #ff9800,
           #f44336
-        ); /* Более яркий градиент */
+        );
         height: 100%;
         border-radius: 10px;
         width: 0%;
-        transition: width 0.3s ease-in-out, background 0.3s ease-in-out; /* Анимация фона */
+        transition: width 0.3s ease-in-out, background 0.3s ease-in-out;
       }
 
       .value-container {
@@ -149,9 +142,9 @@
         align-items: center;
         margin-bottom: 25px;
         cursor: pointer;
-        transition: transform 0.1s ease-in-out; /* Тактильная обратная связь */
+        transition: transform 0.1s ease-in-out;
         border: 1px solid #4d4c4c;
-        -webkit-tap-highlight-color: transparent; /* Убираем подсветку для iOS */
+        -webkit-tap-highlight-color: transparent;
       }
 
       .value-container:active {
@@ -160,17 +153,17 @@
       }
 
       .swag-value {
-        font-size: 4.5em;
+        font-size: 3.5em; /* Немного уменьшим шрифт для мобильных */
         font-weight: bold;
         margin-bottom: 5px;
         letter-spacing: -2px;
         color: #fff;
         transition: color 0.3s ease;
-        white-space: nowrap; /* Предотвращаем перенос текста */
-        overflow: hidden; /* Скрываем выходящий за границы текст */
-        text-overflow: ellipsis; /* Добавляем многоточие для обрезанного текста (если нужно) */
-        padding-left: 15px; /* Добавляем внутренний отступ слева */
-        padding-right: 15px; /* Добавляем внутренний отступ справа */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 10px; /* Уменьшим отступы для мобильных */
+        padding-right: 10px; /* Уменьшим отступы для мобильных */
       }
 
       .swag-value.alert-text {
@@ -179,7 +172,7 @@
 
       .swag-unit {
         color: #777;
-        font-size: 1.4em;
+        font-size: 1.2em; /* Немного уменьшим шрифт для мобильных */
       }
 
       .sensitivity-container {
@@ -187,28 +180,85 @@
         justify-content: space-between;
         align-items: center;
         color: #777;
-        font-size: 1em;
+        font-size: 0.9em; /* Немного уменьшим шрифт для мобильных */
         margin-bottom: 25px;
       }
 
       .sensitivity-value {
         background-color: #333;
         border-radius: 12px;
-        padding: 12px 18px;
+        padding: 10px 15px; /* Уменьшим отступы для мобильных */
         font-weight: bold;
         cursor: pointer;
-        transition: color 0.2s ease, transform 0.3s ease-in-out; /* Добавляем transition */
+        transition: color 0.2s ease, transform 0.3s ease-in-out;
+        width: 130px; /* Уменьшим ширину кнопки для мобильных */
+        height: 35px; /* Уменьшим высоту кнопки для мобильных */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.9em; /* Немного уменьшим шрифт кнопки по умолчанию */
       }
 
       .sensitivity-value.random-mode {
         color: #fff;
-        transform: scale(1.1);
+        transform: scale(1.05); /* Немного уменьшим эффект при random-mode */
       }
 
       .made-by {
         color: #555;
-        font-size: 0.9em;
+        font-size: 0.8em; /* Немного уменьшим шрифт для мобильных */
         margin-top: 20px;
+      }
+
+      /* Медиа-запрос для экранов шириной до 600px (типичные мобильные) */
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 2.2em;
+        }
+
+        .swag-level-text {
+          font-size: 1em;
+        }
+
+        .sub-title {
+          font-size: 0.85em;
+        }
+
+        .emotion {
+          font-size: 1.6em;
+        }
+
+        .level-indicator {
+          height: 20px;
+        }
+
+        .swag-value {
+          font-size: 3em;
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+
+        .swag-unit {
+          font-size: 1.1em;
+        }
+
+        .sensitivity-container {
+          font-size: 0.85em;
+        }
+
+        .sensitivity-value {
+          padding: 8px 12px;
+          width: 110px;
+          height: 30px;
+          font-size: 0.8em;
+        }
+
+        .made-by {
+          font-size: 0.75em;
+        }
       }
     </style>
   </head>
@@ -328,20 +378,19 @@
         const roundedValue = Math.round(value);
         swagValueDisplay.textContent =
           (isFinalRandomValue && specialPhrases[roundedValue]) || roundedValue;
-        swagValueDisplay.style.fontSize = ""; // Сбрасываем предыдущий размер шрифта
 
-        // Проверяем, не выходит ли текст за границы
-        if (swagValueDisplay.offsetWidth > valueContainer.offsetWidth) {
-          let fontSize = parseFloat(
+        // Сбрасываем размер шрифта до начального значения (или достаточно большого)
+        swagValueDisplay.style.fontSize = "3.5em"; // Используем мобильный размер по умолчанию
+
+        // Проверяем, не выходит ли текст за границы, и уменьшаем шрифт, если выходит
+        while (
+          swagValueDisplay.offsetWidth > valueContainer.offsetWidth &&
+          parseFloat(window.getComputedStyle(swagValueDisplay).fontSize) > 10
+        ) {
+          let currentFontSize = parseFloat(
             window.getComputedStyle(swagValueDisplay).fontSize
           );
-          while (
-            swagValueDisplay.offsetWidth > valueContainer.offsetWidth &&
-            fontSize > 10
-          ) {
-            fontSize -= 1;
-            swagValueDisplay.style.fontSize = `${fontSize}px`;
-          }
+          swagValueDisplay.style.fontSize = `${currentFontSize - 1}px`;
         }
 
         const levelInfo = getSwagLevelText(roundedValue);
@@ -444,10 +493,30 @@
         body.classList.remove("alert");
         isAnimatingRandom = false;
         updateSwagDisplay(currentSwag); // Обновляем до числового значения и уровня сваги при смене режима
+
+        // Обновляем текст кнопки и подгоняем размер шрифта
+        sensitivityButton.textContent = randomMode ? "RANDOM MODE" : "x1.0";
+        adjustSensitivityButtonFontSize();
+
         if (!randomMode) {
           holdIntervalId = setInterval(changeSwag, incrementInterval); // Включаем ручное управление при выкл. рандома
         }
       });
+
+      function adjustSensitivityButtonFontSize() {
+        sensitivityButton.style.fontSize = "0.9em"; // Сброс до мобильного размера по умолчанию
+        while (
+          sensitivityButton.scrollWidth > sensitivityButton.offsetWidth &&
+          parseFloat(window.getComputedStyle(sensitivityButton).fontSize) > 0.5
+        ) {
+          let currentFontSize = parseFloat(
+            window.getComputedStyle(sensitivityButton).fontSize
+          );
+          sensitivityButton.style.fontSize = `${currentFontSize - 0.05}em`;
+        }
+      }
+
+      window.addEventListener("load", adjustSensitivityButtonFontSize);
 
       valueContainer.addEventListener("click", () => {
         if (randomMode && !isAnimatingRandom) {
