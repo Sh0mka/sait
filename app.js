@@ -3,7 +3,7 @@ const tg = window.Telegram?.WebApp;
 tg?.expand();
 
 // --- Константы ---
-const API_URL = "http://localhost:8001/api";
+const API_URL = "http://127.0.0.1:4040";
 const STEPS_PER_STAR = 1000;
 
 // --- Состояние приложения ---
