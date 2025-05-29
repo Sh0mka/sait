@@ -1,7 +1,7 @@
 // --- Telegram Mini App API ---
 const tg = window.Telegram?.WebApp;
 
-// --- Данные пользователя (заглушка, потом можно получать с бэка) ---
+// --- Данные пользователя ---
 let user = {
   id: tg?.initDataUnsafe?.user?.id || 1,
   first_name: tg?.initDataUnsafe?.user?.first_name || "Гость",
@@ -11,15 +11,76 @@ let user = {
   referral: "",
 };
 
-// --- Локальное хранение ---
-function saveData() {
-  localStorage.setItem("stepstar_user", JSON.stringify(user));
-}
-function loadData() {
-  const data = localStorage.getItem("stepstar_user");
-  if (data) {
-    user = { ...user, ...JSON.parse(data) };
+// --- API ---
+const API_URL = "https://your-api-endpoint.com/api"; // Замените на ваш реальный API URL
+
+async function fetchUserData() {
+  try {
+    const response = await fetch(`${API_URL}/user/${user.id}`);
+    if (!response.ok) throw new Error("Ошибка получения данных пользователя");
+    const data = await response.json();
+    user = { ...user, ...data };
+    updateUI();
+  } catch (error) {
+    console.error("Ошибка:", error);
   }
+}
+
+async function updateUserSteps(steps) {
+  try {
+    const response = await fetch(`${API_URL}/user/${user.id}/steps`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ steps }),
+    });
+    if (!response.ok) throw new Error("Ошибка обновления шагов");
+    const data = await response.json();
+    user.steps = data.steps;
+    updateUI();
+  } catch (error) {
+    console.error("Ошибка:", error);
+  }
+}
+
+async function convertStepsToStars() {
+  try {
+    const response = await fetch(`${API_URL}/user/${user.id}/convert`, {
+      method: "POST",
+    });
+    if (!response.ok) throw new Error("Ошибка конвертации шагов");
+    const data = await response.json();
+    user.stars = data.stars;
+    user.steps = data.steps;
+    updateUI();
+    alert(`Поздравляем! Вы получили ${data.starsAdded} ⭐!`);
+  } catch (error) {
+    console.error("Ошибка:", error);
+  }
+}
+
+async function fetchLeaderboard() {
+  try {
+    const response = await fetch(`${API_URL}/leaderboard`);
+    if (!response.ok) throw new Error("Ошибка получения лидерборда");
+    const data = await response.json();
+    updateLeaderboardUI(data);
+  } catch (error) {
+    console.error("Ошибка:", error);
+  }
+}
+
+function updateLeaderboardUI(leaderboard) {
+  const list = document.getElementById("leaderboard-list");
+  list.innerHTML = "";
+  leaderboard.forEach((u, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span style="min-width:2em;display:inline-block;">${
+      i + 1
+    }.</span> <b>${u.name}</b> — <span style="color:#229ED9;">${
+      u.stars
+    } ⭐</span>`;
+    list.appendChild(li);
+  });
 }
 
 // --- UI ---
@@ -36,64 +97,21 @@ function updateUI() {
 document.getElementById("add-steps-btn").onclick = function () {
   const val = parseInt(document.getElementById("steps-input").value, 10);
   if (!isNaN(val) && val > 0) {
-    user.steps += val;
-    saveData();
-    updateUI();
+    updateUserSteps(val);
     document.getElementById("steps-input").value = "";
   }
 };
 
 // --- Конвертация шагов в звезды ---
-const STEPS_PER_STAR = 1000;
-document.getElementById("convert-btn").onclick = function () {
-  const starsToAdd = Math.floor(user.steps / STEPS_PER_STAR);
-  if (starsToAdd > 0) {
-    user.stars += starsToAdd;
-    user.steps = user.steps % STEPS_PER_STAR;
-    saveData();
-    updateUI();
-    alert(`Поздравляем! Вы получили ${starsToAdd} ⭐!`);
-  } else {
-    alert(
-      `Недостаточно шагов для конвертации. Нужно ещё ${
-        STEPS_PER_STAR - user.steps
-      } шагов.`
-    );
-  }
-};
-
-// --- Лидерборд (заглушка, потом можно получать с бэка) ---
-function getLeaderboard() {
-  // Примерные данные
-  return [
-    { name: "Аня", stars: 25 },
-    { name: "Иван", stars: 20 },
-    { name: user.username || user.first_name, stars: user.stars },
-    { name: "Олег", stars: 10 },
-    { name: "Мария", stars: 7 },
-  ].sort((a, b) => b.stars - a.stars);
-}
-function updateLeaderboard() {
-  const list = document.getElementById("leaderboard-list");
-  list.innerHTML = "";
-  getLeaderboard().forEach((u, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<span style="min-width:2em;display:inline-block;">${
-      i + 1
-    }.</span> <b>${u.name}</b> — <span style="color:#229ED9;">${
-      u.stars
-    } ⭐</span>`;
-    list.appendChild(li);
-  });
-}
+document.getElementById("convert-btn").onclick = convertStepsToStars;
 
 // --- Реферальная система ---
 function getReferralLink() {
-  // В реальном приложении ссылка будет уникальной
   return `https://t.me/${
     tg?.initDataUnsafe?.bot?.username || "StepStarBot"
   }?start=ref_${user.id}`;
 }
+
 document.getElementById("copy-ref-btn").onclick = function () {
   const link = getReferralLink();
   navigator.clipboard.writeText(link);
@@ -101,10 +119,9 @@ document.getElementById("copy-ref-btn").onclick = function () {
 };
 
 // --- Инициализация ---
-function init() {
-  loadData();
-  updateUI();
-  updateLeaderboard();
+async function init() {
+  await fetchUserData();
+  await fetchLeaderboard();
   if (tg) tg.ready();
 }
 
