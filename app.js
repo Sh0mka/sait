@@ -3,7 +3,7 @@ const tg = window.Telegram?.WebApp;
 tg?.expand();
 
 // --- Константы ---
-const API_URL = "http://127.0.0.1:4040";
+const API_URL = "https://cold-garlics-add.loca.lt/api";
 const STEPS_PER_STAR = 1000;
 
 // --- Состояние приложения ---
