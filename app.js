@@ -1,19 +1,48 @@
 // --- Telegram Mini App API ---
 const tg = window.Telegram?.WebApp;
+tg?.expand();
 
-// --- Данные пользователя ---
+// --- Константы ---
+const API_URL = "https://your-api-endpoint.com/api"; // Замените на ваш реальный API URL
+const STEPS_PER_STAR = 1000;
+
+// --- Состояние приложения ---
 let user = {
   id: tg?.initDataUnsafe?.user?.id || 1,
   first_name: tg?.initDataUnsafe?.user?.first_name || "Гость",
   username: tg?.initDataUnsafe?.user?.username || "",
-  stars: 0,
   steps: 0,
-  referral: "",
+  stars: 0,
+  rank: 0,
+  referral_code: "",
 };
 
-// --- API ---
-const API_URL = "https://your-api-endpoint.com/api"; // Замените на ваш реальный API URL
+// --- Форматирование чисел ---
+function formatNumber(num) {
+  return new Intl.NumberFormat("ru-RU").format(num);
+}
 
+// --- Обновление UI ---
+function updateUI() {
+  // Обновление информации о пользователе
+  document.getElementById("user-name").textContent = user.username
+    ? `@${user.username}`
+    : user.first_name;
+  document.getElementById("user-rank").textContent = `Ранг: #${user.rank}`;
+
+  // Обновление метрик
+  document.getElementById("steps-display").textContent = formatNumber(
+    user.steps
+  );
+  document.getElementById("stars-display").textContent = formatNumber(
+    user.stars
+  );
+
+  // Обновление реферальной ссылки
+  document.getElementById("referral-link").value = getReferralLink();
+}
+
+// --- API запросы ---
 async function fetchUserData() {
   try {
     const response = await fetch(`${API_URL}/user/${user.id}`);
@@ -23,6 +52,7 @@ async function fetchUserData() {
     updateUI();
   } catch (error) {
     console.error("Ошибка:", error);
+    showNotification("Ошибка загрузки данных", "error");
   }
 }
 
@@ -37,8 +67,10 @@ async function updateUserSteps(steps) {
     const data = await response.json();
     user.steps = data.steps;
     updateUI();
+    showNotification(`Добавлено ${formatNumber(steps)} шагов!`, "success");
   } catch (error) {
     console.error("Ошибка:", error);
+    showNotification("Ошибка добавления шагов", "error");
   }
 }
 
@@ -52,9 +84,13 @@ async function convertStepsToStars() {
     user.stars = data.stars;
     user.steps = data.steps;
     updateUI();
-    alert(`Поздравляем! Вы получили ${data.starsAdded} ⭐!`);
+    showNotification(
+      `Поздравляем! Вы получили ${formatNumber(data.starsAdded)} ⭐!`,
+      "success"
+    );
   } catch (error) {
     console.error("Ошибка:", error);
+    showNotification("Ошибка конвертации шагов", "error");
   }
 }
 
@@ -66,57 +102,78 @@ async function fetchLeaderboard() {
     updateLeaderboardUI(data);
   } catch (error) {
     console.error("Ошибка:", error);
+    showNotification("Ошибка загрузки лидерборда", "error");
   }
 }
 
+// --- Обновление лидерборда ---
 function updateLeaderboardUI(leaderboard) {
   const list = document.getElementById("leaderboard-list");
   list.innerHTML = "";
-  leaderboard.forEach((u, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<span style="min-width:2em;display:inline-block;">${
-      i + 1
-    }.</span> <b>${u.name}</b> — <span style="color:#229ED9;">${
-      u.stars
-    } ⭐</span>`;
-    list.appendChild(li);
+
+  leaderboard.forEach((user, index) => {
+    const item = document.createElement("div");
+    item.className = "leaderboard-item";
+    item.innerHTML = `
+      <div class="leaderboard-rank">${index + 1}</div>
+      <div class="leaderboard-name">${
+        user.username ? `@${user.username}` : user.first_name
+      }</div>
+      <div class="leaderboard-stars">${formatNumber(user.stars)} ⭐</div>
+    `;
+    list.appendChild(item);
   });
 }
-
-// --- UI ---
-function updateUI() {
-  document.getElementById("user-info").textContent = user.username
-    ? `@${user.username}`
-    : user.first_name;
-  document.getElementById("steps-display").textContent = user.steps;
-  document.getElementById("stars-display").textContent = user.stars;
-  document.getElementById("referral-link").textContent = getReferralLink();
-}
-
-// --- Логика шагов ---
-document.getElementById("add-steps-btn").onclick = function () {
-  const val = parseInt(document.getElementById("steps-input").value, 10);
-  if (!isNaN(val) && val > 0) {
-    updateUserSteps(val);
-    document.getElementById("steps-input").value = "";
-  }
-};
-
-// --- Конвертация шагов в звезды ---
-document.getElementById("convert-btn").onclick = convertStepsToStars;
 
 // --- Реферальная система ---
 function getReferralLink() {
   return `https://t.me/${
     tg?.initDataUnsafe?.bot?.username || "StepStarBot"
-  }?start=ref_${user.id}`;
+  }?start=ref_${user.referral_code}`;
 }
 
-document.getElementById("copy-ref-btn").onclick = function () {
+// --- Уведомления ---
+function showNotification(message, type = "info") {
+  const notification = document.createElement("div");
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 100);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// --- Обработчики событий ---
+document.getElementById("add-steps-btn").addEventListener("click", () => {
+  const input = document.getElementById("steps-input");
+  const steps = parseInt(input.value, 10);
+
+  if (!isNaN(steps) && steps > 0) {
+    updateUserSteps(steps);
+    input.value = "";
+  } else {
+    showNotification(
+      "Пожалуйста, введите корректное количество шагов",
+      "error"
+    );
+  }
+});
+
+document
+  .getElementById("convert-btn")
+  .addEventListener("click", convertStepsToStars);
+
+document.getElementById("copy-ref-btn").addEventListener("click", () => {
   const link = getReferralLink();
   navigator.clipboard.writeText(link);
-  alert("Ссылка скопирована!");
-};
+  showNotification("Ссылка скопирована!", "success");
+});
 
 // --- Инициализация ---
 async function init() {
@@ -125,4 +182,5 @@ async function init() {
   if (tg) tg.ready();
 }
 
+// --- Запуск приложения ---
 init();

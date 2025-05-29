@@ -3,43 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StepStar Mini App</title>
+    <title>StepStar</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>StepStar</h1>
-        <div class="user-info" id="user-info"></div>
-      </header>
-      <main>
-        <section class="steps-section">
-          <h2>🚶‍♂️ Ваши шаги</h2>
-          <div class="steps-display" id="steps-display">0</div>
+    <div class="app-container">
+      <!-- Верхняя панель с информацией о пользователе -->
+      <div class="user-header">
+        <div class="user-avatar">
+          <img
+            src="https://ui-avatars.com/api/?name=User&background=229ed9&color=fff"
+            alt="Avatar"
+          />
+        </div>
+        <div class="user-info">
+          <h2 id="user-name">Загрузка...</h2>
+          <p id="user-rank">Ранг: #0</p>
+        </div>
+      </div>
+
+      <!-- Основные метрики -->
+      <div class="metrics-container">
+        <div class="metric-card">
+          <div class="metric-icon">🚶‍♂️</div>
+          <div class="metric-info">
+            <h3>Шаги сегодня</h3>
+            <p id="steps-display">0</p>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⭐</div>
+          <div class="metric-info">
+            <h3>Звезды</h3>
+            <p id="stars-display">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Добавление шагов -->
+      <div class="action-card">
+        <h3>Добавить шаги</h3>
+        <div class="input-group">
           <input
             type="number"
             id="steps-input"
-            placeholder="Введите шаги"
+            placeholder="Введите количество шагов"
             min="0"
           />
-          <button id="add-steps-btn">Добавить шаги</button>
-          <button id="convert-btn">Конвертировать в звезды ⭐</button>
-        </section>
-        <section class="stars-section">
-          <h2>⭐ Ваши звезды</h2>
-          <div class="stars-display" id="stars-display">0</div>
-        </section>
-        <section class="leaderboard-section">
-          <h2>🏆 Лидерборд</h2>
-          <ol id="leaderboard-list"></ol>
-        </section>
-        <section class="referral-section">
-          <h2>👥 Реферальная система</h2>
-          <div id="referral-link"></div>
-          <button id="copy-ref-btn">Скопировать ссылку</button>
-        </section>
-      </main>
+          <button id="add-steps-btn" class="primary-btn">Добавить</button>
+        </div>
+        <button id="convert-btn" class="secondary-btn">
+          Конвертировать в звезды ⭐
+        </button>
+      </div>
+
+      <!-- Лидерборд -->
+      <div class="leaderboard-card">
+        <h3>🏆 Топ игроков</h3>
+        <div class="leaderboard-list" id="leaderboard-list">
+          <!-- Список будет заполнен через JavaScript -->
+        </div>
+      </div>
+
+      <!-- Реферальная система -->
+      <div class="referral-card">
+        <h3>👥 Пригласи друзей</h3>
+        <p>Получай бонусные звезды за каждого приглашенного друга!</p>
+        <div class="referral-link-container">
+          <input type="text" id="referral-link" readonly />
+          <button id="copy-ref-btn" class="copy-btn">Копировать</button>
+        </div>
+      </div>
     </div>
     <script src="app.js"></script>
   </body>
