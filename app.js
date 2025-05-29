@@ -3,7 +3,7 @@ const tg = window.Telegram?.WebApp;
 tg?.expand();
 
 // --- Константы ---
-const API_URL = "https://your-api-endpoint.com/api"; // Замените на ваш реальный API URL
+const API_URL = "http://localhost:8001/api";
 const STEPS_PER_STAR = 1000;
 
 // --- Состояние приложения ---
