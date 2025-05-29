@@ -2,10 +2,11 @@
 const tg = window.Telegram?.WebApp;
 if (!tg) {
   console.error("Telegram WebApp не инициализирован");
+  showNotification("Ошибка инициализации Telegram WebApp", "error");
 }
 
 // --- Константы ---
-const API_URL = "https://cold-garlics-add.loca.lt/api";
+const API_URL = "http://localhost:8001/api"; // Локальный адрес для разработки
 const STEPS_PER_STAR = 1000;
 const MIN_STEPS = 1;
 const MAX_STEPS = 1000000;
@@ -192,9 +193,21 @@ function updateLeaderboardUI(leaderboard) {
 // --- Реферальная система ---
 function getReferralLink() {
   try {
-    return `https://t.me/${
-      tg?.initDataUnsafe?.bot?.username || "starstep_bot"
-    }?start=ref_${user.referral_code}`;
+    console.log("Bot data:", tg?.initDataUnsafe?.bot);
+    const botUsername = tg?.initDataUnsafe?.bot?.username;
+    console.log("Bot username:", botUsername);
+
+    if (!botUsername) {
+      console.warn(
+        "Имя бота не получено из Telegram WebApp, используем значение по умолчанию"
+      );
+    }
+
+    const link = `https://t.me/${botUsername || "starstep_bot"}?start=ref_${
+      user.referral_code
+    }`;
+    console.log("Generated link:", link);
+    return link;
   } catch (error) {
     console.error("Ошибка при генерации реферальной ссылки:", error);
     return "";
@@ -274,24 +287,33 @@ function setupEventListeners() {
   }
 }
 
-// --- Инициализация ---
+// --- Инициализация приложения ---
 async function init() {
   try {
     if (!tg) {
       throw new Error("Telegram WebApp не инициализирован");
     }
 
+    // Инициализация Telegram WebApp
+    tg.ready();
+    tg.expand();
+
+    // Получение данных пользователя
     await fetchUserData();
+
+    // Загрузка лидерборда
     await fetchLeaderboard();
+
+    // Настройка обработчиков событий
     setupEventListeners();
 
-    tg.ready();
-    tg.enableClosingConfirmation();
+    // Обновление UI
+    updateUI();
   } catch (error) {
     console.error("Ошибка инициализации:", error);
-    showNotification("Ошибка запуска приложения", "error");
+    showNotification("Ошибка инициализации приложения", "error");
   }
 }
 
-// --- Запуск приложения ---
-init();
+// Запуск приложения
+document.addEventListener("DOMContentLoaded", init);
